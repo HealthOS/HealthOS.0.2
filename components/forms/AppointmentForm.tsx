@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-unused-expressions */
+/* eslint-disable @typescript-eslint/no-non-null-asserted-optional-chain */
 "use client"
 
 import { zodResolver } from "@hookform/resolvers/zod"
@@ -13,13 +15,16 @@ import { FormFieldType } from "./PatientForm"
 import Image from "next/image"
 import { SelectItem } from "../ui/select"
 import { Doctors } from "@/constants"
-import { createAppointment } from "@/lib/actions/appointment.actions"
+import { createAppointment, updateAppointment } from "@/lib/actions/appointment.actions"
+import { Appointment } from "@/types/appwrite.types"
 
 
-const AppointmentForm = ({ userId, patientId, type }: {
+const AppointmentForm = ({ userId, patientId, type, appointment, setOpen }: {
     userId: string,
     patientId: string,
     type: "create" | "cancel" | "schedule"
+    appointment: Appointment,
+    setOpen: (open: boolean) => void;
 }) => {
     const router = useRouter();
     const [isLoading, setIsLoading] = useState(false);
@@ -30,12 +35,11 @@ const AppointmentForm = ({ userId, patientId, type }: {
     const form = useForm<z.infer<typeof AppointmentFormValidation>>({
         resolver: zodResolver(AppointmentFormValidation),
         defaultValues: {
-            primaryPhysician: "",
-            schedule: new Date(),
-            reason: "",
-            note: "",
-            cancellationReason: "",
-
+            primaryPhysician: appointment ? appointment.primaryPhysician : '',
+            schedule: appointment ? new Date(appointment.schedule) : new Date(),
+            reason: appointment ? appointment.reason : '',
+            note: appointment ? appointment.note : "",
+            cancellationReason: appointment ? appointment.cancellationReason : '',
         },
     })
 
@@ -46,9 +50,9 @@ const AppointmentForm = ({ userId, patientId, type }: {
         let status;
 
         switch (type) {
-            case 'schedule': status = 'schedule';
+            case 'schedule': status = 'scheduled';
                 break;
-            case 'cancel': status = 'cancel';
+            case 'cancel': status = 'cancelled';
                 break;
             default: status = 'pending';
                 break;
@@ -72,6 +76,25 @@ const AppointmentForm = ({ userId, patientId, type }: {
                     router.push(`/patients/${userId}/new-appointment/success?appointmentId=${appointment.$id}`)
                     
                 }
+            } else {
+                const appointmentToUpdate = {
+                    userId,
+                    appointmentId: appointment?.$id!,
+                    appointment: {
+                        primaryPhysician: values?.primaryPhysician,
+                        schedule: new Date(values?.schedule),
+                        status: status as Status,
+                        cancellationReason: values?.cancellationReason,
+                    },
+                    type,
+                }
+
+                const updatedAppointment = await updateAppointment(appointmentToUpdate);
+
+                if(updatedAppointment){
+                    setOpen && setOpen(false);
+                    form.reset();
+                }
             }
         } catch (error) {
             console.log(error);
@@ -93,10 +116,11 @@ const AppointmentForm = ({ userId, patientId, type }: {
     return (
         <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6 flex-1">
-                <section className="mb-12 space-y-4">
+                { type  === 'create' && <section className="mb-12 space-y-4">
                     <h1 className="header">New Appointment</h1>
                     <p className="text-dark-700">Add new appointment for patient...</p>
                 </section>
+                }
 
                 {type !== "cancel" && (
                     <>
@@ -138,6 +162,13 @@ const AppointmentForm = ({ userId, patientId, type }: {
                                 name="reason"
                                 label="Reason"
                                 placeholder="Enter reason..."
+                            />
+                            <CustomForm
+                                fieldType={FormFieldType.TEXTAREA}
+                                control={form.control}
+                                name="note"
+                                label="Note"
+                                placeholder="Enter note..."
                             />
                         </div>
                     </>
