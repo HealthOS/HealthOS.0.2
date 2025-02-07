@@ -23,6 +23,7 @@ const config = {
     },
     extend: {
       colors: {
+        accent: '#565554',
         green: {
           500: "#24AE7C",
           600: "#0D2A1F",

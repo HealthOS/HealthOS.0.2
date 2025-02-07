@@ -72,6 +72,10 @@
     @apply text-14-regular justify-items-end text-center text-dark-600 xl:text-left;
   }
 
+  .circles{
+    @apply h-14 w-14 flex items-center justify-center rounded-full bg-white hover:bg-red-500;
+  }
+
   /* ==== SUCCESS */
   .success-img {
     @apply m-auto flex flex-1 flex-col items-center justify-between gap-10 py-10;

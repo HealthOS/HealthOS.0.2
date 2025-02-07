@@ -7,6 +7,7 @@ import { Doctors } from "@/constants"
 import Image from "next/image"
 import AppointmentModal from "../AppointmentModal"
 import { Appointment } from "@/types/appwrite.types"
+import Name from "../Name"
 
 export const columns: ColumnDef<Appointment>[] = [
   {
@@ -16,11 +17,16 @@ export const columns: ColumnDef<Appointment>[] = [
   {
     accessorKey: 'patient',
     header: 'Patient',
-    cell: ({ row }) => <p className="text-14-medium">{row.original.patient.name}</p>
+    cell: ({ row }) => (
+      <Name
+        name={row.original.patient.name}
+        userId={row.original.patient.userId}
+      />
+    )
   },
   {
     accessorKey: "status",
-    header: "Status",
+    header: () => <div className="pl-8">Status</div>,
     cell: ({ row }) => (
       <div className="min-w-[115px]">
         <StatusBadge status={row.original.status} />
@@ -38,7 +44,7 @@ export const columns: ColumnDef<Appointment>[] = [
   },
   {
     accessorKey: "primaryPhysician",
-    header: 'Doctor',
+    header: () => <div className="pl-3">Doctor</div>,
     cell: ({ row }) => {
       const doctor = Doctors.find((doc) => doc.name === row.original.primaryPhysician)
 
@@ -58,7 +64,7 @@ export const columns: ColumnDef<Appointment>[] = [
   },
   {
     id: "actions",
-    header: () => <div className="pl-10">Actions</div>,
+    header: () => <div className="pl-16">Actions</div>,
     cell: ({ row: { original: data } }) => {
       return (
         <div className="flex gap-1">
