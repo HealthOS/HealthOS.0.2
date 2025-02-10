@@ -20,7 +20,7 @@ export default async function NewAppointment({ params: {userId}}: SearchParamPro
                     <AppointmentForm 
                         type="create"
                         userId={userId}
-                        patientId={patient.$id}
+                        patientId={patient.$id} 
                     />
 
                     <p className="justify-items-end text-dark-600 xl:text-left pt-2">© 2025 HealthOS</p>

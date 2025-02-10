@@ -73,7 +73,11 @@
   }
 
   .circles{
-    @apply h-14 w-14 flex items-center justify-center rounded-full bg-white hover:bg-red-500;
+    @apply h-14 w-14 flex items-center justify-center rounded-full cursor-pointer bg-white hover:bg-dark-500;
+  }
+
+  .circle-delete{
+    @apply h-14 w-14 flex items-center justify-center rounded-full cursor-pointer bg-white hover:bg-red-500;
   }
 
   /* ==== SUCCESS */

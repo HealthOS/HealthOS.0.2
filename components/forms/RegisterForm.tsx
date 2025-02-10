@@ -10,10 +10,10 @@ import SubmitButton from "../SubmitButton"
 import { PatientFormValidation, UserFormValidation } from "@/lib/validation"
 import { useRouter } from "next/navigation"
 import { useState } from "react"
-import { registerPatient } from "@/lib/actions/patient.actions"
+import { getPatient, registerPatient } from "@/lib/actions/patient.actions"
 import { FormFieldType } from "./PatientForm"
 import { RadioGroup, RadioGroupItem } from "../ui/radio-group"
-import { Doctors, GenderOptions, IdentificationTypes, PatientFormDefaultValues } from "@/constants"
+import { Doctors, GenderOptions, IdentificationTypes } from "@/constants"
 import { Label } from "../ui/label"
 import { SelectItem } from "../ui/select"
 import Image from "next/image"
@@ -23,23 +23,43 @@ const RegisterForm = ({ user }: { user: User }) => {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
 
+  const use = await getPatient(user);
+
   const form = useForm<z.infer<typeof PatientFormValidation>>({
     resolver: zodResolver(PatientFormValidation),
     defaultValues: {
-      ...PatientFormDefaultValues,
       name: "",
       email: "",
       phone: "",
+      birthDate: new Date(Date.now()),
+      gender: "male" as Gender,
+      address: "",
+      occupation: "",
+      emergencyContactName: "",
+      emergencyContactNumber: "",
+      primaryPhysician: "",
+      insuranceProvider: "",
+      insurancePolicyNumber: "",
+      allergies: "",
+      currentMedication: "",
+      familyMedicalHistory: "",
+      pastMedicalHistory: "",
+      identificationType: "Birth Certificate",
+      identificationNumber: "",
+      identificationDocument: [],
+      treatmentConsent: false,
+      disclosureConsent: false,
+      privacyConsent: false,
     },
   })
 
-  async function onSubmit( values: z.infer<typeof PatientFormValidation>) {
+  async function onSubmit(values: z.infer<typeof PatientFormValidation>) {
 
     setIsLoading(true);
 
     let formData;
 
-    if(values.identificationDocument && values.identificationDocument.length>0){
+    if (values.identificationDocument && values.identificationDocument.length > 0) {
       const blobFile = new Blob([values.identificationDocument[0]], {
         type: values.identificationDocument[0].type,
       })
