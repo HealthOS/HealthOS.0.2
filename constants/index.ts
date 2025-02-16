@@ -24,6 +24,11 @@ export const PatientFormDefaultValues = {
   treatmentConsent: false,
   disclosureConsent: false,
   privacyConsent: false,
+  temperature: 0,
+  sugarLevel: 0,
+  bloodPressure: "",
+  description: "",
+  seriousConditions: "",
 };
 
 export const IdentificationTypes = [

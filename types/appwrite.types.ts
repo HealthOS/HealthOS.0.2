@@ -22,6 +22,11 @@ export interface Patient extends Models.Document {
   identificationNumber: string | undefined;
   identificationDocument: FormData | undefined;
   privacyConsent: boolean;
+  temperature: string | undefined;
+  sugarLevel: string | undefined;
+  bloodPressure: string | undefined;
+  description: string | undefined;
+  seriousConditions: string | undefined;
 }
 
 export interface Appointment extends Models.Document {

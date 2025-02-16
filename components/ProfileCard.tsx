@@ -1,6 +1,18 @@
 'use client';
 
-import React from 'react'
+import {
+    AlertDialog,
+    AlertDialogAction,
+    AlertDialogCancel,
+    AlertDialogContent,
+    AlertDialogDescription,
+    AlertDialogFooter,
+    AlertDialogHeader,
+    AlertDialogTitle,
+    AlertDialogTrigger,
+} from "@/components/ui/alert-dialog"
+
+import React, { useState } from 'react'
 import { UserMinus, Mail, Clipboard, BookUser } from 'lucide-react';
 import { Bounce, toast, ToastContainer } from 'react-toastify';
 import {
@@ -9,11 +21,52 @@ import {
     TooltipProvider,
     TooltipTrigger,
 } from "@/components/ui/tooltip"
+import { deleteAppointment, deletePatient, deleteProfile, getUser } from '@/lib/actions/patient.actions';
+import { useRouter } from 'next/navigation';
+import Image from "next/image";
+import Link from "next/link";
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 const ProfileCard = ({ userId, name, phone, gender, birthDate, address, occupation, email, emergencyContactName, emergencyContactNumber }: {
-    user
+    userId: string
+    name: string
+    phone: string
+    gender: string
+    birthDate: string
+    address: string
+    occupation: string
+    email: string
+    emergencyContactName: string
+    emergencyContactNumber: string
 }) => {
+
+    const router = useRouter();
+    const [open, setOpen] = useState(false);
+    const [openLoading, setLoadingOpen] = useState(false);
+    const [patient, setPatient] = useState(false);
+    const [apt, setApt] = useState(false);
+    const [user, setUser] = useState(false);
+    const [del, setDel] = useState(0);
+
+    const handleDelete = async () => {
+
+        setLoadingOpen(true);
+        setDel(1);
+        setPatient(true);
+        const deleteAppointments = await deleteAppointment(userId);
+        setPatient(false);
+        setApt(true);
+        const deleteProfileData = await deleteProfile(userId);
+        setApt(false);
+        setUser(true);
+        const userDeleted = await deletePatient(userId);
+        setUser(false);
+        setDel(2);
+    }
+
+    const closeModal = () => {
+        setOpen(false);
+    }
 
     const handleCopy = ({ text, value }: {
         text: string
@@ -96,14 +149,73 @@ const ProfileCard = ({ userId, name, phone, gender, birthDate, address, occupati
                     <TooltipProvider>
                         <Tooltip>
                             <TooltipTrigger>
-                                <UserMinus className='h-5 w-5 text-red-700 group-hover:text-white' />
+                                <div onClick={() => setOpen(true)}>
+                                    <UserMinus className='h-5 w-5 text-red-700 group-hover:text-white' />
+                                </div>
                             </TooltipTrigger>
                             <TooltipContent className='bg-dark-300 rounded-md'>
-                                <p className='text-red-500'>Delete patient: {emergencyContactName}</p>
+                                <p className='text-red-500'>Delete patient: {name}</p>
                             </TooltipContent>
                         </Tooltip>
                     </TooltipProvider>
+
+                    <AlertDialog open={open} onOpenChange={setOpen}>
+                        <AlertDialogContent className="shad-alert-dialog">
+                            <AlertDialogHeader>
+                                <AlertDialogTitle className="flex items-start justify-between">Are you absolutely sure?
+                                    <Image
+                                        src="/assets/icons/close.svg"
+                                        height={20}
+                                        width={20}
+                                        alt="close"
+                                        onClick={() => closeModal()}
+                                        className="cursor-pointer"
+                                    />
+                                </AlertDialogTitle>
+                                <AlertDialogDescription>
+                                    This action cannot be undone. This will permanently delete Patient profile and appointment data from the servers.
+                                </AlertDialogDescription>
+                            </AlertDialogHeader>
+                            <AlertDialogFooter>
+                                <AlertDialogCancel>Cancel</AlertDialogCancel>
+                                <AlertDialogAction 
+                                    onClick={() => handleDelete()}
+                                    className="shad-danger-btn">Delete</AlertDialogAction>
+                            </AlertDialogFooter>
+                        </AlertDialogContent>
+                    </AlertDialog>
                 </div>
+
+                <AlertDialog open={openLoading} onOpenChange={setLoadingOpen}>
+                    <AlertDialogContent className="shad-alert-dialog">
+                        <AlertDialogHeader>
+                            <AlertDialogTitle className="flex items-start justify-between">Deleting {name}
+                            </AlertDialogTitle>
+                            <AlertDialogDescription>
+                                Clearing data..
+                            </AlertDialogDescription>
+                        </AlertDialogHeader>
+                        <AlertDialogFooter>
+                            {del == 0 && 
+                                <AlertDialogAction onClick={() => handleDelete()} className="shad-danger-btn w-full">wait</AlertDialogAction>
+                            }
+                            {del == 1 &&
+                                <AlertDialogAction className="shad-danger-btn w-full cursor-wait">
+                                    <p>Deleting 
+                                        {patient && <span> patient...</span>}
+                                        {apt && <span> appointments...</span>}
+                                        {user && <span> patient profile...</span>}</p>
+                                </AlertDialogAction>
+                            }
+                            {del == 2 &&
+                                <AlertDialogAction className="shad-danger-btn w-full">
+                                    <Link href='/admin'>Patient Deleted</Link>
+                                </AlertDialogAction>
+                            }
+                        </AlertDialogFooter>
+                    </AlertDialogContent>
+                </AlertDialog>
+
             </div>
             <ToastContainer />
 

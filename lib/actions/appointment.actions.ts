@@ -85,8 +85,7 @@ export const updateAppointment = async ({ appointmentId, userId, appointment, ty
         if(!updatedAppointment){
             throw new Error('Appointment not found');
         }
-
-
+        
         revalidatePath('/admin');
         return parseStringify(updatedAppointment);
 

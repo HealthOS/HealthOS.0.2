@@ -1,3 +1,4 @@
+import ButtonActions from '@/components/ButtonActions';
 import EditButton from '@/components/EditButton';
 import IPN from '@/components/IPN';
 import ProfileCard from '@/components/ProfileCard';
@@ -10,9 +11,8 @@ import React from 'react'
 
 
 const profilePage = async ({ params: { userId } }: SearchParamProps) => {
-    const user = await getPatient(userId);
+    const user = await getPatient(userId); // 677421f4003129054d37
 
-    console.log(user);
     return (
         <div className='mx-auto flex max-w-7xl h-screen pb-6 flex-col space-y-10'>
             <header className='admin-header'>
@@ -29,10 +29,9 @@ const profilePage = async ({ params: { userId } }: SearchParamProps) => {
                     <ChevronRight className='h-5 w-5' />
                     <p className='text-14-bold'>{user.name}</p>
                 </div>
-                <div className='flex gap-2 relative'>
-                    <Button variant="outline">New Appointment</Button>
-                    <Button variant="outline">Add Bill</Button>
-                </div>
+                
+                <ButtonActions userId={userId} patientId={user.$id}/>
+        
             </header>
 
             <main className='mx-auto flex h-full w-[90%] max-w-6xl gap-x-4'>

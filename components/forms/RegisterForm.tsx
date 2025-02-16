@@ -7,10 +7,10 @@ import { z } from "zod"
 import { Form, FormControl } from "@/components/ui/form"
 import CustomForm from "../CustomForm"
 import SubmitButton from "../SubmitButton"
-import { PatientFormValidation, UserFormValidation } from "@/lib/validation"
+import { PatientFormValidation } from "@/lib/validation"
 import { useRouter } from "next/navigation"
 import { useState } from "react"
-import { getPatient, registerPatient } from "@/lib/actions/patient.actions"
+import { registerPatient } from "@/lib/actions/patient.actions"
 import { FormFieldType } from "./PatientForm"
 import { RadioGroup, RadioGroupItem } from "../ui/radio-group"
 import { Doctors, GenderOptions, IdentificationTypes } from "@/constants"
@@ -22,8 +22,6 @@ import FileUploader from "../FileUploader"
 const RegisterForm = ({ user }: { user: User }) => {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
-
-  const use = await getPatient(user);
 
   const form = useForm<z.infer<typeof PatientFormValidation>>({
     resolver: zodResolver(PatientFormValidation),
@@ -50,6 +48,11 @@ const RegisterForm = ({ user }: { user: User }) => {
       treatmentConsent: false,
       disclosureConsent: false,
       privacyConsent: false,
+      temperature: "",
+      sugarLevel: "",
+      bloodPressure: "",
+      description: "",
+      seriousConditions: "",
     },
   })
 
@@ -76,7 +79,6 @@ const RegisterForm = ({ user }: { user: User }) => {
         birthDate: new Date(values.birthDate),
         identificationDocument: formData,
       };
-      console.log(patientData);
 
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-expect-error
@@ -249,6 +251,31 @@ const RegisterForm = ({ user }: { user: User }) => {
 
         <div className="flex flex-col gap-6 xl:flex-row">
           <CustomForm
+            fieldType={FormFieldType.INPUT}
+            control={form.control}
+            name="temperature"
+            label="Temperature"
+            placeholder="98.4 F"
+          />
+          <CustomForm
+            fieldType={FormFieldType.INPUT}
+            control={form.control}
+            name="bloodPressure"
+            label="Blood Pressure"
+            placeholder="128/85 mmHg"
+          />
+
+          <CustomForm
+            fieldType={FormFieldType.INPUT}
+            control={form.control}
+            name="sugarLevel"
+            label="Sugar Level"
+            placeholder="5.6 mg/dL"
+          />
+        </div>
+
+        <div className="flex flex-col gap-6 xl:flex-row">
+          <CustomForm
             fieldType={FormFieldType.TEXTAREA}
             control={form.control}
             name="allergies"
@@ -261,6 +288,23 @@ const RegisterForm = ({ user }: { user: User }) => {
             name="currentMedication"
             label="Current Medication(if any)"
             placeholder="Paracetamol 500mg, etc"
+          />
+        </div>
+
+        <div className="flex flex-col gap-6 xl:flex-row">
+          <CustomForm
+            fieldType={FormFieldType.TEXTAREA}
+            control={form.control}
+            name="description"
+            label="Give detailed description"
+            placeholder="Enter the patient condition, treatment, problems, etc."
+          />
+          <CustomForm
+            fieldType={FormFieldType.TEXTAREA}
+            control={form.control}
+            name="seriousConditions"
+            label="Serious Condition (if any)"
+            placeholder="Very high blood pressure, Sugar level increased"
           />
         </div>
 

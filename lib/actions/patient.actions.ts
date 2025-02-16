@@ -1,7 +1,7 @@
 'use server';
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { ID, Query } from "node-appwrite"
-import { BUCKET_ID, users, storage, databases, DATABASE_ID, PATIENT_COLLECTION_ID, ENDPOINT, PROJECT_ID } from "../appwrite.config"
+import { BUCKET_ID, users, storage, databases, DATABASE_ID, PATIENT_COLLECTION_ID, ENDPOINT, PROJECT_ID, APPOINTMENT_COLLECTION_ID } from "../appwrite.config"
 import { parseStringify } from "../utils"
 import { InputFile } from "node-appwrite/file";
 
@@ -14,9 +14,9 @@ export const createUser = async (user: CreateUserParams) => {
             undefined,
             user.name
         )
-        console.log( newUser );
+        console.log(newUser);
         return parseStringify(newUser)
-        
+
     } catch (error: any) {
         if (error && error?.code === 409) {
             const existingUser = await users.list([
@@ -29,10 +29,10 @@ export const createUser = async (user: CreateUserParams) => {
 }
 
 export const getUser = async (userId: string) => {
-    try{
+    try {
         const user = await users.get(userId);
         return parseStringify(user)
-    }catch(error){
+    } catch (error) {
         console.log(error)
     }
 }
@@ -41,8 +41,8 @@ export const registerPatient = async ({ identificationDocument, ...patient }: Re
     try {
         let file;
 
-        if(identificationDocument) {
-            const inputFile=InputFile.fromBuffer(
+        if (identificationDocument) {
+            const inputFile = InputFile.fromBuffer(
                 identificationDocument?.get('blobFile') as Blob,
                 identificationDocument?.get('fileName') as string,
             )
@@ -67,15 +67,84 @@ export const registerPatient = async ({ identificationDocument, ...patient }: Re
 }
 
 export const getPatient = async (userId: string) => {
-    try{
+    try {
         const patients = await databases.listDocuments(
             DATABASE_ID!,
             PATIENT_COLLECTION_ID!,
             [Query.equal('userId', userId)]
         );
         return parseStringify(patients.documents[0]);
-        
-    }catch(error){
+
+    } catch (error) {
         console.log(error)
     }
 }
+
+export const deletePatient = async (userId: string) => {
+    try {
+        const deletedUser = await users.delete(userId);
+        return (true);
+
+    } catch (error) {
+        console.log(error)
+        return (false);
+    }
+}
+
+export const deleteProfile = async (userId: string) => {
+      try {
+        const documents = await databases.listDocuments(
+          DATABASE_ID!,
+          PATIENT_COLLECTION_ID!,
+          [Query.equal('userId', userId)]
+        );
+        
+        if (documents.total > 0) {
+          const documentId = documents.documents[0].$id;
+          console.log(documentId);
+    
+          await databases.deleteDocument(
+            DATABASE_ID!,
+            PATIENT_COLLECTION_ID!,
+            documentId
+          );
+          console.log(`Appointment with userId ${userId} has been deleted.`);
+        } else {
+          console.error(`No document found with userId: ${userId}`);
+        }
+      } catch (error) {
+        console.error('Error deleting appointment:', error);
+      }
+    };
+    
+export const deleteAppointment = async (userId: string) => {
+  try {
+    const documents = await databases.listDocuments(
+      DATABASE_ID!,
+      APPOINTMENT_COLLECTION_ID!,
+      [
+        Query.equal('userId', userId)
+      ]
+    );
+
+    if (documents.total > 0) {
+      for (const document of documents.documents) {
+        const documentId = document.$id;
+        console.log(documentId);
+        await databases.deleteDocument(
+          DATABASE_ID!,
+          APPOINTMENT_COLLECTION_ID!,
+          documentId
+        );
+
+        console.log(`Appointment with userId ${userId} and documentId ${documentId} has been deleted.`);
+      }
+    } else {
+      console.error(`No documents found with userId: ${userId}`);
+    }
+  } catch (error) {
+    console.error('Error deleting appointment:', error);
+  }
+};
+
+// 679a61ef0026b0ed7a7f

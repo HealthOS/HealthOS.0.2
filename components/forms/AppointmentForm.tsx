@@ -26,9 +26,9 @@ const AppointmentForm = ({ userId, patientId, type, appointment, setOpen }: {
     appointment: Appointment,
     setOpen: (open: boolean) => void;
 }) => {
+
     const router = useRouter();
     const [isLoading, setIsLoading] = useState(false);
-
     const AppointmentFormValidation = getAppointmentSchema(type)
 
     const form = useForm<z.infer<typeof AppointmentFormValidation>>({

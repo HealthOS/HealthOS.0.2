@@ -55,6 +55,11 @@ export const PatientFormValidation = z.object({
   pastMedicalHistory: z.string().optional(),
   identificationType: z.string().optional(),
   identificationNumber: z.string().optional(),
+  temperature: z.string().optional(),
+  sugarLevel: z.string().optional(),
+  bloodPressure: z.string().optional(),
+  description: z.string().optional(),
+  seriousConditions: z.string().optional(),
   identificationDocument: z.custom<File[]>().optional(),
   treatmentConsent: z
     .boolean()

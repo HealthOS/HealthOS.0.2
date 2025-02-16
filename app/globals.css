@@ -195,7 +195,7 @@
   }
 
   .shad-danger-btn {
-    @apply bg-red-700 text-white !important;
+    @apply bg-red-700 text-white hover:bg-red-800 !important;
   }
 
   .shad-gray-btn {

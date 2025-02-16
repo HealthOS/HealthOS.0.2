@@ -34,6 +34,11 @@ declare type SearchParamProps = {
     identificationNumber: string | undefined;
     identificationDocument: FormData | undefined;
     privacyConsent: boolean;
+    temperature: string | undefined;
+    sugarLevel: string | undefined;
+    bloodPressure: string | undefined;
+    description: string | undefined;
+    seriousConditions: string | undefined;
   }
   
   declare type CreateAppointmentParams = {
