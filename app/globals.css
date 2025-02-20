@@ -61,7 +61,7 @@
   }
 
   .sub-container {
-    @apply mx-auto flex size-full flex-col py-10;
+    @apply mx-auto flex flex-col py-10;
   }
 
   .side-img {
@@ -183,6 +183,10 @@
 
   .text-12-regular {
     @apply text-[12px] leading-[16px] font-normal;
+  }
+
+  .text-10-regular {
+    @apply text-[10px] leading-[14px] font-normal;
   }
 
   .text-12-semibold {

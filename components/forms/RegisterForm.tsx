@@ -10,7 +10,7 @@ import SubmitButton from "../SubmitButton"
 import { PatientFormValidation } from "@/lib/validation"
 import { useRouter } from "next/navigation"
 import { useState } from "react"
-import { registerPatient } from "@/lib/actions/patient.actions"
+import { registerPatient, updatePatient } from "@/lib/actions/patient.actions"
 import { FormFieldType } from "./PatientForm"
 import { RadioGroup, RadioGroupItem } from "../ui/radio-group"
 import { Doctors, GenderOptions, IdentificationTypes } from "@/constants"
@@ -18,41 +18,57 @@ import { Label } from "../ui/label"
 import { SelectItem } from "../ui/select"
 import Image from "next/image"
 import FileUploader from "../FileUploader"
+import { Patient } from "@/types/appwrite.types"
 
-const RegisterForm = ({ user }: { user: User }) => {
+const RegisterForm = ({ user, patientData }: {
+  user: User
+  patientData: Patient
+}) => {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
 
   const form = useForm<z.infer<typeof PatientFormValidation>>({
     resolver: zodResolver(PatientFormValidation),
     defaultValues: {
-      name: "",
-      email: "",
-      phone: "",
-      birthDate: new Date(Date.now()),
-      gender: "male" as Gender,
-      address: "",
-      occupation: "",
-      emergencyContactName: "",
-      emergencyContactNumber: "",
-      primaryPhysician: "",
-      insuranceProvider: "",
-      insurancePolicyNumber: "",
-      allergies: "",
-      currentMedication: "",
-      familyMedicalHistory: "",
-      pastMedicalHistory: "",
-      identificationType: "Birth Certificate",
-      identificationNumber: "",
+      name: patientData?.name || "",
+      email: patientData?.email || "",
+      phone: patientData?.phone || "",
+      birthDate: patientData?.birthDate || new Date(Date.now()),
+      gender: patientData?.gender || "male" as Gender,
+      address: patientData?.address || "",
+      occupation: patientData?.occupation || "",
+      emergencyContactName: patientData?.emergencyContactName || "",
+      emergencyContactNumber: patientData?.emergencyContactNumber || "",
+      primaryPhysician: patientData?.primaryPhysician || "",
+      insuranceProvider: patientData?.insuranceProvider || "",
+      insurancePolicyNumber: patientData?.insurancePolicyNumber || "",
+      allergies: patientData?.allergies || "",
+      currentMedication: patientData?.currentMedication || "",
+      familyMedicalHistory: patientData?.familyMedicalHistory || "",
+      pastMedicalHistory: patientData?.pastMedicalHistory || "",
+      identificationType: patientData?.identificationType || "Birth Certificate",
+      identificationNumber: patientData?.identificationNumber || "",
       identificationDocument: [],
-      treatmentConsent: false,
-      disclosureConsent: false,
-      privacyConsent: false,
-      temperature: "",
-      sugarLevel: "",
-      bloodPressure: "",
-      description: "",
-      seriousConditions: "",
+      treatmentConsent: patientData?.treatmentConsent || false,
+      disclosureConsent: patientData?.disclosureConsent || false,
+      privacyConsent: patientData?.privacyConsent || false,
+      temperature: patientData?.temperature || "",
+      diabetes: patientData?.diabetes || "",
+      bloodPressure: patientData?.bloodPressure || "",
+      description: patientData?.description || "",
+      seriousConditions: patientData?.seriousConditions || "",
+      tachycardia: patientData?.tachycardia || "",
+      hypoxia: patientData?.hypoxia || "",
+      respiratoryDistress: patientData?.respiratoryDistress || "",
+      hypercholesterolemia: patientData?.hypercholesterolemia || "",
+      anemia: patientData?.anemia || "",
+      chronicKidneyDisease: patientData?.chronicKidneyDisease || "",
+      hypothyroidism: patientData?.hypothyroidism || "",
+      hyperthyroidism: patientData?.hyperthyroidism || "",
+      obesity: patientData?.obesity || "",
+      gout: patientData?.gout || "",
+      coagulationDisorder: patientData?.coagulationDisorder || "",
+      osteoporosis: patientData?.osteoporosis || "",
     },
   })
 
@@ -73,18 +89,75 @@ const RegisterForm = ({ user }: { user: User }) => {
     }
 
     try {
-      const patientData = {
-        ...values,
-        userId: user.$id,
-        birthDate: new Date(values.birthDate),
-        identificationDocument: formData,
-      };
+      if (patientData) {
 
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-expect-error
-      const patient = await registerPatient(patientData);
+        const updatePatientData = {
+          userId: patientData.$id,
+          identificationDocument: formData,
+          name: values.name,
+          email: values.email,
+          phone: values.phone,
+          birthDate: values.birthDate,
+          gender: values.gender,
+          address: values.address,
+          occupation: values.occupation,
+          emergencyContactName: values.emergencyContactName,
+          emergencyContactNumber: values.emergencyContactNumber,
+          primaryPhysician: values.primaryPhysician,
+          insuranceProvider: values.insuranceProvider,
+          insurancePolicyNumber: values.insurancePolicyNumber,
+          allergies: values.allergies,
+          currentMedication: values.currentMedication,
+          familyMedicalHistory: values.familyMedicalHistory,
+          pastMedicalHistory: values.pastMedicalHistory,
+          identificationType: values.identificationType,
+          identificationNumber: values.identificationNumber,
+          treatmentConsent: values.treatmentConsent,
+          disclosureConsent: values.disclosureConsent,
+          privacyConsent: values.privacyConsent,
+          temperature: values.temperature,
+          diabetes: values.diabetes,
+          bloodPressure: values.bloodPressure,
+          description: values.description,
+          seriousConditions: values.seriousConditions,
+          tachycardia: values.tachycardia,
+          hypoxia: values.hypoxia,
+          respiratoryDistress: values.respiratoryDistress,
+          hypercholesterolemia: values.hypercholesterolemia,
+          anemia: values.anemia,
+          chronicKidneyDisease: values.chronicKidneyDisease,
+          hypothyroidism: values.hypothyroidism,
+          hyperthyroidism: values.hyperthyroidism,
+          obesity: values.obesity,
+          gout: values.gout,
+          coagulationDisorder: values.coagulationDisorder,
+          osteoporosis: values.osteoporosis,
+        }
 
-      if (patient) router.push(`/patients/${user.$id}/new-appointment`)
+        console.log(updatePatientData)
+
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-expect-error
+        const updatedPatient = await updatePatient(updatePatientData);
+
+        if (updatedPatient) router.push(`/patients/${user.$id}/profile`)
+
+      }
+      else {
+        const newPatientData = {
+          ...values,
+          userId: user.$id,
+          birthDate: new Date(values.birthDate),
+          identificationDocument: formData,
+        };
+
+
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-expect-error
+        const patient = await registerPatient(newPatientData);
+
+        if (patient) router.push(`/patients/${user.$id}/new-appointment`)
+      }
 
     } catch (error) {
       console.log(error);
@@ -268,9 +341,109 @@ const RegisterForm = ({ user }: { user: User }) => {
           <CustomForm
             fieldType={FormFieldType.INPUT}
             control={form.control}
-            name="sugarLevel"
-            label="Sugar Level"
+            name="diabetes"
+            label="Diabetes Mellitus"
             placeholder="5.6 mg/dL"
+          />
+        </div>
+
+        <div className="flex flex-col gap-6 xl:flex-row">
+          <CustomForm
+            fieldType={FormFieldType.INPUT}
+            control={form.control}
+            name="tachycardia"
+            label="Tachycardia"
+            placeholder="110 bpm"
+          />
+          <CustomForm
+            fieldType={FormFieldType.INPUT}
+            control={form.control}
+            name="hypoxia"
+            label="Hypoxia"
+            placeholder="88%"
+          />
+
+          <CustomForm
+            fieldType={FormFieldType.INPUT}
+            control={form.control}
+            name="respiratoryDistress"
+            label="Respiratory Distress"
+            placeholder="30 breaths/min"
+          />
+        </div>
+
+        <div className="flex flex-col gap-6 xl:flex-row">
+          <CustomForm
+            fieldType={FormFieldType.INPUT}
+            control={form.control}
+            name="hypercholesterolemia"
+            label="Hypercholesterolemia"
+            placeholder="250 mg/dL"
+          />
+          <CustomForm
+            fieldType={FormFieldType.INPUT}
+            control={form.control}
+            name="anemia"
+            label="Anemia"
+            placeholder="12.0 g/dL"
+          />
+
+          <CustomForm
+            fieldType={FormFieldType.INPUT}
+            control={form.control}
+            name="chronicKidneyDisease"
+            label="Chronic Kidney Disease"
+            placeholder="45 mL/min/1.73m²"
+          />
+        </div>
+
+        <div className="flex flex-col gap-6 xl:flex-row">
+          <CustomForm
+            fieldType={FormFieldType.INPUT}
+            control={form.control}
+            name="gout"
+            label="Gout"
+            placeholder="7.0 mg/dL"
+          />
+          <CustomForm
+            fieldType={FormFieldType.INPUT}
+            control={form.control}
+            name="coagulationDisorder"
+            label="Coagulation Disorder"
+            placeholder="3.2 (INR)"
+          />
+
+          <CustomForm
+            fieldType={FormFieldType.INPUT}
+            control={form.control}
+            name="osteoporosis"
+            label="Osteoporosis"
+            placeholder="1.4 T-Score"
+          />
+        </div>
+
+        <div className="flex flex-col gap-6 xl:flex-row">
+          <CustomForm
+            fieldType={FormFieldType.INPUT}
+            control={form.control}
+            name="hypothyroidism"
+            label="Hypothyroidism"
+            placeholder="5.3 µIU/mL"
+          />
+          <CustomForm
+            fieldType={FormFieldType.INPUT}
+            control={form.control}
+            name="Hyperthyroidism"
+            label="Hyperthyroidism"
+            placeholder="0.3 µIU/mL"
+          />
+
+          <CustomForm
+            fieldType={FormFieldType.INPUT}
+            control={form.control}
+            name="obesity"
+            label="Obesity"
+            placeholder="30 kg/m²"
           />
         </div>
 

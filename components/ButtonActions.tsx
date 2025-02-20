@@ -31,7 +31,7 @@ const ButtonActions = ({ userId, patientId }: {
 
 
             <Dialog open={openApt} onOpenChange={setOpenApt}>
-                <DialogContent className="shad-alert-dialog">
+                <DialogContent className="shad-dialog sm:max-w-md">
                     <DialogHeader>
                         <DialogTitle></DialogTitle>
                     </DialogHeader>
@@ -46,7 +46,7 @@ const ButtonActions = ({ userId, patientId }: {
             </Dialog>
 
             <Dialog open={openBill} onOpenChange={setOpenBill}>
-                <DialogContent className="shad-alert-dialog">
+                <DialogContent className="shad-dialog sm:max-w-md">
                     <DialogHeader>
                         <DialogTitle>Billing window</DialogTitle>
                     </DialogHeader>

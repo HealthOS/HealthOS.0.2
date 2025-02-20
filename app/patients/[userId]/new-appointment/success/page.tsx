@@ -69,7 +69,7 @@ const Success = async ({ params: { userId }, searchParams }: SearchParamProps) =
 
                     <Button variant='outline' className='shad-primary-btn' asChild>
                         <Link href={`/patients/${userId}/profile`}>
-                            Return
+                            Profile
                         </Link>
                     </Button>
 

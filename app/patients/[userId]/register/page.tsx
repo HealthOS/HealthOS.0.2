@@ -1,10 +1,13 @@
 import RegisterForm from '@/components/forms/RegisterForm'
-import { getUser } from '@/lib/actions/patient.actions'
+import { getPatient, getUser } from '@/lib/actions/patient.actions'
 import Image from 'next/image'
 import React from 'react'
 
 const Register = async ({ params: { userId } }: SearchParamProps) => {
   const user = await getUser(userId);
+
+  const profileData = await getPatient(userId);
+
   
     return (
     <div className="flex h-screen max-h-screen">
@@ -18,7 +21,9 @@ const Register = async ({ params: { userId } }: SearchParamProps) => {
             className="mb-12 h-10 w-fit"
           />
           
-          <RegisterForm user={user}/>
+          <RegisterForm user={user}
+              patientData={profileData}
+          />
 
           <p className="copyright py-12">© 2025 HealthOS</p>
 

@@ -11,7 +11,7 @@ export default function Home( { searchParams }: SearchParamProps) {
 
       {isAdmon && <PasskeyModal/>}
 
-      <section className="remove-scrollbar container my-auto">
+      <section className="remove-scrollbar container">
         <div className="sub-container max-w-[496px]">
           <Image
             src="/assets/icons/logo-full.svg"
@@ -23,7 +23,7 @@ export default function Home( { searchParams }: SearchParamProps) {
           
           <PatientForm />
 
-          <div className="text-14-regular mt-20 flex justify-between">
+          <div className="text-14-regular flex justify-between py-12">
             <p className="justify-items-end text-dark-600 xl:text-left">© 2025 HealthOS</p>
             <Link href="/?admin=true" className="text-green-500">
               Doctor Dash

@@ -2,6 +2,7 @@ import ButtonActions from '@/components/ButtonActions';
 import EditButton from '@/components/EditButton';
 import IPN from '@/components/IPN';
 import ProfileCard from '@/components/ProfileCard';
+import RoundedContainers from '@/components/RoundedContainers';
 import { Button } from '@/components/ui/button';
 import { getPatient } from '@/lib/actions/patient.actions';
 import { ChevronRight } from 'lucide-react';
@@ -14,7 +15,7 @@ const profilePage = async ({ params: { userId } }: SearchParamProps) => {
     const user = await getPatient(userId); // 677421f4003129054d37
 
     return (
-        <div className='mx-auto flex max-w-7xl h-screen pb-6 flex-col space-y-10'>
+        <div className='mx-auto flex max-w-7xl h-screen  max-h-screen pb-6 flex-col space-y-10'>
             <header className='admin-header'>
                 <div className='flex items-center gap-2'>
                     <Link href="/" className="cursor-pointer">
@@ -29,13 +30,13 @@ const profilePage = async ({ params: { userId } }: SearchParamProps) => {
                     <ChevronRight className='h-5 w-5' />
                     <p className='text-14-bold'>{user.name}</p>
                 </div>
-                
-                <ButtonActions userId={userId} patientId={user.$id}/>
-        
+
+                <ButtonActions userId={userId} patientId={user.$id} />
+
             </header>
 
-            <main className='mx-auto flex h-full w-[90%] max-w-6xl gap-x-4'>
-                <section className='flex flex-col justify-center w-full h-full max-w-[30%] bg-dark-400 rounded-lg gap-y-4'>
+            <main className='mx-auto flex h-full max-h-[80%] w-[90%] max-w-6xl gap-x-4'>
+                <section className='flex flex-col justify-center w-full h-full max-w-[25%] bg-dark-400 rounded-lg gap-y-4'>
                     <ProfileCard
                         userId={user.userId}
                         name={user.name}
@@ -49,50 +50,106 @@ const profilePage = async ({ params: { userId } }: SearchParamProps) => {
                         emergencyContactNumber={user.emergencyContactNumber}
                     />
                 </section>
-                <section className='w-full max-w-[70%]'>
-                    <div className='flex w-full flex-row justify-between px-4'>
-                        <h2 className='text-2xl font-megium'>Medical condition</h2>
-                        
-                        <EditButton userId={userId} />
-                        
+                <section className='remove-scrollbar relative flex-1 overflow-y-auto px-[2%] w-full max-w-[55%]'>
+                    <div className="mx-auto flex flex-col py-0">
+                        <div className='flex w-full flex-row justify-between mb-4'>
+                            <h2 className='text-2xl font-megium'>Medical condition</h2>
+
+                            <EditButton userId={userId} />
+
+                        </div>
+                        <div className='flex flex-col gap-y-2'>
+                            <div>
+                                <p className='text-16-medium'>Description</p>
+                                <p className='text-14-regular text-dark-700'>{user.description}</p>
+                            </div>
+                            <div className='remove-scrollbar flex my-2 gap-2 w-full items-center overflow-auto'>
+                                <p className='text-16-medium'>Quick look: </p>
+
+                                {user.temperature && <RoundedContainers
+                                    value={user.temperature} field='temperature'
+                                />}
+                                {user.bloodPressure && <RoundedContainers
+                                    value={user.bloodPressure} field='bloodPressure'
+                                />}
+                                {user.hypertension && <RoundedContainers
+                                    value={user.hypertension} field="hypertension"
+                                />}
+                                {user.diabetes && <RoundedContainers
+                                    value={user.diabetes} field="diabetes"
+                                />}
+                                {user.tachycardia && <RoundedContainers
+                                    value={user.tachycardia} field="tachycardia"
+                                />}
+                                {user.hypoxia && <RoundedContainers
+                                    value={user.hypoxia} field="hypoxia"
+                                />}
+                                {user.respiratoryDistress && <RoundedContainers
+                                    value={user.respiratoryDistress} field="respiratoryDistress"
+                                />}
+                                {user.hypercholesterolemia && <RoundedContainers
+                                    value={user.hypercholesterolemia} field="hypercholesterolemia"
+                                />}
+                                {user.anemia && <RoundedContainers
+                                    value={user.anemia} field="anemia"
+                                />}
+                                {user.chronicKidneyDisease && <RoundedContainers
+                                    value={user.chronicKidneyDisease} field="chronicKidneyDisease"
+                                />}
+                                {user.hypothyroidism && <RoundedContainers
+                                    value={user.hypothyroidism} field="hypothyroidism"
+                                />}
+                                {user.hyperthyroidism && <RoundedContainers
+                                    value={user.hyperthyroidism} field="hyperthyroidism"
+                                />}
+                                {user.obesity && <RoundedContainers
+                                    value={user.obesity} field="obesity"
+                                />}
+                                {user.gout && <RoundedContainers
+                                    value={user.gout} field="gout"
+                                />}
+                                {user.coagulationDisorder && <RoundedContainers
+                                    value={user.coagulationDisorder} field="coagulationDisorder"
+                                />}
+
+                            </div>
+                            <div>
+                                <p className='text-16-medium'>Serious conditions</p>
+                                <p className='text-14-regular text-dark-700'>{user.seriousConditions}</p>
+                            </div>
+                            <div>
+                                <p className='text-16-medium'>Allergies</p>
+                                {user.allergies.length > 0 ? <p className='text-14-regular text-dark-700'>{user.allergies}</p> : <p className='text-14-regular text-dark-600'>nil</p>}
+                            </div>
+                            <p className='text-16-medium'>Physician: <span className='text-16-regular text-dark-700'>Dr. {user.primaryPhysician}</span></p>
+                            <div>
+                                <p className='text-16-medium'>Current Medication</p>
+                                <p className='text-14-regular text-dark-700'>{user.currentMedication}</p>
+                            </div>
+                            <div>
+                                <p className='text-16-medium'>Past Medical History</p>
+                                <p className='text-14-regular text-dark-700'>{user.pastMedicalHistory}</p>
+                            </div>
+                            <div>
+                                <p className='text-16-medium'>Family Medical History</p>
+                                <p className='text-14-regular text-dark-700'>{user.familyMedicalHistory}</p>
+                            </div>
+
+                            <IPN insurancePolicyNumber={user.insurancePolicyNumber} insuranceProvider={user.insuranceProvider} />
+
+                            <div>
+                                <p className='text-16-medium'>Family Medical History</p>
+                                <p className='text-14-regular text-dark-700'>{user.familyMedicalHistory}</p>
+                            </div>
+                        </div>
                     </div>
-                    <div className="flex flex-col px-4 mt-2 gap-y-2">
-                        <div>
-                            <p className='text-16-medium'>Description</p>
-                            <p className='text-14-regular text-dark-700'>user.description</p>
-                        </div>
-                        <div>
-                            <p className='text-16-medium'>Quick look</p>
-                            <p className='text-14-regular text-dark-700'>user.description</p>
-                        </div>
-                        <div>
-                            <p className='text-16-medium'>Serious conditions</p>
-                            <p className='text-14-regular text-dark-700'>user.seriousConditions</p>
-                        </div>
-                        <div>
-                            <p className='text-16-medium'>Allergies</p>
-                            {user.allergies.length > 0 ? <p className='text-14-regular text-dark-700'>{user.allergies}</p> : <p className='text-14-regular text-dark-600'>nil</p>}
-                        </div>
-                        <p className='text-16-medium'>Physician: <span className='text-16-regular text-dark-700'>Dr. {user.primaryPhysician}</span></p>
-                        <div>
-                            <p className='text-16-medium'>Current Medication</p>
-                            <p className='text-14-regular text-dark-700'>{user.currentMedication}</p>
-                        </div>
-                        <div>
-                            <p className='text-16-medium'>Past Medical History</p>
-                            <p className='text-14-regular text-dark-700'>{user.pastMedicalHistory}</p>
-                        </div>
-                        <div>
-                            <p className='text-16-medium'>Family Medical History</p>
-                            <p className='text-14-regular text-dark-700'>{user.familyMedicalHistory}</p>
-                        </div>
-
-                        <IPN insurancePolicyNumber={user.insurancePolicyNumber} insuranceProvider={user.insuranceProvider} />
-
-                        <div>
-                            <p className='text-16-medium'>Family Medical History</p>
-                            <p className='text-14-regular text-dark-700'>{user.familyMedicalHistory}</p>
-                        </div>
+                </section>
+                <section className='flex flex-col w-full space-y-2 max-w-[15%]'>
+                    <div className=' h-[50%] max-h-[50%] flex flex-col rounded-lg bg-dark-400 items-center'>
+                        <p className='py-2 text-dark-700'>Appointments</p>
+                    </div>
+                    <div className=' h-[50%] max-h-[50%] flex flex-col rounded-lg bg-dark-400 items-center'>
+                        <p className='py-2 text-dark-700'>Bills</p>
                     </div>
                 </section>
             </main>

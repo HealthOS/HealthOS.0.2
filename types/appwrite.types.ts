@@ -23,10 +23,22 @@ export interface Patient extends Models.Document {
   identificationDocument: FormData | undefined;
   privacyConsent: boolean;
   temperature: string | undefined;
-  sugarLevel: string | undefined;
   bloodPressure: string | undefined;
   description: string | undefined;
   seriousConditions: string | undefined;
+  diabetes: string | undefined;
+  tachycardia: string | undefined;
+  hypoxia: string | undefined;
+  respiratoryDistress: string | undefined;
+  hypercholesterolemia: string | undefined;
+  anemia: string | undefined;
+  chronicKidneyDisease: string | undefined;
+  hypothyroidism: string | undefined;
+  hyperthyroidism: string | undefined;
+  obesity: string | undefined;
+  gout: string | undefined;
+  coagulationDisorder: string | undefined;
+  osteoporosis: string | undefined;
 }
 
 export interface Appointment extends Models.Document {
