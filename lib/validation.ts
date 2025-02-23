@@ -11,6 +11,14 @@ export const UserFormValidation = z.object({
     .refine((phone) => /^\+\d{10,15}$/.test(phone), "Invalid phone number"),
 });
 
+export const BillFormValidation = z.object({
+  transactionAmount: z
+    .string()
+    .min(1, "Amount is required")
+    .transform((val) => parseFloat(val))
+    .refine((val) => !isNaN(val) && val > 0, "Enter a valid amount"),
+});
+
 export const PatientFormValidation = z.object({
   name: z
     .string()

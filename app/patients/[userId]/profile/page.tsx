@@ -1,9 +1,12 @@
 import ButtonActions from '@/components/ButtonActions';
 import EditButton from '@/components/EditButton';
 import IPN from '@/components/IPN';
+import ListField from '@/components/ListField';
 import ProfileCard from '@/components/ProfileCard';
 import RoundedContainers from '@/components/RoundedContainers';
-import { Button } from '@/components/ui/button';
+import { ScrollArea } from '@/components/ui/scroll-area';
+import { getAppointmentsByUser } from '@/lib/actions/appointment.actions';
+import { getBillsByUser } from '@/lib/actions/bill.action';
 import { getPatient } from '@/lib/actions/patient.actions';
 import { ChevronRight } from 'lucide-react';
 import Image from 'next/image';
@@ -13,6 +16,8 @@ import React from 'react'
 
 const profilePage = async ({ params: { userId } }: SearchParamProps) => {
     const user = await getPatient(userId); // 677421f4003129054d37
+    const appointments = await getAppointmentsByUser(userId); // 677421f4003129054d37
+    const bills = await getBillsByUser(userId);
 
     return (
         <div className='mx-auto flex max-w-7xl h-screen  max-h-screen pb-6 flex-col space-y-10'>
@@ -31,7 +36,7 @@ const profilePage = async ({ params: { userId } }: SearchParamProps) => {
                     <p className='text-14-bold'>{user.name}</p>
                 </div>
 
-                <ButtonActions userId={userId} patientId={user.$id} />
+                <ButtonActions user={user}/>
 
             </header>
 
@@ -145,12 +150,16 @@ const profilePage = async ({ params: { userId } }: SearchParamProps) => {
                     </div>
                 </section>
                 <section className='flex flex-col w-full space-y-2 max-w-[15%]'>
-                    <div className=' h-[50%] max-h-[50%] flex flex-col rounded-lg bg-dark-400 items-center'>
-                        <p className='py-2 text-dark-700'>Appointments</p>
-                    </div>
-                    <div className=' h-[50%] max-h-[50%] flex flex-col rounded-lg bg-dark-400 items-center'>
-                        <p className='py-2 text-dark-700'>Bills</p>
-                    </div>
+                    <ListField
+                        head="Appointments"
+                        count={appointments.totalCount}
+                        data={appointments.documents}
+                    />
+                    <ListField 
+                        head="Bills"
+                        count={bills.totalCount}
+                        data={bills.documents}
+                    />
                 </section>
             </main>
         </div>

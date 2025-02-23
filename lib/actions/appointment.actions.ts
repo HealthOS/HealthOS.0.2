@@ -93,3 +93,25 @@ export const updateAppointment = async ({ appointmentId, userId, appointment, ty
         console.log(error);
     }
 }
+
+export const getAppointmentsByUser = async (userId: string) => {
+    try {
+        const appointments = await databases.listDocuments(
+            DATABASE_ID!,
+            APPOINTMENT_COLLECTION_ID!,
+            [
+                Query.equal("userId", userId),
+                Query.orderDesc("$createdAt"),
+            ]
+        );
+
+        return parseStringify({
+            totalCount: appointments.total,
+            documents: appointments.documents
+        });
+
+    } catch (error) {
+        console.error("Error fetching appointments:", error);
+        return null;
+    }
+};

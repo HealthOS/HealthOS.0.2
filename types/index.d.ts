@@ -62,6 +62,13 @@ declare type SearchParamProps = {
     status: Status;
     note: string | undefined;
   };
+
+  declare type CreateBillParams = {
+    userId: string;
+    patient: string;
+    transactionAmount: number;
+    dateTime: Date;
+  };
   
   declare type UpdateAppointmentParams = {
     appointmentId: string;

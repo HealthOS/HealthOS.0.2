@@ -150,8 +150,6 @@ const RegisterForm = ({ user, patientData }: {
           birthDate: new Date(values.birthDate),
           identificationDocument: formData,
         };
-
-
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-expect-error
         const patient = await registerPatient(newPatientData);

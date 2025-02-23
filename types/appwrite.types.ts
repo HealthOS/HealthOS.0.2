@@ -41,6 +41,13 @@ export interface Patient extends Models.Document {
   osteoporosis: string | undefined;
 }
 
+export interface Bill extends Models.Document {
+  patient: string;
+  dateTime: Date;
+  transactionAmount: number;
+  userId: string;
+}
+
 export interface Appointment extends Models.Document {
   patient: Patient;
   schedule: Date;

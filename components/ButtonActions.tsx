@@ -15,12 +15,12 @@ import {
 
 import { getPatient } from '@/lib/actions/patient.actions';
 import AppointmentForm from './forms/AppointmentForm';
-const ButtonActions = ({ userId, patientId }: { 
-    userId: string
-    patientId: string
+import BillForm from './forms/BillForm';
+import { Patient } from '@/types/appwrite.types';
+const ButtonActions = ({ user }: { 
+    user: Patient
 }) => {
 
-    const router = useRouter();
     const [openApt, setOpenApt] = useState(false);
     const [openBill, setOpenBill] = useState(false);
 
@@ -38,8 +38,8 @@ const ButtonActions = ({ userId, patientId }: {
                     <DialogFooter>
                         <AppointmentForm 
                             type='create'
-                            userId={userId}
-                            patientId={patientId}
+                            userId={user.userId}
+                            patientId={user.$id}
                         />
                     </DialogFooter>
                 </DialogContent>
@@ -47,11 +47,16 @@ const ButtonActions = ({ userId, patientId }: {
 
             <Dialog open={openBill} onOpenChange={setOpenBill}>
                 <DialogContent className="shad-dialog sm:max-w-md">
-                    <DialogHeader>
-                        <DialogTitle>Billing window</DialogTitle>
+                    <DialogHeader className='space-y-4'>
+                        <DialogTitle>Patient billing window...</DialogTitle>
+                        <div className='space-y-1'>
+                            <p className='text-14-regular text-dark-700'>Patient name: {user.name}</p>
+                            <p className='text-14-regular text-dark-700'>Patient ID: {user.userId}</p>
+                            <p className='text-14-regular text-dark-700'>Patient Contact: {user.phone}</p>
+                        </div>
                     </DialogHeader>
                     <DialogFooter>
-                        Feature will be added soon...
+                        <BillForm userId={user.userId} patientId={user.$id}/>
                     </DialogFooter>
                 </DialogContent>
             </Dialog>
