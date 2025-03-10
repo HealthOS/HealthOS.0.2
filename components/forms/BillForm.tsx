@@ -13,13 +13,16 @@ import { FormFieldType } from "./PatientForm"
 import { addTransactionAmount } from "@/lib/actions/bill.action"
 import LiveClock from "../LiveClock"
 import { Clock3 } from "lucide-react"
+import { useRouter } from "next/navigation"
 
-const BillForm = ({ userId, patientId }: {
+const BillForm = ({ userId, patientId, setOpenBill }: {
     userId: string
     patientId: string
+    setOpenBill: (open: boolean) => void;
 }) => {
 
     const [isLoading, setIsLoading] = useState(false);
+    const router = useRouter();
 
     const form = useForm<z.infer<typeof BillFormValidation>>({
         resolver: zodResolver(BillFormValidation),
@@ -42,12 +45,13 @@ const BillForm = ({ userId, patientId }: {
                 transactionAmount,
                 dateTime
             };
-            console.log(billData);
 
             const bill = await addTransactionAmount(billData);
 
             if (bill) {
                 form.reset();
+                setOpenBill && setOpenBill(false);
+                router.refresh();
             }
 
         } catch (error) {
@@ -64,7 +68,6 @@ const BillForm = ({ userId, patientId }: {
                         control={form.control}
                         name="transactionAmount"
                         label="Total amount"
-                        placeholder="example@ex.com"
                         iconSrc="/assets/icons/indian-rupee.svg"
                         iconAlt="transactionAmount"
                     />

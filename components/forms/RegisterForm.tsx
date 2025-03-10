@@ -31,6 +31,7 @@ const RegisterForm = ({ user, patientData }: {
     resolver: zodResolver(PatientFormValidation),
     defaultValues: {
       name: patientData?.name || "",
+      room: patientData?.room || "",
       email: patientData?.email || "",
       phone: patientData?.phone || "",
       birthDate: patientData?.birthDate || new Date(Date.now()),
@@ -95,6 +96,7 @@ const RegisterForm = ({ user, patientData }: {
           userId: patientData.$id,
           identificationDocument: formData,
           name: values.name,
+          room: values.room,
           email: values.email,
           phone: values.phone,
           birthDate: values.birthDate,
@@ -133,8 +135,6 @@ const RegisterForm = ({ user, patientData }: {
           coagulationDisorder: values.coagulationDisorder,
           osteoporosis: values.osteoporosis,
         }
-
-        console.log(updatePatientData)
 
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-expect-error
@@ -176,15 +176,24 @@ const RegisterForm = ({ user, patientData }: {
           </div>
         </section>
 
-        <CustomForm
-          fieldType={FormFieldType.INPUT}
-          control={form.control}
-          name="name"
-          label="Fullname"
-          placeholder="John Doe"
-          iconSrc="/assets/icons/user.svg"
-          iconAlt="user"
-        />
+        <div className="flex flex-col gap-6 xl:flex-row">
+          <CustomForm
+            fieldType={FormFieldType.INPUT}
+            control={form.control}
+            name="name"
+            label="Fullname"
+            placeholder="John Doe"
+            iconSrc="/assets/icons/user.svg"
+            iconAlt="user"
+          />
+          <CustomForm
+            fieldType={FormFieldType.INPUT}
+            control={form.control}
+            name="room"
+            label="Room number"
+            placeholder="Not admitted"
+          />
+        </div>
 
         <div className="flex flex-col gap-6 xl:flex-row">
           <CustomForm

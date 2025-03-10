@@ -1,7 +1,9 @@
 import StatCard from '@/components/StatCard'
 import { columns } from '@/components/table/columns'
 import { DataTable } from '@/components/table/DataTable'
+import UserButton from '@/components/UserButton'
 import { getRecentAppointmentList } from '@/lib/actions/appointment.actions'
+import { User } from 'lucide-react'
 import Image from 'next/image'
 import Link from 'next/link'
 import React from 'react'
@@ -9,6 +11,7 @@ import React from 'react'
 const Admin = async () => {
 
   const appointments = await getRecentAppointmentList()
+
 
   return (
     <div className="mx-auto flex max-w-7xl flex-col space-y-14">
@@ -22,11 +25,13 @@ const Admin = async () => {
             className='h-8 w-fit'
           />
         </Link>
+
+        <UserButton />
       </header>
 
       <main className='admin-main'>
         <section className='w-full space-y-4'>
-          <h1 className='header'>welcome</h1>
+          <h1 className='header'>Welcome</h1>
           <p className='text-dark-700'>Start your appointments for today</p>
         </section>
         <section className='admin-stat'>
@@ -49,7 +54,11 @@ const Admin = async () => {
             icon="/assets/icons/cancelled.svg"
           />
         </section>
-        <DataTable columns={columns} data={appointments.documents} />
+
+        <div className='w-full space-y-2'>
+          <div className='w-full text-20-regular'>All Appointments...</div>
+          <DataTable columns={columns} data={appointments.documents} />
+        </div>
       </main>
     </div>
   )

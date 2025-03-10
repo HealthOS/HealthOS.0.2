@@ -97,7 +97,6 @@ const RoundedContainers = ({ value, field }: {
             unit = "";
     }
 
-
     return (
         <div className='h-16 w-16 min-w-16 bg-white flex flex-col space-y-1 rounded-xl items-center justify-center shadow-inner shadow-dark-300'>
             <TooltipProvider>

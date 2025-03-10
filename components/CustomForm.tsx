@@ -51,7 +51,7 @@ const RenderField = ({ field, props }: { field: any; props: CustomProps }) => {
                             height={24}
                             width={24}
                             alt={iconAlt || 'icon'}
-                            className='ml-2'
+                            className='mx-1.5'
                         />
                     )}
                     <FormControl>

@@ -56,7 +56,7 @@ const ButtonActions = ({ user }: {
                         </div>
                     </DialogHeader>
                     <DialogFooter>
-                        <BillForm userId={user.userId} patientId={user.$id}/>
+                        <BillForm userId={user.userId} patientId={user.$id} setOpenBill={setOpenBill}/>
                     </DialogFooter>
                 </DialogContent>
             </Dialog>

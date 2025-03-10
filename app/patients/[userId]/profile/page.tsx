@@ -33,10 +33,15 @@ const profilePage = async ({ params: { userId } }: SearchParamProps) => {
                         />
                     </Link>
                     <ChevronRight className='h-5 w-5' />
+                    {user.room && <div className='flex'>
+                        <p className='text-14-bold'>Room: {user.room}</p>
+                        <ChevronRight className='h-5 w-5' />
+                    </div>
+                    }
                     <p className='text-14-bold'>{user.name}</p>
                 </div>
 
-                <ButtonActions user={user}/>
+                <ButtonActions user={user} />
 
             </header>
 
@@ -155,7 +160,7 @@ const profilePage = async ({ params: { userId } }: SearchParamProps) => {
                         count={appointments.totalCount}
                         data={appointments.documents}
                     />
-                    <ListField 
+                    <ListField
                         head="Bills"
                         count={bills.totalCount}
                         data={bills.documents}

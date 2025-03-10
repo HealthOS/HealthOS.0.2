@@ -18,6 +18,7 @@ client
   .setEndpoint(ENDPOINT!)  // Using environment variable
   .setProject(PROJECT_ID!)  // Using environment variable
   .setKey(API_KEY!);  // Using environment variable
+  
 
 export const databases = new sdk.Databases(client);
 export const storage = new sdk.Storage(client);

@@ -361,3 +361,14 @@
   color: #1a1d21;
 }
 
+
+
+@layer base {
+  * {
+    @apply border-dark-600 outline-white/50;
+  }
+  body {
+    @apply bg-dark-200 text-white;
+  }
+}
+

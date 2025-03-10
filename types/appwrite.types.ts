@@ -3,6 +3,7 @@ import { Models } from "node-appwrite";
 export interface Patient extends Models.Document {
   userId: string;
   name: string;
+  room: string;
   email: string;
   phone: string;
   birthDate: Date;
