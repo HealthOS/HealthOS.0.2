@@ -1,26 +1,60 @@
+'use client';
+
 import PatientForm from "@/components/forms/PatientForm";
 import PasskeyModal from "@/components/PasskeyModal";
+import ProfileMenu from "@/components/profileMenu";
+import { getUser } from "@/lib/actions/accounts.actions";
 import Image from "next/image";
 import Link from "next/link";
+import { useRouter, useSearchParams } from "next/navigation";
+import { useEffect, useState } from "react";
 
-export default function Home( { searchParams }: SearchParamProps) {
-  const isAdmon = searchParams.admin === 'true';
+export default function Home() {
+
+const searchParams = useSearchParams();
+  const isAdmin = searchParams.get("admin") === "true";
+
+
+  const [user, setUser] = useState(null);
+  const router = useRouter();
+
+  useEffect(() => {
+    const fetchUser = async () => {
+      try {
+        const userData = await getUser();
+        if(userData){
+          setUser(userData);
+        }
+        else{
+          router.push('/login');
+        }
+      } catch (error) {
+        console.error("Error fetching user:", error);
+      }
+    };
+
+    fetchUser();
+  }, []);
 
   return (
     <div className="flex h-screen max-h-screen">
 
-      {isAdmon && <PasskeyModal/>}
+      {isAdmin && <PasskeyModal />}
 
       <section className="remove-scrollbar container">
         <div className="sub-container max-w-[496px]">
-          <Image
-            src="/assets/icons/logo-full.svg"
-            height={1000}
-            width={1000}
-            alt="patient"
-            className="mb-12 h-10 w-fit"
-          />
-          
+          <div className="flex justify-between">
+            <Image
+              src="/assets/icons/logo-full.svg"
+              height={1000}
+              width={1000}
+              alt="patient"
+              className="mb-12 h-10 w-fit"
+            />
+
+            { user && <ProfileMenu /> }
+          </div>
+
           <PatientForm />
 
           <div className="text-14-regular flex justify-between py-12">

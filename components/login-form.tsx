@@ -7,7 +7,8 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { createAccount, createSession, getUser, logout } from "@/lib/actions/accounts.actions";
-import { cn } from "@/lib/utils"
+import { cn, parseStringify } from "@/lib/utils";
+import Link from "next/link";
 
 export function LoginForm({
   className,
@@ -17,24 +18,26 @@ export function LoginForm({
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
-  const [isSignUp, setIsSignUp] = useState(false);
   const router = useRouter();
 
   useEffect(() => {
     const checkSession = async () => {
-      const storedUser = localStorage.getItem("appwriteUser");
-      
-      await logout();
+      const storedUser = localStorage.getItem("appwriteUser")
+      ? JSON.parse(localStorage.getItem("appwriteUser")!)
+      : null;
+    
+    console.log("Retrieved user", storedUser);
+    
       if (storedUser) {
         try {
           let user = await getUser();
           console.log("Current user", user);
+          if(user) router.push('/');
         } catch (error: any) {
           console.warn("Session expired:", error.message);
           localStorage.removeItem("appwriteUser");
         }
       }
-
       setLoading(false);
     };
 
@@ -43,55 +46,32 @@ export function LoginForm({
 
   const handleLogin = async () => {
     setError("");
-    try {
-
-      
-      await logout();
-      let session = await createSession({ email, password });
-
+    let session = await createSession({ email, password });
+    if (session.error) {
+      if(session.message==="Invalid `password` param: Password must be between 8 and 256 characters long.")
+        setError("Incorrect Password")
+      else if(session.message==="Invalid `email` param: Value must be a valid email address")
+        setError("Invalid Email address")
+      else setError(session.message)
+    } else {
       let user = await getUser();
-
       console.log("Current user", user);
-
-      localStorage.setItem("appwriteUser", user); // Store session
-
+      localStorage.setItem("appwriteUser", JSON.stringify(user)); // ✅ Correct
       router.push('/');
-
-
-    } catch (error: any) {
-      setError("Invalid credentials. Please try again.");
-      console.error("Login failed:", error.message);
     }
   };
 
-  const handleSignUp = async () => {
-    setError("");
-    try {
-      await logout();
-      await createAccount({ email, password });
-      console.log("Account created");
-    } catch (error: any) {
-      setError("Sign-up failed. Try again.");
-      console.error("Sign-up error:", error.message);
-    }
-  };
-
-  if (loading) return (<div className="w-full flex justify-center">
-    <p className="text-16-bold">Loading...</p>
-  </div>
-  );
-
+  if (loading) return <p>Loading...</p>;
   return (
-
     <div className={cn("flex flex-col gap-6", className)} {...props}>
-      <Card className="overflow-hidden bg-dark-200">
+      <Card className="overflow-hidden bg-dark-300">
         <CardContent className="grid p-0 md:grid-cols-2">
           <form className="p-6 md:p-8">
             <div className="flex flex-col gap-6">
               <div className="flex flex-col items-center text-center">
                 <h1 className="text-2xl font-bold">Welcome back</h1>
                 <p className="text-balance text-muted-foreground">
-                  Login to your Acme Inc account
+                  Login to your HealthOS account
                 </p>
               </div>
               <div className="grid gap-2">
@@ -109,21 +89,21 @@ export function LoginForm({
                   <Label htmlFor="password">Password</Label>
                   <a
                     href="#"
-                    className="ml-auto text-sm underline-offset-2 hover:underline"
+                    className="ml-auto text-sm text-dark-700 underline-offset-2 hover:underline"
                   >
                     Forgot your password?
                   </a>
                 </div>
-                <Input id="password"
+                <Input
+                  id="password"
                   type="password"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)} required />
               </div>
-              <Button type='button'className="w-full" onClick={handleLogin}>
-                Login
-              </Button>
-              <div className="relative text-center text-sm after:absolute after:inset-0 after:top-1/2 after:z-0 after:flex after:items-center after:border-t after:border-border">
-                <span className="relative z-10 bg-dark-200 px-2 text-muted-foreground">
+              {error && <p className="text-red-500 text-sm">{error}</p>}
+                <Button type="button" onClick={handleLogin} className="w-full">Login</Button>
+              <div className="relative text-center text-sm after:absolute after:inset-0 after:top-1/2 after:z-0 after:flex after:items-center after:border-t after:border-dark-700">
+                <span className="relative z-10 bg-dark-300 px-2 text-dark-700">
                   Or continue with
                 </span>
               </div>
@@ -156,12 +136,10 @@ export function LoginForm({
                   <span className="sr-only">Login with Meta</span>
                 </Button>
               </div>
-              <div className="text-center text-sm">
-                Don&apos;t have an account?{" "}
-                <a href="#" className="underline underline-offset-4">
-                  Sign up
-                </a>
-              </div>
+              <p className="text-center text-sm">
+                Don't have an account? 
+                <Link href='/login/signUp' className="text-green-500 underline"> Sign Up</Link>
+              </p>
             </div>
           </form>
           <div className="relative hidden bg-muted md:block">

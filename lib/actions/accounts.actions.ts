@@ -10,27 +10,24 @@ const client = new Client()
 
 const account = new Account(client);
 
-export const createAccount = async ({ email, password }:
+export const createAccount = async ({ email, password, name }:
     {
         email: string
         password: string
+        name: string
     }) => {
 
     try {
         const newAccount = await account.create(
             ID.unique(),
             email,
-            password
+            password,
+            name
         );
-
-        if (newAccount) {
-            createSession({ email, password })
-        } else {
-            return parseStringify(newAccount)
-        }
+            return parseStringify(newAccount);
     } catch (error) {
         console.log(error)
-        return null;
+        return error;
     }
 }
 
@@ -47,15 +44,17 @@ export const createSession = async ({ email, password }:
         );
 
         return parseStringify(newSession)
-    } catch (error) {
-        console.log(error)
-        return null;
+    } catch (error:any) {
+        console.log(error.message)
+        return { error: true, message: error.message || "Failed to fetch user" };;
     }
 }
 
 export const getUser = async () => {
     try {
         let user = await account.get();
+
+        console.log(user);
 
         return parseStringify(user);
 
@@ -74,6 +73,6 @@ export const logout = async () => {
 
     } catch (error) {
         console.log(error)
-        return null;
+        return error;
     }
 }
