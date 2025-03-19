@@ -9,6 +9,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { createAccount, createSession, getUser, logout } from "@/lib/actions/accounts.actions";
 import { cn, parseStringify } from "@/lib/utils";
 import Link from "next/link";
+import { registerDoctor } from "@/lib/actions/doctor.actions";
 
 export function SignupForm({
     className,
@@ -31,7 +32,7 @@ export function SignupForm({
 
     const handleLogin = async () => {
         setError("");
-        let session = await createSession( formData );
+        let session = await createSession(formData);
         if (session.error) {
             if (session.message === "Invalid `password` param: Password must be between 8 and 256 characters long.")
                 setError("Incorrect Password")
@@ -49,9 +50,28 @@ export function SignupForm({
     const handleSignUp = async () => {
         setError("");
         try {
-            await createAccount( formData );
-            console.log("Account created");
-            handleLogin();
+            
+            let newDoctor = await createAccount(formData);
+            if (newDoctor) {
+                console.log("Account created");
+                console.log(newDoctor);
+                let userId = newDoctor.$id;
+                const docData = {
+                    userId,
+                    name: formData.name,
+                    email: formData.email,
+                    password: formData.password,
+                    phone: formData.phone
+                };
+                console.log(docData); // This will exclude confirmPassword
+                // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                // @ts-expect-error
+                let doctorData = await registerDoctor(docData);
+                if (doctorData) handleLogin();
+            }
+            else {
+                console.log("failed to register");
+            }
         } catch (error: any) {
             setError("Sign-up failed. Try again.");
             console.error("Sign-up error:", error.message);
@@ -118,9 +138,9 @@ export function SignupForm({
                                     required />
                             </div>
                             {error && <p className="text-red-500 text-sm">{error}</p>}
-                            {(formData.password === formData.confirmPassword && formData.password.length>0) ? 
-                            <Button type="button" onClick={handleSignUp} className="w-full">Sign Up</Button>
-                            : <div className="inline-flex items-center justify-center bg-dark-400 p-2 gap-2 whitespace-nowrap rounded-md text-sm font-medium focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring pointer-events-none opacity-50">Sign Up</div>
+                            {(formData.password === formData.confirmPassword && formData.password.length > 0) ?
+                                <Button type="button" onClick={handleSignUp} className="w-full">Sign Up</Button>
+                                : <div className="inline-flex items-center justify-center bg-dark-400 p-2 gap-2 whitespace-nowrap rounded-md text-sm font-medium focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring pointer-events-none opacity-50">Sign Up</div>
                             }
                             <div className="relative text-center text-sm after:absolute after:inset-0 after:top-1/2 after:z-0 after:flex after:items-center after:border-t after:border-dark-700">
                                 <span className="relative z-10 bg-dark-300 px-2 text-dark-700">

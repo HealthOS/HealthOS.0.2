@@ -40,6 +40,7 @@ export interface Patient extends Models.Document {
   gout: string | undefined;
   coagulationDisorder: string | undefined;
   osteoporosis: string | undefined;
+  doctor: DoctorParams;
 }
 
 export interface Bill extends Models.Document {
@@ -58,4 +59,23 @@ export interface Appointment extends Models.Document {
   note: string;
   userId: string;
   cancellationReason: string | null;
+}
+
+export interface DoctorParams extends Models.Document {
+  userId: string;
+  name: string;
+  email: string;
+  phone: string;
+  password: string;
+  birthDate?: Date;
+  passKey?: string;
+  registrationNumber?: string;
+  licensingAuthority?: string;
+  validFrom?: Date;
+  validTill?: Date;
+  specialization?: string;
+  experience?: string;
+  highestDegree?: string;
+  university?: string;
+  yearOfGraduation?: string;
 }

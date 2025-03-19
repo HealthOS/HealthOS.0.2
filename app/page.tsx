@@ -37,7 +37,7 @@ const searchParams = useSearchParams();
   }, []);
 
   return (
-    <div className="flex h-screen max-h-screen">
+    <div className="flex h-screen my-auto max-h-screen">
 
       {isAdmin && <PasskeyModal />}
 
@@ -49,7 +49,7 @@ const searchParams = useSearchParams();
               height={1000}
               width={1000}
               alt="patient"
-              className="mb-12 h-10 w-fit"
+              className="mb-12 h-8 w-fit"
             />
 
             { user && <ProfileMenu /> }
