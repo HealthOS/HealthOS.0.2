@@ -157,11 +157,35 @@ export const DoctorFormValidation = z.object({
   passKey: z.string().optional(),
   registrationNumber: z.string().optional(),
   licensingAuthority: z.string().optional(),
-  validFrom: z.coerce.date(),
-  validTill: z.coerce.date(),
+  validFrom: z.coerce.date().optional(),
+  validTill: z.coerce.date().optional(),
   specialization: z.string().optional(),
   experience: z.string().optional(),
   highestDegree: z.string().optional(),
   university: z.string().optional(),
   yearOfGraduation: z.string().optional()
+});
+
+export const PersonalFormValidation = z.object({
+  name: z
+    .string()
+    .min(2, "Name must be at least 2 characters")
+    .max(50, "Name must be at most 50 characters"),
+  email: z.string().email("Invalid email address"),
+  phone: z
+    .string()
+    .refine((phone) => /^\+\d{10,15}$/.test(phone), "Invalid phone number"),
+  birthDate: z.coerce.date(),
+});
+
+export const ProfessionalFormValidation = z.object({
+  registrationNumber: z.string(),
+  licensingAuthority: z.string(),
+  validFrom: z.coerce.date(),
+  validTill: z.coerce.date().optional(),
+  specialization: z.string(),
+  experience: z.string(),
+  highestDegree: z.string(),
+  university: z.string(),
+  yearOfGraduation: z.string()
 });

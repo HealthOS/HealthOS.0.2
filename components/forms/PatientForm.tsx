@@ -55,8 +55,8 @@ const PatientForm = () => {
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6 flex-1">
         <section className="mb-12 space-y-4">
-            <h1 className="header">Hi there!!!</h1>
-            <p className="text-dark-700">Login in to your modern EMR system</p>
+            <h1 className="header">Register Patient</h1>
+            <p className="text-dark-700">Add patient to your modern EMR system in few simple steps</p>
         </section>
         <CustomForm 
             fieldType={FormFieldType.INPUT}

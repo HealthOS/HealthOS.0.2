@@ -76,3 +76,23 @@ export const logout = async () => {
         return error;
     }
 }
+
+
+export const UpdatePassword = async ({currentPassword, newPassword}:{
+    currentPassword: string
+    newPassword: string
+}) => {
+    try {
+
+        const result = await account.updatePassword(
+            newPassword, // password
+            currentPassword // oldPassword (optional)
+        );
+
+        return parseStringify(result);
+
+    } catch (error) {
+        console.log(error)
+        return null;
+    }
+}

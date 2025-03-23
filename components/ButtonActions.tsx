@@ -40,6 +40,7 @@ const ButtonActions = ({ user }: {
                             type='create'
                             userId={user.userId}
                             patientId={user.$id}
+                            open={true}
                         />
                     </DialogFooter>
                 </DialogContent>

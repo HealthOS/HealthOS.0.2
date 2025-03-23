@@ -207,3 +207,16 @@ export const deleteAppointment = async (userId: string) => {
 };
 
 // 679a61ef0026b0ed7a7f
+
+export const getAllPatients = async () => {
+    try {
+        const data = await databases.listDocuments(
+            DATABASE_ID!,
+            PATIENT_COLLECTION_ID!,
+            [Query.orderAsc('name')]
+        );
+        return parseStringify(data.documents);
+    } catch (error) {
+        console.log(error)
+    }
+}

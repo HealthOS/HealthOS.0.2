@@ -42,3 +42,16 @@ export const getBillsByUser = async (userId: string) => {
         console.log("Error fetching bills:", error);
     }
 };
+
+export const getAllPatientBills = async () => {
+    try {
+        const data = await databases.listDocuments(
+            DATABASE_ID!,
+            BILL_COLLECTION_ID!,
+            [Query.orderDesc("$createdAt")]
+        );
+        return parseStringify(data.documents);
+    } catch (error) {
+        console.log(error)
+    }
+}

@@ -4,11 +4,10 @@ import Image from 'next/image'
 import React from 'react'
 
 const Register = async ({ params: { userId } }: SearchParamProps) => {
+  
   const user = await getUser(userId);
-
   const profileData = await getPatient(userId);
 
-  
     return (
     <div className="flex h-screen max-h-screen">
       <section className="remove-scrollbar container">

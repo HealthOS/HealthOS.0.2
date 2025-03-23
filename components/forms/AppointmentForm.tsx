@@ -17,13 +17,15 @@ import { SelectItem } from "../ui/select"
 import { Doctors } from "@/constants"
 import { createAppointment, updateAppointment } from "@/lib/actions/appointment.actions"
 import { Appointment } from "@/types/appwrite.types"
+import { Button } from "../ui/button"
 
 
-const AppointmentForm = ({ userId, patientId, type, appointment, setOpen }: {
+const AppointmentForm = ({ userId, patientId, type, appointment, open, setOpen }: {
     userId: string,
     patientId: string,
     type: "create" | "cancel" | "schedule"
     appointment: Appointment,
+    open: boolean,
     setOpen: (open: boolean) => void;
 }) => {
 
@@ -69,11 +71,11 @@ const AppointmentForm = ({ userId, patientId, type, appointment, setOpen }: {
                     status: status as Status,
                 }
                 const appointment = await createAppointment(appointmentData);
-                
-                if(appointment) {
+
+                if (appointment) {
                     form.reset();
                     router.push(`/patients/${userId}/new-appointment/success?appointmentId=${appointment.$id}`)
-                    
+
                 }
             } else {
                 const appointmentToUpdate = {
@@ -90,7 +92,7 @@ const AppointmentForm = ({ userId, patientId, type, appointment, setOpen }: {
 
                 const updatedAppointment = await updateAppointment(appointmentToUpdate);
 
-                if(updatedAppointment){
+                if (updatedAppointment) {
                     setOpen && setOpen(false);
                     form.reset();
                 }
@@ -115,7 +117,7 @@ const AppointmentForm = ({ userId, patientId, type, appointment, setOpen }: {
     return (
         <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6 flex-1">
-                { type  === 'create' && <section className="mb-12 space-y-4">
+                {type === 'create' && <section className="mb-12 space-y-4">
                     <h1 className="header">New Appointment</h1>
                     <p className="text-dark-700">Add new appointment for patient...</p>
                 </section>
@@ -182,7 +184,14 @@ const AppointmentForm = ({ userId, patientId, type, appointment, setOpen }: {
                         placeholder="Enter Reason for Cancellation"
                     />
                 )}
-                <SubmitButton isLoading={isLoading} className={`${type === 'cancel' ? 'shad-danger-btn' : 'shad-primary-btn'} w-full`}>{buttonLabel}</SubmitButton>
+
+                <div className="flex gap-4">
+                    <p>{open}</p>
+                    { open === false && 
+                     <Button type="reset" onClick={() => router.push(`/patients/${userId}/profile`)}>Skip</Button>
+                    }
+                    <SubmitButton isLoading={isLoading} className={`${type === 'cancel' ? 'shad-danger-btn' : 'shad-primary-btn'} w-full`}>{buttonLabel}</SubmitButton>
+                </div>
             </form>
         </Form>
     )

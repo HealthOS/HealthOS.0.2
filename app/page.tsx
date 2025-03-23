@@ -11,21 +11,42 @@ import { useEffect, useState } from "react";
 
 export default function Home() {
 
-const searchParams = useSearchParams();
+  const searchParams = useSearchParams();
   const isAdmin = searchParams.get("admin") === "true";
 
 
   const [user, setUser] = useState(null);
+  const [wish, setWish] = useState('');
   const router = useRouter();
 
   useEffect(() => {
+    const updateWish = () => {
+      console.log("Updating wish");
+      const hours = new Date().getHours();
+      if (hours >= 0 && hours < 12) {
+        setWish("Good Morning");
+      } else if (hours >= 12 && hours < 17) {
+        setWish("Good Afternoon");
+      } else {
+        setWish("Good Evening");
+      }
+    };
+
+    updateWish();
+
+    setInterval(updateWish, 60 * 1000); // Update every minute
+  }, []);
+
+  const [name, setName] = useState('');
+  useEffect(() => {
     const fetchUser = async () => {
       try {
-        const userData = await getUser();
-        if(userData){
-          setUser(userData);
+        const loggedDoc = await getUser();
+        if (loggedDoc) {
+          setUser(loggedDoc);
+          setName(loggedDoc.name);
         }
-        else{
+        else {
           router.push('/login');
         }
       } catch (error) {
@@ -52,9 +73,9 @@ const searchParams = useSearchParams();
               className="mb-12 h-8 w-fit"
             />
 
-            { user && <ProfileMenu /> }
+            {user && <ProfileMenu />}
           </div>
-
+          <p className="text-2xl font-semibold">{wish}!<span className="text-green-500"> Dr.{name}</span></p>
           <PatientForm />
 
           <div className="text-14-regular flex justify-between py-12">

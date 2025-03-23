@@ -19,6 +19,7 @@ import { SelectItem } from "../ui/select"
 import Image from "next/image"
 import FileUploader from "../FileUploader"
 import { Patient } from "@/types/appwrite.types"
+import { Button } from "../ui/button"
 
 const RegisterForm = ({ user, patientData }: {
   user: User
@@ -26,14 +27,15 @@ const RegisterForm = ({ user, patientData }: {
 }) => {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
+  console.log(user.phone);
 
   const form = useForm<z.infer<typeof PatientFormValidation>>({
     resolver: zodResolver(PatientFormValidation),
     defaultValues: {
-      name: patientData?.name || "",
+      name: patientData?.name  || user?.name || "", 
       room: patientData?.room || "",
-      email: patientData?.email || "",
-      phone: patientData?.phone || "",
+      email: patientData?.email || user?.email || "",
+      phone: patientData?.phone || user?.phone || "",
       birthDate: patientData?.birthDate || new Date(Date.now()),
       gender: patientData?.gender || "male" as Gender,
       address: patientData?.address || "",
@@ -166,8 +168,12 @@ const RegisterForm = ({ user, patientData }: {
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-12 flex-1">
         <section className="space-y-4">
-          <h1 className="header">Welcome!!!</h1>
-          <p className="text-dark-700">Add complete details of your patients.</p>
+          <h1 className="text-3xl font-bold text-green-500 animate-fade-in">
+            👋 Welcome to HealthOS!
+          </h1>
+          <p className="text-lg text-muted-foreground">
+            Let's add complete details of your patients for better care.
+          </p>
         </section>
 
         <section className="space-y-6">
@@ -573,7 +579,10 @@ const RegisterForm = ({ user, patientData }: {
           label="I consent to privacy policy"
         />
 
+        <div className="flex justify-between gap-6">
+          <Button type="reset" className="bg-red-500 hover:bg-red-900 hover:text-white" onClick={() => router.back()}>Cancel</Button>
         <SubmitButton isLoading={isLoading}>Submit</SubmitButton>
+        </div>
       </form>
     </Form>
   )

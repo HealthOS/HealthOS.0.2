@@ -1,11 +1,12 @@
 'use client';
 
 import React, { useState } from 'react'
-import { Lock, Trash2, User2 } from 'lucide-react';
+import { Lock, LogOut, Trash2, User2 } from 'lucide-react';
 import ProfileComponent from './ProfileComponent';
 import PassAccessComponent from './PassAccessComponent';
 import DeleteComponent from './DeleteComponent';
 import { DoctorParams } from '@/types/appwrite.types';
+import LogoutComponent from './LogoutComponent';
 
 const AccountSection = ({ user }: { user: DoctorParams }) => {
 
@@ -14,17 +15,23 @@ const AccountSection = ({ user }: { user: DoctorParams }) => {
     return (
         <main className='border flex h-full rounded-lg'>
             <section className=' w-64 max-w-60 h-full p-3'>
-                <div className='py-3 px-2 gap-2 flex items-center hover:bg-dark-500 rounded-xl' onClick={() => setState('profile')}>
+                <div className='py-3 px-2 gap-2 flex items-center hover:cursor-pointer hover:bg-dark-500 rounded-xl' onClick={() => setState('profile')}>
                     <User2 className='h-5' fill='white' strokeWidth='0' />
                     <p className='text-14-regular'>My Profile</p>
                 </div>
-                <div className='py-3 px-2 gap-2 flex items-center hover:bg-dark-500 rounded-xl' onClick={() => setState('passAccess')}>
+                <div className='py-3 px-2 gap-2 flex items-center hover:cursor-pointer hover:bg-dark-500 rounded-xl' onClick={() => setState('passAccess')}>
                     <Lock className='h-5' />
                     <p className='text-14-regular' >
                         Password & Passkey
                     </p>
                 </div>
-                <div className='py-3 px-2 gap-2 flex items-center hover:bg-dark-500 rounded-xl' onClick={() => setState('delete')}>
+                <div className='py-3 px-2 gap-2 flex items-center hover:cursor-pointer hover:bg-dark-500 rounded-xl' onClick={() => setState('logout')}>
+                    <LogOut className='h-5' />
+                    <p className='text-14-regular' >
+                        Logout Account
+                    </p>
+                </div>
+                <div className='py-3 px-2 gap-2 flex items-center hover:cursor-pointer text-red-400 hover:bg-dark-500 rounded-xl' onClick={() => setState('delete')}>
                     <Trash2 className='h-5' />
                     <p className='text-14-regular' >
                         Delete Account
@@ -47,6 +54,8 @@ const AccountSection = ({ user }: { user: DoctorParams }) => {
                                 return <DeleteComponent
                                     user={user}
                                 />;
+                            case 'logout':
+                                return <LogoutComponent name={user.name}/>;
                             default:
                                 return <ProfileComponent
                                     user={user}

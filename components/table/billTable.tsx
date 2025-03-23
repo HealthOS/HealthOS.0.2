@@ -33,6 +33,11 @@ export function DataTable<TData, TValue>({
     columns,
     getCoreRowModel: getCoreRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
+    initialState: {
+        pagination: {
+          pageSize: 20, // Set default page size to 20
+        },
+      },
   })
 
   return (

@@ -96,13 +96,16 @@ const RenderField = ({ field, props }: { field: any; props: CustomProps }) => {
                             showTimeSelect={showTimeSelect ?? false}
                             timeInputLabel="Time:"
                             wrapperClassName="date-picker"
+                            showYearDropdown
+                            showMonthDropdown
+                            dropdownMode="select"
                         />
                     </FormControl>
                 </div>
             )
         case FormFieldType.SKELETON:
             return renderSkeleton ? renderSkeleton(field) : null;
-            
+
         case FormFieldType.SELECT:
             return (
                 <FormControl>
@@ -120,12 +123,12 @@ const RenderField = ({ field, props }: { field: any; props: CustomProps }) => {
         case FormFieldType.CHECKBOX:
             return (
                 <div className="flex items-center gap-4">
-                <Checkbox
-                    id={props.name}
-                    checked={field.value}
-                    onCheckedChange={field.onChange}
-                />
-                <label htmlFor={props.name} className="checked-label">{props.label}</label>
+                    <Checkbox
+                        id={props.name}
+                        checked={field.value}
+                        onCheckedChange={field.onChange}
+                    />
+                    <label htmlFor={props.name} className="checked-label">{props.label}</label>
                 </div>
             )
         case FormFieldType.TEXTAREA:
