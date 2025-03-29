@@ -23,7 +23,6 @@ const ProfileMenu = () => {
         const fetchUser = async () => {
             try {
                 const userData = await getUser();
-                console.log(userData.targets?.[0]?.userId)
                 setUser(userData.targets?.[0]?.userId);
             } catch (error) {
                 console.error("Error fetching user:", error);

@@ -1,15 +1,12 @@
 import ProfileMenu from '@/components/profileMenu';
-import { columns } from '@/components/table/billColumn';
-import { DataTable } from '@/components/table/billTable';
 import { getAllPatientBills } from '@/lib/actions/bill.action';
-import { getUser } from '@/lib/actions/patient.actions'
 import Image from 'next/image';
 import Link from 'next/link';
 import React from 'react'
+import BillTableComp from '@/components/BillTableComp';
 
-const page = async ({ params: { userId } }: SearchParamProps ) => {
-  
-  const loggedDoc = await getUser(userId);
+const page = async ({ params: { userId } }: SearchParamProps) => {
+
   const billsData = await getAllPatientBills();
 
   return (
@@ -29,7 +26,7 @@ const page = async ({ params: { userId } }: SearchParamProps ) => {
       </header>
 
       <main className='admin-main'>
-        <DataTable columns={columns} data={billsData} />
+        <BillTableComp data={billsData}/>
       </main>
     </div>
   )

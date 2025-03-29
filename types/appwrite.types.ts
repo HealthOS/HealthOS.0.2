@@ -44,7 +44,7 @@ export interface Patient extends Models.Document {
 }
 
 export interface Bill extends Models.Document {
-  patient: string;
+  patient: Patient;
   dateTime: Date;
   transactionAmount: number;
   userId: string;

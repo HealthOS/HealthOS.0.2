@@ -1,7 +1,6 @@
 import ProfileMenu from '@/components/profileMenu'
 import StatCard from '@/components/StatCard'
-import { columns } from '@/components/table/columns'
-import { DataTable } from '@/components/table/DataTable'
+import TableComponent from '@/components/TableComponent'
 import { getRecentAppointmentList } from '@/lib/actions/appointment.actions'
 import Image from 'next/image'
 import Link from 'next/link'
@@ -10,7 +9,6 @@ import React from 'react'
 const Admin = async () => {
 
   const appointments = await getRecentAppointmentList();
-  console.log(appointments)
 
   return (
     <div className="mx-auto flex max-w-7xl flex-col space-y-14">
@@ -53,11 +51,8 @@ const Admin = async () => {
             icon="/assets/icons/cancelled.svg"
           />
         </section>
-
-        <div className='w-full space-y-2'>
-          <div className='w-full text-20-regular'>All Appointments...</div>
-          <DataTable columns={columns} data={appointments.documents} />
-        </div>
+        <TableComponent data={appointments.documents} />
+      
       </main>
     </div>
   )

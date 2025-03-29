@@ -6,10 +6,10 @@ import { formatDateTime } from "@/lib/utils"
 import { Doctors } from "@/constants"
 import Image from "next/image"
 import AppointmentModal from "../AppointmentModal"
-import { Patient } from "@/types/appwrite.types"
+import { Bill } from "@/types/appwrite.types"
 import Name from "../Name"
 
-export const columns: ColumnDef<Patient>[] = [
+export const columns: ColumnDef<Bill>[] = [
   {
     header: 'ID',
     cell: ({ row }) => <p className="text-14-medium">{row.index + 1}</p>
@@ -52,11 +52,11 @@ export const columns: ColumnDef<Patient>[] = [
     )
   },
  { 
-  accessorKey: "userId",
-  header: "Database ID",
+  accessorKey: "$id",
+  header: "Txn ID",
   cell: ({ row }) => (
     <p className="text-14-regular min-w-[100px] justify-center">
-      {row.original.userId}
+      {row.original.$id}
     </p>
   )
 },

@@ -1,17 +1,13 @@
 import ProfileMenu from '@/components/profileMenu';
-import { columns } from '@/components/table/patientColumns';
-import { DataTable } from '@/components/table/PatientTable';
-import { getAllPatients, getUser } from '@/lib/actions/patient.actions'
 import Image from 'next/image';
 import Link from 'next/link';
 import React from 'react'
+import PatientTableComp from '@/components/PatientTableComp';
+import { getAllPatients } from '@/lib/actions/patient.actions';
 
 const page = async ({ params: { userId } }: SearchParamProps) => {
 
-  const user = await getUser(userId);
   const patientData = await getAllPatients();
-  console.log(patientData)
-
 
   return (
     <div className="mx-auto flex max-w-7xl flex-col space-y-14">
@@ -28,12 +24,13 @@ const page = async ({ params: { userId } }: SearchParamProps) => {
 
         <ProfileMenu />
       </header>
-
       <main className='admin-main'>
-        <DataTable columns={columns} data={patientData} />
+       <PatientTableComp data={patientData}/>
       </main>
     </div>
   )
 }
+
+
 
 export default page
