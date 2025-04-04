@@ -26,7 +26,11 @@ const page = async ({ params: { userId } }: SearchParamProps) => {
       </header>
 
       <main className='admin-main'>
-        <BillTableComp data={billsData}/>
+        <BillTableComp data={billsData.documents} 
+            todayTxn={billsData.todayTxn}
+            yesterdayTxn={billsData.yesterdayTxn}
+            last7dTxn={billsData.last7dTxn}
+            />
       </main>
     </div>
   )

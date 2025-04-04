@@ -220,3 +220,29 @@ export const getAllPatients = async () => {
         console.log(error)
     }
 }
+
+export const getAllPatientsByNewest = async () => {
+  try {
+      const data = await databases.listDocuments(
+          DATABASE_ID!,
+          PATIENT_COLLECTION_ID!,
+          [Query.orderDesc('$createdAt')]
+      );
+      return parseStringify(data.documents);
+  } catch (error) {
+      console.log(error)
+  }
+}
+
+export const getAllPatientsByOldest = async () => {
+  try {
+      const data = await databases.listDocuments(
+          DATABASE_ID!,
+          PATIENT_COLLECTION_ID!,
+          [Query.orderAsc('$createdAt')]
+      );
+      return parseStringify(data.documents);
+  } catch (error) {
+      console.log(error)
+  }
+}

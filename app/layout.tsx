@@ -3,6 +3,7 @@ import { Plus_Jakarta_Sans } from "next/font/google";
 import { cn } from '@/lib/utils';
 import { ThemeProvider } from "@/components/theme-provider";
 import "./globals.css";
+import { LoaderProvider } from "./context/LoaderContext";
 
 const fontSans = Plus_Jakarta_Sans({
   variable: "--font-sans",
@@ -28,7 +29,7 @@ export default function RootLayout({
           attribute="class"
           defaultTheme="dark"
         >
-          {children}
+          <LoaderProvider>{children}</LoaderProvider>
         </ThemeProvider>
       </body>
     </html>

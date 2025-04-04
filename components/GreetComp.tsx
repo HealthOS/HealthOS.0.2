@@ -25,12 +25,14 @@ const GreetComp = () => {
         const updateWish = () => {
             console.log("Updating wish");
             const hours = new Date().getHours();
-            if (hours >= 0 && hours < 12) {
+            if (hours >= 4 && hours < 12) {
                 setGreeting("Good Morning");
             } else if (hours >= 12 && hours < 17) {
                 setGreeting("Good Afternoon");
-            } else {
-                setGreeting("Good Evening");
+            } else if (hours >= 17 && hours < 21) {
+                setGreeting("Good Afternoon");
+            }else {
+                setGreeting("Good Night");
             }
         };
         updateWish();

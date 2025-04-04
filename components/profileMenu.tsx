@@ -13,17 +13,22 @@ import {
 import { getUser, logout } from '@/lib/actions/accounts.actions'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
+import { useLoader } from '@/app/context/LoaderContext'
 
 
 const ProfileMenu = () => {
 
     const [userId, setUser] = useState(null);
 
+    const { showLoader, hideLoader } = useLoader();
+
     useEffect(() => {
         const fetchUser = async () => {
             try {
+                showLoader();
                 const userData = await getUser();
                 setUser(userData.targets?.[0]?.userId);
+                hideLoader();
             } catch (error) {
                 console.error("Error fetching user:", error);
             }
@@ -73,8 +78,6 @@ const ProfileMenu = () => {
                     <DropdownMenuItem onClick={handleLogout}>Logout</DropdownMenuItem>
                 </DropdownMenuContent>
             </DropdownMenu>
-
-
         </div>
     )
 }

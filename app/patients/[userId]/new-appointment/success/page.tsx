@@ -12,7 +12,7 @@ const Success = async ({ params: { userId }, searchParams }: SearchParamProps) =
     const appointment = await getAppointment(appointmentId);
     const doctor = Doctors.find((doc) => doc.name === appointment.primaryPhysician)
     return (
-        <div className='flex h-screen max-h-screen px-[5%]'>
+        <div className='flex h-screen min-h-[768px] max-h-screen min-h-[768px] px-[5%]'>
             <div className='success-img'>
                 <Link href='/'>
                     <Image

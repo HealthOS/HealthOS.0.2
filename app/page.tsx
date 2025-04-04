@@ -8,16 +8,16 @@ import Image from "next/image";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
+import { useLoader } from "./context/LoaderContext";
 
 export default function Home() {
 
   const searchParams = useSearchParams();
   const isAdmin = searchParams.get("admin") === "true";
-
-
   const [user, setUser] = useState(null);
   const [wish, setWish] = useState('');
   const router = useRouter();
+  const { showLoader, hideLoader } = useLoader();
 
   useEffect(() => {
     const updateWish = () => {
@@ -41,6 +41,7 @@ export default function Home() {
   useEffect(() => {
     const fetchUser = async () => {
       try {
+        showLoader();
         const loggedDoc = await getUser();
         if (loggedDoc) {
           setUser(loggedDoc);
@@ -49,6 +50,7 @@ export default function Home() {
         else {
           router.push('/login');
         }
+        hideLoader();
       } catch (error) {
         console.error("Error fetching user:", error);
       }
@@ -58,7 +60,7 @@ export default function Home() {
   }, []);
 
   return (
-    <div className="flex h-screen my-auto max-h-screen">
+    <div className="flex h-screen min-h-[768px] my-auto max-h-screen min-h-[768px]">
 
       {isAdmin && <PasskeyModal />}
 

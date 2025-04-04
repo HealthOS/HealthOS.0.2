@@ -43,7 +43,6 @@ const TableComponent = ({ data }:
 
         })
         setAptData(newData)
-        console.log("New Data", newData)
     };
 
     return (

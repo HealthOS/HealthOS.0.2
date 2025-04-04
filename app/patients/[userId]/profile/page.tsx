@@ -1,5 +1,6 @@
 import ButtonActions from '@/components/ButtonActions';
 import EditButton from '@/components/EditButton';
+import GeminiRecommendation from '@/components/Gemini';
 import IPN from '@/components/IPN';
 import ListField from '@/components/ListField';
 import ProfileCard from '@/components/ProfileCard';
@@ -20,7 +21,7 @@ const profilePage = async ({ params: { userId } }: SearchParamProps) => {
     const bills = await getBillsByUser(userId);
 
     return (
-        <div className='mx-auto flex max-w-7xl h-screen  max-h-screen pb-6 flex-col space-y-10'>
+        <div className='mx-auto flex max-w-7xl h-screen min-h-[768px]  max-h-screen pb-6 flex-col space-y-10'>
             <header className='admin-header'>
                 <div className='flex items-center gap-2'>
                     <Link href="/" className="cursor-pointer">
@@ -151,6 +152,8 @@ const profilePage = async ({ params: { userId } }: SearchParamProps) => {
                                 <p className='text-16-medium'>Family Medical History</p>
                                 <p className='text-14-regular text-dark-700'>{user.familyMedicalHistory}</p>
                             </div>
+
+                            <GeminiRecommendation data={user}/>
                         </div>
                     </div>
                 </section>
