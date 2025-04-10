@@ -9,7 +9,7 @@ const Register = async ({ params: { userId } }: SearchParamProps) => {
   const profileData = await getPatient(userId);
 
     return (
-    <div className="flex h-screen min-h-[768px] max-h-screen min-h-[768px]">
+    <div className="flex h-screen min-h-[768px] max-h-screen">
       <section className="remove-scrollbar container">
         <div className="sub-container max-w-[860px] flex-1 flex-col py-10">
           <Image

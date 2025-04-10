@@ -16,7 +16,7 @@ export async function googleGemini(input: string) {
   
     const result = response.text
     console.log(result);
-    return parseStringify(result); 
+    return (result); 
   } catch (error) {
     console.log(error);
   }

@@ -14,12 +14,13 @@ import { getUser, logout } from '@/lib/actions/accounts.actions'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import { useLoader } from '@/app/context/LoaderContext'
+import Loader from './loader/loader'
 
 
 const ProfileMenu = () => {
 
     const [userId, setUser] = useState(null);
-
+    const [loader, setLoader] = useState(false);
     const { showLoader, hideLoader } = useLoader();
 
     useEffect(() => {
@@ -54,30 +55,47 @@ const ProfileMenu = () => {
                 <DropdownMenuContent className='bg-dark-200 w-30 lg:mr-28'>
                     <DropdownMenuLabel>My Account</DropdownMenuLabel>
                     <DropdownMenuSeparator />
-                    <DropdownMenuItem className='border-b'>
-                        <Link href={`/doctor/${userId}/profile`} >
+                    <DropdownMenuItem className='border-b p-0'>
+                        <Link href={`/doctor/${userId}/profile`}
+                            className='px-2 py-1.5 w-full h-full'
+                            onClick={() => { setLoader(true) }}
+                        >
                             Profile
                         </Link>
 
                     </DropdownMenuItem>
-                    <DropdownMenuItem className='border-b'>
-                        <Link href="/?admin=true">
+                    <DropdownMenuItem className='border-b p-0 '>
+                        <Link href="/?admin=true"
+                            className='px-2 py-1.5 w-full h-full'
+                            onClick={() => { setLoader(true) }}
+                        >
                             Dashboard
                         </Link>
                     </DropdownMenuItem>
-                    <DropdownMenuItem className='border-b'>
-                        <Link href={`/allPatients/${userId}/list`}>
+                    <DropdownMenuItem className='border-b p-0'>
+                        <Link href={`/allPatients/${userId}/list`}
+                            className='px-2 py-1.5 w-full h-full'
+                            onClick={() => { setLoader(true) }}
+                        >
                             Patients
                         </Link>
                     </DropdownMenuItem>
-                    <DropdownMenuItem className='border-b'>
-                        <Link href={`/allPatients/${userId}/list/bills`}>
+                    <DropdownMenuItem className='border-b p-0'>
+                        <Link href={`/allPatients/${userId}/list/bills`}
+                            className='px-2 py-1.5 w-full h-full'
+                            onClick={() => { setLoader(true) }}
+                        >
                             Bills
                         </Link>
                     </DropdownMenuItem>
                     <DropdownMenuItem onClick={handleLogout}>Logout</DropdownMenuItem>
                 </DropdownMenuContent>
             </DropdownMenu>
+
+            {loader &&
+                <div className="fixed inset-0 flex items-center justify-center backdrop-blur-sm z-[9999]">
+                    <Loader />
+                </div>}
         </div>
     )
 }

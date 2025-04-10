@@ -65,8 +65,10 @@ const profilePage = async ({ params: { userId } }: SearchParamProps) => {
                     <div className="mx-auto flex flex-col py-0">
                         <div className='flex w-full flex-row justify-between mb-4'>
                             <h2 className='text-2xl font-megium'>Medical condition</h2>
-
+                            <div className='flex gap-4 items-center'>
+                            <GeminiRecommendation data={user}/>
                             <EditButton userId={userId} />
+                            </div>
 
                         </div>
                         <div className='flex flex-col gap-y-2'>
@@ -153,7 +155,6 @@ const profilePage = async ({ params: { userId } }: SearchParamProps) => {
                                 <p className='text-14-regular text-dark-700'>{user.familyMedicalHistory}</p>
                             </div>
 
-                            <GeminiRecommendation data={user}/>
                         </div>
                     </div>
                 </section>
