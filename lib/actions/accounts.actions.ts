@@ -1,12 +1,14 @@
-import { Client, Account } from "appwrite";
+import { Client, Account, Storage } from "appwrite";
 
 import { ID } from "node-appwrite";
 import { ENDPOINT, PROJECT_ID } from "../appwrite.config";
 import { parseStringify } from "../utils";
 
-const client = new Client()
+export const client = new Client()
     .setEndpoint(ENDPOINT!)
     .setProject(PROJECT_ID!);
+
+    export const storage = new Storage(client);
 
 const account = new Account(client);
 

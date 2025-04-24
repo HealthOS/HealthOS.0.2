@@ -1,6 +1,8 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 "use client"
 
+import React, { useCallback, useEffect } from 'react'
+import { useDropzone } from 'react-dropzone'
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
 import { z } from "zod"
@@ -20,6 +22,9 @@ import Image from "next/image"
 import FileUploader from "../FileUploader"
 import { Patient } from "@/types/appwrite.types"
 import { Button } from "../ui/button"
+import { FileText } from 'lucide-react'
+import { deletePDF, extractTextFromPDF, uploadPDF } from '@/lib/actions/autoFill'
+import { useLoader } from '@/src/app/context/LoaderContext'
 
 const RegisterForm = ({ user, patientData }: {
   user: User
@@ -27,12 +32,109 @@ const RegisterForm = ({ user, patientData }: {
 }) => {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
-  console.log(user.phone);
+  const [fileId, setFileId] = useState("");
+  const [pdfFile, setPdfFile] = useState<File | null>(null);
+  const { showLoader, hideLoader } = useLoader();
+  const [data, setData] = useState({
+      address: "",
+      allergies: "",
+      anemia: "",
+      birthDate: "",
+      bloodPressure: "",
+      chronicKidneyDisease: "",
+      coagulationDisorder: "",
+      description: "",
+      diabetes: "",
+      emergencyContactName: "",
+      emergencyContactNumber: "",
+      gender: "",
+      gout: "",
+      hypercholesterolemia: "",
+      hyperthyroidism: "",
+      hypothyroidism: "",
+      hypoxia: "",
+      insurancePolicyNumber: "",
+      insuranceProvider: "",
+      obesity: "",
+      occupation: "",
+      osteoporosis: "",
+      respiratoryDistress: "",
+      seriousConditions: "",
+      tachycardia: "",
+      temperature: ""
+  });
+
+  const handelDelete = async () => {
+    try {
+
+      showLoader();
+      const deletedFile = await deletePDF(fileId);
+      console.log(deletedFile)
+      hideLoader();
+
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+  const onDrop = useCallback(async (acceptedFiles: any) => {
+
+    showLoader();
+
+    const file = acceptedFiles[0];
+
+    setPdfFile(file);
+
+    const uploadedFile = await uploadPDF(file);
+
+    setFileId(uploadedFile.$id);
+
+    const fetchedPDF = await extractTextFromPDF(uploadedFile.$id);
+
+    console.log(fetchedPDF);
+    setData(fetchedPDF)
+    
+    form.reset({
+      ...form.getValues(), // retain current form values
+      ...fetchedPDF,       // override with extracted data
+    });
+
+    hideLoader();
+
+  }, [])
+  const { getRootProps, getInputProps } = useDropzone({ onDrop })
+
+  {/**
+anemia: "Yes"
+birthDate: "1980-01-15"
+bloodPressure: "130/85 mmHg"
+chronicKidneyDisease: "Stage 1"
+coagulationDisorder: "None Reported"
+description: null
+diabetes: "Type 2"
+emergencyContactName: "Jane Doe"
+emergencyContactNumber: "+1 555-765-4321"
+gender: "Male"
+gout: null
+hypercholesterolemia: null
+hyperthyroidism: null
+hypothyroidism: null
+hypoxia: null
+insurancePolicyNumber: "MC-456789101"
+insuranceProvider: "MediCare Health"
+obesity: "No"
+occupation: "Software Engineer"
+osteoporosis: null
+respiratoryDistress: "Mild"
+seriousConditions: "Hypertension, Type 2 Diabetes, Heart Disease"
+tachycardia: "No"
+temperature: "98.6°F"  
+  */}
 
   const form = useForm<z.infer<typeof PatientFormValidation>>({
     resolver: zodResolver(PatientFormValidation),
     defaultValues: {
-      name: patientData?.name  || user?.name || "", 
+      name: patientData?.name || user?.name || "",
       room: patientData?.room || "",
       email: patientData?.email || user?.email || "",
       phone: patientData?.phone || user?.phone || "",
@@ -57,7 +159,7 @@ const RegisterForm = ({ user, patientData }: {
       privacyConsent: patientData?.privacyConsent || false,
       temperature: patientData?.temperature || "",
       diabetes: patientData?.diabetes || "",
-      bloodPressure: patientData?.bloodPressure || "",
+      bloodPressure: patientData?.bloodPressure || data?.bloodPressure || "",
       description: patientData?.description || "",
       seriousConditions: patientData?.seriousConditions || "",
       tachycardia: patientData?.tachycardia || "",
@@ -167,7 +269,8 @@ const RegisterForm = ({ user, patientData }: {
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-12 flex-1">
-        <section className="space-y-4">
+
+        <section className="space-y-4w-full">
           <h1 className="text-3xl font-bold text-green-500 animate-fade-in">
             👋 Welcome to HealthOS!
           </h1>
@@ -175,6 +278,36 @@ const RegisterForm = ({ user, patientData }: {
             Let's add complete details of your patients for better care.
           </p>
         </section>
+
+        <div className='file-upload w-full flex items-center justify-center' {...getRootProps()}>
+          <input {...getInputProps()} />
+          {
+            pdfFile ?
+              <div className='flex flex-col space-y-2 items-center justify-center'>
+                <div className='rounded-full bg-slate-800 h-12 w-12 flex items-center justify-center'>
+                  <FileText className="w-6 h-6 text-green-500" strokeWidth={1} />
+                </div>
+                <p className='text-14-regular'>{pdfFile.name}</p>
+                <Button className="h-0 hover:bg-transparent hover:text-red-500" variant="ghost"
+                  onClick={(e) => {
+                    e.stopPropagation(); // Prevent triggering file input
+                    handelDelete();
+                    setPdfFile(null)
+                  }}>Cancel</Button>
+              </div>
+              :
+              <div className='flex flex-col items-center justify-center file-upload_label'>
+                <Image
+                  src="/assets/icons/upload.svg"
+                  width={40}
+                  height={40}
+                  alt="upload"
+                />
+                <p >Upload the patient’s medical report – drag & drop or click to browse</p>
+                <p>PDF only. It will be scanned to auto fill form</p>
+              </div>
+          }
+        </div>
 
         <section className="space-y-6">
           <div className="mb-9 space-y-1">
@@ -545,7 +678,8 @@ const RegisterForm = ({ user, patientData }: {
           label="Scanned copy of identification document"
           renderSkeleton={(field) => (
             <FormControl>
-              <FileUploader files={field.value}
+              <FileUploader
+                files={field.value}
                 onChange={field.onChange}
               />
             </FormControl>
@@ -581,10 +715,10 @@ const RegisterForm = ({ user, patientData }: {
 
         <div className="flex justify-between gap-6">
           <Button type="reset" className="bg-red-500 hover:bg-red-900 hover:text-white" onClick={() => router.back()}>Cancel</Button>
-        <SubmitButton isLoading={isLoading}>Submit</SubmitButton>
+          <SubmitButton isLoading={isLoading}>Submit</SubmitButton>
         </div>
       </form>
-    </Form>
+    </Form >
   )
 }
 

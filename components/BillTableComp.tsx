@@ -10,7 +10,7 @@ import { Input } from './ui/input';
 import { Button } from './ui/button';
 import { getAllBillsByOldest } from '@/lib/actions/bill.action';
 import EarningCards from './EarningCards';
-import { useLoader } from '@/app/context/LoaderContext';
+import { useLoader } from '@/src/app/context/LoaderContext';
 
 const BillTableComp = ({ data, todayTxn, yesterdayTxn, last7dTxn }: {
   data: Bill[]

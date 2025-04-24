@@ -13,8 +13,8 @@ import {
 import { getUser, logout } from '@/lib/actions/accounts.actions'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
-import { useLoader } from '@/app/context/LoaderContext'
 import Loader from './loader/loader'
+import { useLoader } from '@/src/app/context/LoaderContext'
 
 
 const ProfileMenu = () => {

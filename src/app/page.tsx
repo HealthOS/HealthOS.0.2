@@ -60,7 +60,7 @@ export default function Home() {
   }, []);
 
   return (
-    <div className="flex h-screen min-h-[768px] my-auto max-h-screen min-h-[768px]">
+    <div className="flex h-screen min-h-[768px] my-auto max-h-screen">
 
       {isAdmin && <PasskeyModal />}
 
