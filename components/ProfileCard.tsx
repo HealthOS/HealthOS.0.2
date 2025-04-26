@@ -25,9 +25,13 @@ import { deleteAppointment, deletePatient, deleteProfile, getUser } from '@/lib/
 import { useRouter } from 'next/navigation';
 import Image from "next/image";
 import Link from "next/link";
+import { formatDateTime, parseStringify } from "@/lib/utils";
+import { Button } from "./ui/button";
+import { BUCKET_ID } from "@/lib/appwrite.config";
+import { storage } from "@/lib/actions/accounts.actions";
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-const ProfileCard = ({ userId, name, phone, gender, birthDate, address, occupation, email, emergencyContactName, emergencyContactNumber }: {
+const ProfileCard = ({ userId, name, phone, gender, birthDate, address, occupation, email, emergencyContactName, emergencyContactNumber, identificationDocumentUrl, report }: {
     userId: string
     name: string
     phone: string
@@ -38,6 +42,8 @@ const ProfileCard = ({ userId, name, phone, gender, birthDate, address, occupati
     email: string
     emergencyContactName: string
     emergencyContactNumber: string
+    identificationDocumentUrl: string
+    report: string
 }) => {
 
     const router = useRouter();
@@ -47,6 +53,28 @@ const ProfileCard = ({ userId, name, phone, gender, birthDate, address, occupati
     const [apt, setApt] = useState(false);
     const [user, setUser] = useState(false);
     const [del, setDel] = useState(0);
+
+    const handleReportOpen = async () => {
+        const response = await storage.getFileView(BUCKET_ID!, report);
+        console.log(response);
+        window.open(response, '_blank')
+    }
+
+    console.log(birthDate)
+    const datePart = birthDate.split("T")[0];
+    console.log("Date only:", datePart); // "2003-02-13"
+
+    // Calculate difference in years
+    const birthDay = new Date(birthDate);
+    const today = new Date();
+
+    let age = today.getFullYear() - birthDay.getFullYear();
+
+    // Adjust if the birthday hasn't occurred yet this year
+    const m = today.getMonth() - birthDay.getMonth();
+    if (m < 0 || (m === 0 && today.getDate() < birthDay.getDate())) {
+        age--;
+    }
 
     const handleDelete = async () => {
 
@@ -112,7 +140,9 @@ const ProfileCard = ({ userId, name, phone, gender, birthDate, address, occupati
                 </TooltipProvider>
             </div>
 
-            <div className='text-14-regular text-dark-700'>{gender}-{birthDate}</div>
+            <div className='text-14-regular text-dark-700'>{gender}-{age}</div>
+            <p className='flex justify-center max-w-[80%] text-center text-14-regular text-dark-700'>DOB: {datePart}</p>
+
             <p className='flex justify-center max-w-[80%] text-center text-14-regular text-dark-700'>Address: {address}</p>
             <p>Occupation-{occupation}</p>
 
@@ -178,7 +208,7 @@ const ProfileCard = ({ userId, name, phone, gender, birthDate, address, occupati
                             </AlertDialogHeader>
                             <AlertDialogFooter>
                                 <AlertDialogCancel>Cancel</AlertDialogCancel>
-                                <AlertDialogAction 
+                                <AlertDialogAction
                                     onClick={() => handleDelete()}
                                     className="shad-danger-btn">Delete</AlertDialogAction>
                             </AlertDialogFooter>
@@ -196,12 +226,12 @@ const ProfileCard = ({ userId, name, phone, gender, birthDate, address, occupati
                             </AlertDialogDescription>
                         </AlertDialogHeader>
                         <AlertDialogFooter>
-                            {del == 0 && 
+                            {del == 0 &&
                                 <AlertDialogAction onClick={() => handleDelete()} className="shad-danger-btn w-full">wait</AlertDialogAction>
                             }
                             {del == 1 &&
                                 <AlertDialogAction className="shad-danger-btn w-full cursor-wait">
-                                    <p>Deleting 
+                                    <p>Deleting
                                         {patient && <span> patient...</span>}
                                         {apt && <span> appointments...</span>}
                                         {user && <span> patient profile...</span>}</p>
@@ -217,6 +247,17 @@ const ProfileCard = ({ userId, name, phone, gender, birthDate, address, occupati
                 </AlertDialog>
 
             </div>
+
+            <Button variant="ghost" className="w-[75%] rounded-xl" 
+                onClick={() => handleReportOpen()}
+            >
+                Patient Report
+            </Button>
+            <Button variant="ghost" className="w-[75%] rounded-xl"
+                onClick={() => window.open(identificationDocumentUrl, '_blank')}
+            >
+                Patient ID
+            </Button>
             <ToastContainer />
 
         </div>

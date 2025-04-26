@@ -1,9 +1,7 @@
 'use client';
 import React, { useState } from 'react';
 import { ScrollArea } from './ui/scroll-area';
-import { IndianRupee } from 'lucide-react';
 import { Patient } from '@/types/appwrite.types';
-import { Dialog, DialogClose, DialogContent, DialogFooter, DialogHeader, DialogTitle } from './ui/dialog';
 import TransactionItem from './TransactionItem';
 import { formatDateTime } from '@/lib/utils';
 

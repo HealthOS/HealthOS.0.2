@@ -40,6 +40,7 @@ export interface Patient extends Models.Document {
   gout: string | undefined;
   coagulationDisorder: string | undefined;
   osteoporosis: string | undefined;
+  report: string | undefined;
   doctor: DoctorParams;
 }
 

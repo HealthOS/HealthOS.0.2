@@ -25,6 +25,7 @@ import { Button } from "../ui/button"
 import { FileText } from 'lucide-react'
 import { deletePDF, extractTextFromPDF, uploadPDF } from '@/lib/actions/autoFill'
 import { useLoader } from '@/src/app/context/LoaderContext'
+import { getUser } from '@/lib/actions/accounts.actions'
 
 const RegisterForm = ({ user, patientData }: {
   user: User
@@ -35,38 +36,39 @@ const RegisterForm = ({ user, patientData }: {
   const [fileId, setFileId] = useState("");
   const [pdfFile, setPdfFile] = useState<File | null>(null);
   const { showLoader, hideLoader } = useLoader();
+  const [userId, setUser] = useState(null);
+
   const [data, setData] = useState({
-      address: "",
-      allergies: "",
-      anemia: "",
-      birthDate: "",
-      bloodPressure: "",
-      chronicKidneyDisease: "",
-      coagulationDisorder: "",
-      description: "",
-      diabetes: "",
-      emergencyContactName: "",
-      emergencyContactNumber: "",
-      gender: "",
-      gout: "",
-      hypercholesterolemia: "",
-      hyperthyroidism: "",
-      hypothyroidism: "",
-      hypoxia: "",
-      insurancePolicyNumber: "",
-      insuranceProvider: "",
-      obesity: "",
-      occupation: "",
-      osteoporosis: "",
-      respiratoryDistress: "",
-      seriousConditions: "",
-      tachycardia: "",
-      temperature: ""
+    address: "",
+    allergies: "",
+    anemia: "",
+    birthDate: "",
+    bloodPressure: "",
+    chronicKidneyDisease: "",
+    coagulationDisorder: "",
+    description: "",
+    diabetes: "",
+    emergencyContactName: "",
+    emergencyContactNumber: "",
+    gender: "",
+    gout: "",
+    hypercholesterolemia: "",
+    hyperthyroidism: "",
+    hypothyroidism: "",
+    hypoxia: "",
+    insurancePolicyNumber: "",
+    insuranceProvider: "",
+    obesity: "",
+    occupation: "",
+    osteoporosis: "",
+    respiratoryDistress: "",
+    seriousConditions: "",
+    tachycardia: "",
+    temperature: ""
   });
 
   const handelDelete = async () => {
     try {
-
       showLoader();
       const deletedFile = await deletePDF(fileId);
       console.log(deletedFile)
@@ -93,7 +95,7 @@ const RegisterForm = ({ user, patientData }: {
 
     console.log(fetchedPDF);
     setData(fetchedPDF)
-    
+
     form.reset({
       ...form.getValues(), // retain current form values
       ...fetchedPDF,       // override with extracted data
@@ -130,6 +132,21 @@ seriousConditions: "Hypertension, Type 2 Diabetes, Heart Disease"
 tachycardia: "No"
 temperature: "98.6°F"  
   */}
+
+  useEffect(() => {
+    const fetchUser = async () => {
+      try {
+        showLoader();
+        const userData = await getUser();
+        setUser(userData.targets?.[0]?.userId);
+        hideLoader();
+      } catch (error) {
+        console.error("Error fetching user:", error);
+      }
+    };
+
+    fetchUser();
+  }, []);
 
   const form = useForm<z.infer<typeof PatientFormValidation>>({
     resolver: zodResolver(PatientFormValidation),
@@ -238,6 +255,7 @@ temperature: "98.6°F"
           gout: values.gout,
           coagulationDisorder: values.coagulationDisorder,
           osteoporosis: values.osteoporosis,
+          report: fileId || patientData.report
         }
 
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
@@ -253,6 +271,8 @@ temperature: "98.6°F"
           userId: user.$id,
           birthDate: new Date(values.birthDate),
           identificationDocument: formData,
+          report: fileId,
+          doctor: userId
         };
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-expect-error

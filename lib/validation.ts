@@ -80,6 +80,7 @@ export const PatientFormValidation = z.object({
   coagulationDisorder: z.string().optional(),
   osteoporosis: z.string().optional(),
   description: z.string().optional(),
+  report: z.string().optional(),
   seriousConditions: z.string().optional(),
   identificationDocument: z.custom<File[]>().optional(),
   treatmentConsent: z

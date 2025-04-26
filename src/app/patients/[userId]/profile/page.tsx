@@ -59,6 +59,8 @@ const profilePage = async ({ params: { userId } }: SearchParamProps) => {
                         email={user.email}
                         emergencyContactName={user.emergencyContactName}
                         emergencyContactNumber={user.emergencyContactNumber}
+                        identificationDocumentUrl={user.identificationDocumentUrl}
+                        report={user.report}
                     />
                 </section>
                 <section className='remove-scrollbar relative flex-1 overflow-y-auto px-[2%] w-full max-w-[55%]'>
