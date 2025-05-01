@@ -11,16 +11,29 @@ import {
     SidebarMenuButton,
     SidebarMenuItem,
 } from "@/components/ui/sidebar"
+
+import {
+    Dialog,
+    DialogContent,
+    DialogDescription,
+    DialogFooter,
+    DialogHeader,
+    DialogTitle,
+    DialogTrigger,
+} from "@/components/ui/dialog"
+
 import { getUser, logout } from '@/lib/actions/accounts.actions'
 import { usePathname, useRouter, useSearchParams } from 'next/navigation'
 
 import { useLoader } from '@/src/app/context/LoaderContext'
 
-import { Calendar, Home, Inbox, IndianRupee, LayoutDashboard, List, ListPlus, LogOut, Search, Settings, User } from "lucide-react"
+import { Home, IndianRupee, LayoutDashboard, List, ListPlus, LogOut, User, UserPlus } from "lucide-react"
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import PasskeyModal from "../PasskeyModal";
 import Loader from "../loader/loader";
+import AppointmentForm from "../forms/AppointmentForm";
+import PatientForm from "../forms/PatientForm";
 
 
 export function AppSidebar() {
@@ -28,7 +41,9 @@ export function AppSidebar() {
     const searchParams = useSearchParams();
     const isAdmin = searchParams.get("admin") === "true";
 
-    const [userId, setUser] = useState(null);
+    const [openApt, setOpenApt] = useState(false);
+    const [openPatientForm, setOpenPatientForm] = useState(false);
+    const [userId, setUser] = useState("");
     const [loader, setLoader] = useState(false);
     const { showLoader, hideLoader } = useLoader();
     const pathname = usePathname();
@@ -74,7 +89,7 @@ export function AppSidebar() {
 
                                 <SidebarMenuItem>
                                     <SidebarMenuButton asChild
-                                    className="hover:bg-green-500"
+                                        className="hover:bg-green-500"
                                     >
                                         <Link href="/">
                                             <Home />
@@ -85,7 +100,7 @@ export function AppSidebar() {
 
                                 <SidebarMenuItem>
                                     <SidebarMenuButton asChild
-                                    className="hover:bg-green-500"
+                                        className="hover:bg-green-500"
                                     >
                                         <Link href={`${pathname}/?admin=true`}
                                             onClick={() => { setLoader(true) }}
@@ -99,35 +114,33 @@ export function AppSidebar() {
 
                                 <SidebarMenuItem>
                                     <SidebarMenuButton asChild
-                                    className="hover:bg-green-500"
+                                        onClick={() => { setOpenPatientForm(true) }}
+                                        className="hover:bg-green-500 cursor-pointer"
                                     >
-                                        <Link href={`${pathname}/?admin=true`}
-                                            onClick={() => { setLoader(true) }}
-                                        >
-                                            <User />
+                                        <p>
+                                            <UserPlus />
                                             <span>Add Patient</span>
 
-                                        </Link>
+                                        </p>
                                     </SidebarMenuButton>
                                 </SidebarMenuItem>
 
                                 <SidebarMenuItem>
                                     <SidebarMenuButton asChild
-                                    className="hover:bg-green-500"
+                                        className="hover:bg-green-500 cursor-pointer"
+                                        onClick={() => { setOpenApt(true) }}
                                     >
-                                        <Link href={`${pathname}/?admin=true`}
-                                            onClick={() => { setLoader(true) }}
-                                        >
+                                        <p>
                                             <ListPlus />
                                             <span>Add Appointment</span>
 
-                                        </Link>
+                                        </p>
                                     </SidebarMenuButton>
                                 </SidebarMenuItem>
 
                                 <SidebarMenuItem>
                                     <SidebarMenuButton asChild
-                                    className="hover:bg-green-500"
+                                        className="hover:bg-green-500"
                                     >
                                         <Link href={`/allPatients/${userId}/list`}
                                             onClick={() => { setLoader(true) }}
@@ -141,7 +154,7 @@ export function AppSidebar() {
 
                                 <SidebarMenuItem>
                                     <SidebarMenuButton asChild
-                                    className="hover:bg-green-500"
+                                        className="hover:bg-green-500"
                                     >
                                         <Link href={`/allPatients/${userId}/list/bills`}
                                             onClick={() => { setLoader(true) }}
@@ -163,7 +176,7 @@ export function AppSidebar() {
 
                                 <SidebarMenuItem>
                                     <SidebarMenuButton asChild
-                                    className="hover:bg-green-500"
+                                        className="hover:bg-green-500"
                                     >
                                         <Link href={`/doctor/${userId}/profile`}
                                             onClick={() => { setLoader(true) }}
@@ -192,6 +205,35 @@ export function AppSidebar() {
                     </SidebarGroup>
                 </SidebarContent>
             </Sidebar>
+
+
+            <Dialog open={openApt} onOpenChange={setOpenApt}>
+                <DialogContent className="shad-dialog sm:max-w-md">
+                    <DialogHeader>
+                        <DialogTitle></DialogTitle>
+                    </DialogHeader>
+                    <DialogFooter>
+                        <AppointmentForm
+                            type='create'
+                            userId={"user.userId"}
+                            patientId={"user.$id"}
+                            open={true}
+                        />
+                    </DialogFooter>
+                </DialogContent>
+            </Dialog>
+
+            <Dialog open={openPatientForm} onOpenChange={setOpenPatientForm}>
+                <DialogContent className="shad-dialog sm:max-w-md">
+                    <DialogHeader>
+                        <DialogTitle></DialogTitle>
+                    </DialogHeader>
+                    <DialogFooter>
+                        <PatientForm
+                        />
+                    </DialogFooter>
+                </DialogContent>
+            </Dialog>
 
             {loader &&
                 <div className="fixed inset-0 flex items-center justify-center backdrop-blur-sm z-[9999]">

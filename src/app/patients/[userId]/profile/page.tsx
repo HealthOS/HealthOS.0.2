@@ -25,9 +25,6 @@ const profilePage = async ({ params: { userId } }: SearchParamProps) => {
     const bills = await getBillsByUser(userId);
 
     return (
-        <div  className='w-full'>
-
-    
         <SidebarProvider>
             <AppSidebar />
             <CustomTrigger />
@@ -186,8 +183,6 @@ const profilePage = async ({ params: { userId } }: SearchParamProps) => {
             </div>
 
         </SidebarProvider>
-
-        </div>
     )
 }
 
