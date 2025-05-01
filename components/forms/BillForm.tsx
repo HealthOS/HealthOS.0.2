@@ -7,19 +7,45 @@ import { Form } from "@/components/ui/form"
 import CustomForm from "../CustomForm"
 import SubmitButton from "../SubmitButton"
 import { BillFormValidation } from "@/lib/validation"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import React from 'react'
 import { FormFieldType } from "./PatientForm"
 import { addTransactionAmount } from "@/lib/actions/bill.action"
 import LiveClock from "../LiveClock"
 import { Clock3 } from "lucide-react"
 import { useRouter } from "next/navigation"
+import { useLoader } from "@/src/app/context/LoaderContext"
+import { getUser } from "@/lib/actions/accounts.actions"
 
 const BillForm = ({ userId, patientId, setOpenBill }: {
     userId: string
     patientId: string
     setOpenBill: (open: boolean) => void;
 }) => {
+
+    const {showLoader, hideLoader} = useLoader();
+    const [ doctor, setDoctor ] = useState('');
+    
+    useEffect(() => {
+        const fetchUser = async () => {
+          try {
+            showLoader();
+            const loggedDoc = await getUser();
+            if (loggedDoc){
+              console.log(loggedDoc);
+              setDoctor(loggedDoc.$id);
+            }
+            else {
+              router.push('/login');
+            }
+            hideLoader();
+          } catch (error) {
+            console.error("Error fetching user:", error);
+          }
+        };
+    
+        fetchUser();
+      }, []);
 
     const [isLoading, setIsLoading] = useState(false);
     const router = useRouter();
@@ -43,6 +69,7 @@ const BillForm = ({ userId, patientId, setOpenBill }: {
                 userId,
                 patient: patientId,
                 transactionAmount,
+                doctor,
                 dateTime
             };
 

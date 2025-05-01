@@ -11,7 +11,7 @@ import Name from "../Name"
 
 export const columns: ColumnDef<Bill>[] = [
   {
-    header: 'ID',
+    header: 'S.No',
     cell: ({ row }) => <p className="text-14-medium">{row.index + 1}</p>
   },
   {
@@ -53,7 +53,7 @@ export const columns: ColumnDef<Bill>[] = [
   },
  { 
   accessorKey: "$id",
-  header: "Txn ID",
+  header: "Invoice ID",
   cell: ({ row }) => (
     <p className="text-14-regular min-w-[100px] justify-center">
       {row.original.$id}

@@ -22,7 +22,7 @@ import Image from "next/image";
 import { usePathname, useRouter } from "next/navigation";
 import React, { useEffect, useState } from 'react'
 
-const PasskeyModal = () => {
+const PasskeyModal = ( {doctor}:{doctor:string} ) => {
 
     const router = useRouter();
     const path=usePathname();
@@ -39,7 +39,7 @@ const PasskeyModal = () => {
         if(path){
             if (accessKey === process.env.NEXT_PUBLIC_DOCTOR_PASSKEY) {
                 setOpen(false);
-                router.push('/admin')
+                router.push(`/admin/${doctor}/dashboard`);
             } else {
                 setOpen(true);
             }    

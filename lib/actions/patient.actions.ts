@@ -94,12 +94,12 @@ export const updatePatient = async ({ identificationDocument, userId, ...patient
       if (!updatedPatient) {
         throw new Error('Appointment not found');
       }
-  
+
+      console.log(updatedPatient);
+
       revalidatePath('/admin');
       return parseStringify(updatedPatient);
     }
-
-    console.log(patient);
 
     const updatedPatient = await databases.updateDocument(
       DATABASE_ID!,
@@ -113,10 +113,10 @@ export const updatePatient = async ({ identificationDocument, userId, ...patient
     if (!updatedPatient) {
       throw new Error('Appointment not found');
     }
+    console.log(updatedPatient);
 
     revalidatePath('/admin');
     return parseStringify(updatedPatient);
-
   } catch (error) {
     console.log(error);
   }
@@ -130,7 +130,7 @@ export const getPatient = async (userId: string) => {
       [Query.equal('userId', userId)]
     );
 
-    if(!patients.documents[0]) return null;
+    if (!patients.documents[0]) return null;
 
     return parseStringify(patients.documents[0]);
 
@@ -139,7 +139,8 @@ export const getPatient = async (userId: string) => {
   }
 }
 
-export const deletePatient = async (userId: string) => {""
+export const deletePatient = async (userId: string) => {
+  ""
   try {
     const deletedUser = await users.delete(userId);
     return (true);
@@ -208,41 +209,44 @@ export const deleteAppointment = async (userId: string) => {
 
 // 679a61ef0026b0ed7a7f
 
-export const getAllPatients = async () => {
-    try {
-        const data = await databases.listDocuments(
-            DATABASE_ID!,
-            PATIENT_COLLECTION_ID!,
-            [Query.orderAsc('name')]
-        );
-        return parseStringify(data.documents);
-    } catch (error) {
-        console.log(error)
-    }
+export const getAllPatients = async (doctor:string ) => {
+  try {
+    const data = await databases.listDocuments(
+      DATABASE_ID!,
+      PATIENT_COLLECTION_ID!,
+      [
+        Query.equal('doctor', doctor),
+        Query.orderAsc('name')
+      ],
+    );
+    return parseStringify(data.documents);
+  } catch (error) {
+    console.log(error)
+  }
 }
 
 export const getAllPatientsByNewest = async () => {
   try {
-      const data = await databases.listDocuments(
-          DATABASE_ID!,
-          PATIENT_COLLECTION_ID!,
-          [Query.orderDesc('$createdAt')]
-      );
-      return parseStringify(data.documents);
+    const data = await databases.listDocuments(
+      DATABASE_ID!,
+      PATIENT_COLLECTION_ID!,
+      [Query.orderDesc('$createdAt')]
+    );
+    return parseStringify(data.documents);
   } catch (error) {
-      console.log(error)
+    console.log(error)
   }
 }
 
 export const getAllPatientsByOldest = async () => {
   try {
-      const data = await databases.listDocuments(
-          DATABASE_ID!,
-          PATIENT_COLLECTION_ID!,
-          [Query.orderAsc('$createdAt')]
-      );
-      return parseStringify(data.documents);
+    const data = await databases.listDocuments(
+      DATABASE_ID!,
+      PATIENT_COLLECTION_ID!,
+      [Query.orderAsc('$createdAt')]
+    );
+    return parseStringify(data.documents);
   } catch (error) {
-      console.log(error)
+    console.log(error)
   }
 }

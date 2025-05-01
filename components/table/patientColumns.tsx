@@ -11,7 +11,7 @@ import Name from "../Name"
 
 export const columns: ColumnDef<Patient>[] = [
   {
-    header: 'ID',
+    header: 'S.No',
     cell: ({ row }) => <p className="text-14-medium">{row.index + 1}</p>
   },
   {
@@ -34,42 +34,23 @@ export const columns: ColumnDef<Patient>[] = [
     )
   },
   {
+    accessorKey: "insuranceProvider",
+    header: "Insurance Provider",
+    cell: ({ row }) => (
+      <p className="text-14-regular min-w-[100px] justify-center">
+        {row.original.insuranceProvider}
+      </p>
+    )
+  },
+  {
     accessorKey: "insurancePolicyNumber",
-    header: "Insurance",
+    header: "Insurance ID",
     cell: ({ row }) => (
       <p className="text-14-regular min-w-[100px] justify-center">
         {row.original.insurancePolicyNumber}
       </p>
     )
   },
-  {
-    accessorKey: "primaryPhysician",
-    header: () => <div className="pl-3">Doctor</div>,
-    cell: ({ row }) => {
-      const doctor = Doctors.find((doc) => doc.name === row.original.primaryPhysician)
-
-      return (<div className="flex items-center gap-3">
-        <Image
-          src={doctor?.image || '/default-image.png'}
-          alt={doctor?.name || 'none'}
-          width={100}
-          height={100}
-          className="size-8"
-        />
-        <p className="whitespace-nowrap">
-          Dr. {doctor?.name}
-        </p>
-      </div>)
-    },
-  },
- { 
-  accessorKey: "userId",
-  header: "Database ID",
-  cell: ({ row }) => (
-    <p className="text-14-regular min-w-[100px] justify-center">
-      {row.original.userId}
-    </p>
-  )
-},
+  
 ]
 

@@ -5,6 +5,7 @@ import { ThemeProvider } from "@/components/theme-provider";
 import "./globals.css";
 import { LoaderProvider } from "./context/LoaderContext";
 import NetworkStatus from "@/components/NetworkStatus";
+import { ToastProvider } from "@/components/ToastProvider";
 
 const fontSans = Plus_Jakarta_Sans({
   variable: "--font-sans",
@@ -30,7 +31,8 @@ export default function RootLayout({
           attribute="class"
           defaultTheme="dark"
         >
-           <NetworkStatus />
+          <ToastProvider />
+          <NetworkStatus />
           <LoaderProvider>{children}</LoaderProvider>
         </ThemeProvider>
       </body>

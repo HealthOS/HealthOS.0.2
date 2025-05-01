@@ -42,12 +42,15 @@ export const getBillsByUser = async (userId: string) => {
     }
 };
 
-export const getAllPatientBills = async () => {
+export const getAllPatientBills = async ( doctor : string ) => {
     try {
         const billsData = await databases.listDocuments(
             DATABASE_ID!,
             BILL_COLLECTION_ID!,
-            [Query.orderDesc("$createdAt")]
+            [
+                Query.equal("doctor", doctor),
+                Query.orderDesc("$createdAt")
+            ]
         );
 
         const now = new Date();
@@ -81,6 +84,7 @@ export const getAllPatientBills = async () => {
             ...counts,
             documents: billsData.documents
         }
+        
         return parseStringify(data);
     } catch (error) {
         console.log(error)

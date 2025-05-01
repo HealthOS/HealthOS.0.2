@@ -30,7 +30,7 @@ const GreetComp = () => {
             } else if (hours >= 12 && hours < 17) {
                 setGreeting("Good Afternoon");
             } else if (hours >= 17 && hours < 21) {
-                setGreeting("Good Afternoon");
+                setGreeting("Good Evening");
             }else {
                 setGreeting("Good Night");
             }

@@ -41,11 +41,12 @@ export interface Patient extends Models.Document {
   coagulationDisorder: string | undefined;
   osteoporosis: string | undefined;
   report: string | undefined;
-  doctor: DoctorParams;
+  doctor: string | undefined;
 }
 
 export interface Bill extends Models.Document {
   patient: Patient;
+  doctor: string;
   dateTime: Date;
   transactionAmount: number;
   userId: string;
@@ -55,7 +56,6 @@ export interface Appointment extends Models.Document {
   patient: Patient;
   schedule: Date;
   status: Status;
-  primaryPhysician: string;
   reason: string;
   note: string;
   userId: string;

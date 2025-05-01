@@ -56,8 +56,6 @@ export const getUser = async () => {
     try {
         let user = await account.get();
 
-        console.log(user);
-
         return parseStringify(user);
 
     } catch (error) {

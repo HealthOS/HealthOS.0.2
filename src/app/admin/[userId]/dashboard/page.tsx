@@ -6,30 +6,35 @@ import Image from 'next/image'
 import Link from 'next/link'
 import React from 'react'
 
-const Admin = async () => {
+const Admin = async ({ params }: { params: { userId: string } }) => {
+  const userId = params.userId;
 
-  const appointments = await getRecentAppointmentList();
+  console.log(userId)
+  const appointments = await getRecentAppointmentList(userId);
 
   return (
     <div className="mx-auto flex max-w-7xl flex-col space-y-14">
       <header className='admin-header'>
         <Link href="/" className="cursor-pointer">
-          <Image
+          <text className='text-sm font-extralight'>
+            HealthOS
+          </text>
+          { /*<Image
             src="/assets/icons/logo-full.svg"
-            height={32}
-            width={162}
+            height={22}
+            width={132}
             alt='logo'
-            className='h-8 w-fit'
-          />
+            className='h-5 w-fit'
+          /> */ }
         </Link>
 
-        <ProfileMenu />
+        {/* <ProfileMenu /> */}
       </header>
 
       <main className='admin-main'>
         <section className='w-full space-y-4'>
-          <h1 className='header'>Welcome</h1>
-          <p className='text-dark-700'>Start your appointments for today</p>
+          <h1 className='header'>Welcome to Dashboard</h1>
+          <p className='text-dark-700'>Effortlessly manage appointments, track your patients, and seamlessly add new ones — all in one place.</p>
         </section>
         <section className='admin-stat'>
           <StatCard
@@ -52,7 +57,7 @@ const Admin = async () => {
           />
         </section>
         <TableComponent data={appointments.documents} />
-      
+
       </main>
     </div>
   )

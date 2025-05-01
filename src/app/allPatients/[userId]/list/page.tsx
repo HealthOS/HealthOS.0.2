@@ -7,7 +7,7 @@ import { getAllPatients } from '@/lib/actions/patient.actions';
 
 const page = async ({ params: { userId } }: SearchParamProps) => {
 
-  const patientData = await getAllPatients();
+  const patientData = await getAllPatients(userId);
 
   return (
     <div className="mx-auto flex max-w-7xl flex-col space-y-14">

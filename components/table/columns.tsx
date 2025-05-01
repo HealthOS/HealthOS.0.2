@@ -11,7 +11,7 @@ import Name from "../Name"
 
 export const columns: ColumnDef<Appointment>[] = [
   {
-    header: 'ID',
+    header: 'S.No',
     cell: ({ row }) => <p className="text-14-medium">{row.index + 1}</p>
   },
   {
@@ -42,26 +42,7 @@ export const columns: ColumnDef<Appointment>[] = [
       </p>
     )
   },
-  {
-    accessorKey: "primaryPhysician",
-    header: () => <div className="pl-3">Doctor</div>,
-    cell: ({ row }) => {
-      const doctor = Doctors.find((doc) => doc.name === row.original.primaryPhysician)
-
-      return (<div className="flex items-center gap-3">
-        <Image
-          src={doctor?.image}
-          alt={doctor.name}
-          width={100}
-          height={100}
-          className="size-8"
-        />
-        <p className="whitespace-nowrap">
-          Dr. {doctor?.name}
-        </p>
-      </div>)
-    },
-  },
+  
   {
     id: "actions",
     header: () => <div className="pl-16">Actions</div>,

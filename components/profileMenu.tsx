@@ -11,17 +11,23 @@ import {
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import { getUser, logout } from '@/lib/actions/accounts.actions'
-import { useRouter } from 'next/navigation'
+import { usePathname, useRouter, useSearchParams } from 'next/navigation'
 import Link from 'next/link'
 import Loader from './loader/loader'
 import { useLoader } from '@/src/app/context/LoaderContext'
+import PasskeyModal from './PasskeyModal'
 
 
 const ProfileMenu = () => {
 
+
+    const searchParams = useSearchParams();
+    const isAdmin = searchParams.get("admin") === "true";
+
     const [userId, setUser] = useState(null);
     const [loader, setLoader] = useState(false);
     const { showLoader, hideLoader } = useLoader();
+    const pathname = usePathname();
 
     useEffect(() => {
         const fetchUser = async () => {
@@ -48,6 +54,10 @@ const ProfileMenu = () => {
 
     return (
         <div>
+            {isAdmin && <PasskeyModal
+                doctor={userId || ""}
+            />}
+
             <DropdownMenu >
                 <DropdownMenuTrigger>
                     <User className="" />
@@ -65,7 +75,7 @@ const ProfileMenu = () => {
 
                     </DropdownMenuItem>
                     <DropdownMenuItem className='border-b p-0 '>
-                        <Link href="/?admin=true"
+                        <Link href={`${pathname}/?admin=true`}
                             className='px-2 py-1.5 w-full h-full'
                             onClick={() => { setLoader(true) }}
                         >

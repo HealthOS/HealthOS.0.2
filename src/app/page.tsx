@@ -21,7 +21,6 @@ export default function Home() {
 
   useEffect(() => {
     const updateWish = () => {
-      console.log("Updating wish");
       const hours = new Date().getHours();
       if (hours >= 0 && hours < 12) {
         setWish("Good Morning");
@@ -38,13 +37,17 @@ export default function Home() {
   }, []);
 
   const [name, setName] = useState('');
+  const [doctor, setDoctor] = useState('');
+
   useEffect(() => {
     const fetchUser = async () => {
       try {
         showLoader();
         const loggedDoc = await getUser();
-        if (loggedDoc) {
+        if (loggedDoc){
+          console.log(loggedDoc);
           setUser(loggedDoc);
+          setDoctor(loggedDoc.$id);
           setName(loggedDoc.name);
         }
         else {
@@ -62,7 +65,9 @@ export default function Home() {
   return (
     <div className="flex h-screen min-h-[768px] my-auto max-h-screen">
 
-      {isAdmin && <PasskeyModal />}
+      {isAdmin && <PasskeyModal 
+        doctor={doctor}
+      />}
 
       <section className="remove-scrollbar container">
         <div className="sub-container max-w-[496px]">
@@ -83,7 +88,7 @@ export default function Home() {
           <div className="text-14-regular flex justify-between py-12">
             <p className="justify-items-end text-dark-600 xl:text-left">© 2025 HealthOS</p>
             <Link href="/?admin=true" className="text-green-500">
-              Doctor Dash
+              Skip to Dashboard
             </Link>
           </div>
 

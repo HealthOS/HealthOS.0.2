@@ -10,14 +10,14 @@ import CustomForm from "../CustomForm"
 import SubmitButton from "../SubmitButton"
 import { getAppointmentSchema } from "@/lib/validation"
 import { useRouter } from "next/navigation"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { FormFieldType } from "./PatientForm"
-import Image from "next/image"
-import { SelectItem } from "../ui/select"
-import { Doctors } from "@/constants"
 import { createAppointment, updateAppointment } from "@/lib/actions/appointment.actions"
 import { Appointment } from "@/types/appwrite.types"
 import { Button } from "../ui/button"
+import { useLoader } from "@/src/app/context/LoaderContext"
+import { getUser } from "@/lib/actions/accounts.actions"
+import { toast } from "react-toastify"
 
 
 const AppointmentForm = ({ userId, patientId, type, appointment, open, setOpen }: {
@@ -33,10 +33,33 @@ const AppointmentForm = ({ userId, patientId, type, appointment, open, setOpen }
     const [isLoading, setIsLoading] = useState(false);
     const AppointmentFormValidation = getAppointmentSchema(type)
 
+     const {showLoader, hideLoader} = useLoader();
+        const [ doctor, setDoctor ] = useState('');
+        
+        useEffect(() => {
+            const fetchUser = async () => {
+              try {
+                showLoader();
+                const loggedDoc = await getUser();
+                if (loggedDoc){
+                  console.log(loggedDoc);
+                  setDoctor(loggedDoc.$id);
+                }
+                else {
+                  router.push('/login');
+                }
+                hideLoader();
+              } catch (error) {
+                console.error("Error fetching user:", error);
+              }
+            };
+        
+            fetchUser();
+          }, []);
+
     const form = useForm<z.infer<typeof AppointmentFormValidation>>({
         resolver: zodResolver(AppointmentFormValidation),
         defaultValues: {
-            primaryPhysician: appointment ? appointment.primaryPhysician : '',
             schedule: appointment ? new Date(appointment.schedule) : new Date(Date.now()),
             reason: appointment ? appointment.reason : '',
             note: appointment ? appointment.note : "",
@@ -64,25 +87,24 @@ const AppointmentForm = ({ userId, patientId, type, appointment, open, setOpen }
                 const appointmentData = {
                     userId,
                     patient: patientId,
-                    primaryPhysician: values.primaryPhysician,
                     schedule: new Date(values.schedule),
                     reason: values.reason!,
                     note: values.note,
+                    doctor: doctor,
                     status: status as Status,
                 }
                 const appointment = await createAppointment(appointmentData);
 
                 if (appointment) {
                     form.reset();
-                    router.push(`/patients/${userId}/new-appointment/success?appointmentId=${appointment.$id}`)
-
+                    toast.success('Appointment created successfully!')
+                    setOpen && setOpen(false);
                 }
             } else {
                 const appointmentToUpdate = {
                     userId,
                     appointmentId: appointment?.$id!,
                     appointment: {
-                        primaryPhysician: values?.primaryPhysician,
                         schedule: new Date(values?.schedule),
                         status: status as Status,
                         cancellationReason: values?.cancellationReason,
@@ -126,28 +148,6 @@ const AppointmentForm = ({ userId, patientId, type, appointment, open, setOpen }
                 {type !== "cancel" && (
                     <>
                         <CustomForm
-                            fieldType={FormFieldType.SELECT}
-                            control={form.control}
-                            name="primaryPhysician"
-                            label="Doctor"
-                            placeholder="Select a doctor"
-                        >{Doctors.map((doctor) => (
-                            <SelectItem key={doctor.name} value={doctor.name}>
-                                <div className="flex cursor-pointer item-center gap-2">
-                                    <Image
-                                        src={doctor.image}
-                                        width={32}
-                                        height={32}
-                                        alt={doctor.name}
-                                        className="rounded-full border border-dark-500"
-                                    />
-                                    <p className="my-auto">{doctor.name}</p>
-                                </div>
-                            </SelectItem>
-                        ))}
-                        </CustomForm>
-
-                        <CustomForm
                             fieldType={FormFieldType.DATE_PICKER}
                             control={form.control}
                             name="schedule"
@@ -186,7 +186,6 @@ const AppointmentForm = ({ userId, patientId, type, appointment, open, setOpen }
                 )}
 
                 <div className="flex gap-4">
-                    <p>{open}</p>
                     { open === false && 
                      <Button type="reset" onClick={() => router.push(`/patients/${userId}/profile`)}>Skip</Button>
                     }

@@ -36,36 +36,7 @@ const RegisterForm = ({ user, patientData }: {
   const [fileId, setFileId] = useState("");
   const [pdfFile, setPdfFile] = useState<File | null>(null);
   const { showLoader, hideLoader } = useLoader();
-  const [userId, setUser] = useState(null);
-
-  const [data, setData] = useState({
-    address: "",
-    allergies: "",
-    anemia: "",
-    birthDate: "",
-    bloodPressure: "",
-    chronicKidneyDisease: "",
-    coagulationDisorder: "",
-    description: "",
-    diabetes: "",
-    emergencyContactName: "",
-    emergencyContactNumber: "",
-    gender: "",
-    gout: "",
-    hypercholesterolemia: "",
-    hyperthyroidism: "",
-    hypothyroidism: "",
-    hypoxia: "",
-    insurancePolicyNumber: "",
-    insuranceProvider: "",
-    obesity: "",
-    occupation: "",
-    osteoporosis: "",
-    respiratoryDistress: "",
-    seriousConditions: "",
-    tachycardia: "",
-    temperature: ""
-  });
+  const [userId, setUser] = useState("");
 
   const handelDelete = async () => {
     try {
@@ -92,9 +63,6 @@ const RegisterForm = ({ user, patientData }: {
     setFileId(uploadedFile.$id);
 
     const fetchedPDF = await extractTextFromPDF(uploadedFile.$id);
-
-    console.log(fetchedPDF);
-    setData(fetchedPDF)
 
     form.reset({
       ...form.getValues(), // retain current form values
@@ -138,6 +106,7 @@ temperature: "98.6°F"
       try {
         showLoader();
         const userData = await getUser();
+        console.log(userData.targets?.[0]?.userId)
         setUser(userData.targets?.[0]?.userId);
         hideLoader();
       } catch (error) {
@@ -161,7 +130,6 @@ temperature: "98.6°F"
       occupation: patientData?.occupation || "",
       emergencyContactName: patientData?.emergencyContactName || "",
       emergencyContactNumber: patientData?.emergencyContactNumber || "",
-      primaryPhysician: patientData?.primaryPhysician || "",
       insuranceProvider: patientData?.insuranceProvider || "",
       insurancePolicyNumber: patientData?.insurancePolicyNumber || "",
       allergies: patientData?.allergies || "",
@@ -176,7 +144,7 @@ temperature: "98.6°F"
       privacyConsent: patientData?.privacyConsent || false,
       temperature: patientData?.temperature || "",
       diabetes: patientData?.diabetes || "",
-      bloodPressure: patientData?.bloodPressure || data?.bloodPressure || "",
+      bloodPressure: patientData?.bloodPressure || "",
       description: patientData?.description || "",
       seriousConditions: patientData?.seriousConditions || "",
       tachycardia: patientData?.tachycardia || "",
@@ -226,7 +194,6 @@ temperature: "98.6°F"
           occupation: values.occupation,
           emergencyContactName: values.emergencyContactName,
           emergencyContactNumber: values.emergencyContactNumber,
-          primaryPhysician: values.primaryPhysician,
           insuranceProvider: values.insuranceProvider,
           insurancePolicyNumber: values.insurancePolicyNumber,
           allergies: values.allergies,
@@ -255,11 +222,14 @@ temperature: "98.6°F"
           gout: values.gout,
           coagulationDisorder: values.coagulationDisorder,
           osteoporosis: values.osteoporosis,
+          doctor: userId,
           report: fileId || patientData.report
         }
 
+        console.log("Updated Data", updatePatientData)
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-expect-error
+
         const updatedPatient = await updatePatient(updatePatientData);
 
         if (updatedPatient) router.push(`/patients/${user.$id}/profile`)
@@ -272,13 +242,16 @@ temperature: "98.6°F"
           birthDate: new Date(values.birthDate),
           identificationDocument: formData,
           report: fileId,
-          doctor: userId
+          doctor: userId,
         };
+
+        console.log("New Patient Data", newPatientData);
+        
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-expect-error
         const patient = await registerPatient(newPatientData);
 
-        if (patient) router.push(`/patients/${user.$id}/new-appointment`)
+        if (patient) router.push(`/patients/${user.$id}/profile`)
       }
 
     } catch (error) {
@@ -448,28 +421,6 @@ temperature: "98.6°F"
             <h2 className="sub-header">Medical Information</h2>
           </div>
         </section>
-
-        <CustomForm
-          fieldType={FormFieldType.SELECT}
-          control={form.control}
-          name="primaryPhysician"
-          label="Primary Physician"
-          placeholder="Select a Physician"
-        >{Doctors.map((doctor) => (
-          <SelectItem key={doctor.name} value={doctor.name}>
-            <div className="flex cursor-pointer item-center gap-2">
-              <Image
-                src={doctor.image}
-                width={32}
-                height={32}
-                alt={doctor.name}
-                className="rounded-full border border-dark-500"
-              />
-              <p>{doctor.name}</p>
-            </div>
-          </SelectItem>
-        ))}
-        </CustomForm>
 
         <div className="flex flex-col gap-6 xl:flex-row">
           <CustomForm

@@ -7,7 +7,7 @@ import BillTableComp from '@/components/BillTableComp';
 
 const page = async ({ params: { userId } }: SearchParamProps) => {
 
-  const billsData = await getAllPatientBills();
+  const billsData = await getAllPatientBills(userId);
 
   return (
     <div className="mx-auto flex max-w-7xl flex-col space-y-14">
