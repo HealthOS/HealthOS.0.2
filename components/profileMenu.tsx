@@ -47,6 +47,7 @@ const ProfileMenu = () => {
     const router = useRouter();
 
     const handleLogout = async () => {
+        setLoader(true)
         await logout();
         localStorage.removeItem("appwriteUser");
         router.push('/login')

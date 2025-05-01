@@ -5,6 +5,9 @@ import { getRecentAppointmentList } from '@/lib/actions/appointment.actions'
 import Image from 'next/image'
 import Link from 'next/link'
 import React from 'react'
+import { SidebarProvider } from "@/components/ui/sidebar"
+import { AppSidebar } from '@/components/ui/app-sidebar'
+import { CustomTrigger } from '@/components/ui/CustomTrigger'
 
 const Admin = async ({ params }: { params: { userId: string } }) => {
   const userId = params.userId;
@@ -13,52 +16,50 @@ const Admin = async ({ params }: { params: { userId: string } }) => {
   const appointments = await getRecentAppointmentList(userId);
 
   return (
-    <div className="mx-auto flex max-w-7xl flex-col space-y-14">
-      <header className='admin-header'>
+    <div className="mx-auto flex flex-col space-y-6">
+      <header className='fixed bg-dark-200 w-full flex items-center py-1 justify-center z-0'>
         <Link href="/" className="cursor-pointer">
-          <text className='text-sm font-extralight'>
+          <p className='text-sm font-extralight'>
             HealthOS
-          </text>
-          { /*<Image
-            src="/assets/icons/logo-full.svg"
-            height={22}
-            width={132}
-            alt='logo'
-            className='h-5 w-fit'
-          /> */ }
+          </p>
         </Link>
-
-        {/* <ProfileMenu /> */}
       </header>
 
-      <main className='admin-main'>
-        <section className='w-full space-y-4'>
-          <h1 className='header'>Welcome to Dashboard</h1>
-          <p className='text-dark-700'>Effortlessly manage appointments, track your patients, and seamlessly add new ones — all in one place.</p>
-        </section>
-        <section className='admin-stat'>
-          <StatCard
-            type="appointments"
-            count={appointments.scheduledCount}
-            label="Scheduled appointment"
-            icon="/assets/icons/appointments.svg"
-          />
-          <StatCard
-            type="pending"
-            count={appointments.pendingCount}
-            label="Pending appointment"
-            icon="/assets/icons/pending.svg"
-          />
-          <StatCard
-            type="cancelled"
-            count={appointments.cancelledCount}
-            label="Cancelled appointment"
-            icon="/assets/icons/cancelled.svg"
-          />
-        </section>
-        <TableComponent data={appointments.documents} />
+      <SidebarProvider >
+        <AppSidebar />
+        <CustomTrigger />
+        <main className='mx-auto w-full flex flex-col mt-10 space-y-14'>
+          <main className='admin-main max-w-7xl mx-auto w-full'>
+            <section className='w-full space-y-4'>
+              <h1 className='header'>Welcome to Dashboard</h1>
+              <p className='text-dark-700'>Effortlessly manage appointments, track your patients, and seamlessly add new ones — all in one place.</p>
+            </section>
+            <section className='admin-stat'>
+              <StatCard
+                type="appointments"
+                count={appointments.scheduledCount}
+                label="Scheduled appointment"
+                icon="/assets/icons/appointments.svg"
+              />
+              <StatCard
+                type="pending"
+                count={appointments.pendingCount}
+                label="Pending appointment"
+                icon="/assets/icons/pending.svg"
+              />
+              <StatCard
+                type="cancelled"
+                count={appointments.cancelledCount}
+                label="Cancelled appointment"
+                icon="/assets/icons/cancelled.svg"
+              />
+            </section>
+            <TableComponent data={appointments.documents} />
 
-      </main>
+          </main>
+
+        </main>
+      </SidebarProvider>
     </div>
   )
 }

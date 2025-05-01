@@ -10,6 +10,8 @@ import { Patient } from '@/types/appwrite.types';
 import { Input } from './ui/input';
 import { getAllPatientsByNewest, getAllPatientsByOldest } from '@/lib/actions/patient.actions';
 import Loader from './loader/loader';
+import { getUser } from '@/lib/actions/accounts.actions';
+import { useLoader } from '@/src/app/context/LoaderContext';
 
 const PatientTableComp = ({ data }: { data: Patient[] }) => {
 
@@ -17,7 +19,24 @@ const PatientTableComp = ({ data }: { data: Patient[] }) => {
   const [query, setQuery] = useState("");
   const [order, setOrder] = useState("AZ");
   const [loader, setLoader] = useState(false);
+  const [userId, setUser] = useState("");
 
+  const { showLoader, hideLoader } = useLoader();
+
+  useEffect(() => {
+    const fetchUser = async () => {
+      try {
+        showLoader();
+        const userData = await getUser();
+        setUser(userData.targets?.[0]?.userId);
+        hideLoader();
+      } catch (error) {
+        console.error("Error fetching user:", error);
+      }
+    };
+
+    fetchUser();
+  }, []);
 
   const handleSearch = () => {
     console.log(query);
@@ -45,11 +64,11 @@ const PatientTableComp = ({ data }: { data: Patient[] }) => {
       setPatientData(data);
       setLoader(false)
     } else if (type === 'newest') {
-      const fetchedData = await getAllPatientsByNewest();
+      const fetchedData = await getAllPatientsByNewest(userId);
       setLoader(false)
       setPatientData(fetchedData);
     } else if (type === 'oldest') {
-      const fetchedData = await getAllPatientsByOldest();
+      const fetchedData = await getAllPatientsByOldest(userId);
       setPatientData(fetchedData);
       setLoader(false)
     }

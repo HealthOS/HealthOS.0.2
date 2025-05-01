@@ -6,6 +6,10 @@ import "./globals.css";
 import { LoaderProvider } from "./context/LoaderContext";
 import NetworkStatus from "@/components/NetworkStatus";
 import { ToastProvider } from "@/components/ToastProvider";
+import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar"
+import { AppSidebar } from "@/components/ui/app-sidebar";
+import Link from "next/link";
+
 
 const fontSans = Plus_Jakarta_Sans({
   variable: "--font-sans",
@@ -27,15 +31,20 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning className="min-w-[1024px] min-h-[768px]">
       <body
         className={cn('bg-dark-300 font-sans antialiased', fontSans.variable)}>
+         
         <ThemeProvider
           attribute="class"
           defaultTheme="dark"
         >
           <ToastProvider />
           <NetworkStatus />
-          <LoaderProvider>{children}</LoaderProvider>
+          <LoaderProvider>
+
+              {children}
+          </LoaderProvider>
         </ThemeProvider>
       </body>
     </html>
   );
 }
+

@@ -209,7 +209,7 @@ export const deleteAppointment = async (userId: string) => {
 
 // 679a61ef0026b0ed7a7f
 
-export const getAllPatients = async (doctor:string ) => {
+export const getAllPatients = async ( doctor:string ) => {
   try {
     const data = await databases.listDocuments(
       DATABASE_ID!,
@@ -225,12 +225,15 @@ export const getAllPatients = async (doctor:string ) => {
   }
 }
 
-export const getAllPatientsByNewest = async () => {
+export const getAllPatientsByNewest = async ( doctor:string ) => {
   try {
     const data = await databases.listDocuments(
       DATABASE_ID!,
       PATIENT_COLLECTION_ID!,
-      [Query.orderDesc('$createdAt')]
+      [
+        Query.equal('doctor', doctor),
+        Query.orderDesc('$createdAt')
+      ]
     );
     return parseStringify(data.documents);
   } catch (error) {
@@ -238,12 +241,15 @@ export const getAllPatientsByNewest = async () => {
   }
 }
 
-export const getAllPatientsByOldest = async () => {
+export const getAllPatientsByOldest = async ( doctor:string ) => {
   try {
     const data = await databases.listDocuments(
       DATABASE_ID!,
       PATIENT_COLLECTION_ID!,
-      [Query.orderAsc('$createdAt')]
+      [
+        Query.equal('doctor', doctor),
+        Query.orderAsc('$createdAt')
+      ]
     );
     return parseStringify(data.documents);
   } catch (error) {
