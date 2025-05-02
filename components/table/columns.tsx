@@ -3,8 +3,6 @@
 import { ColumnDef } from "@tanstack/react-table"
 import StatusBadge from "./StatusBadge"
 import { formatDateTime } from "@/lib/utils"
-import { Doctors } from "@/constants"
-import Image from "next/image"
 import AppointmentModal from "../AppointmentModal"
 import { Appointment } from "@/types/appwrite.types"
 import Name from "../Name"
@@ -45,11 +43,16 @@ export const columns: ColumnDef<Appointment>[] = [
   
   {
     id: "actions",
-    header: () => <div className="pl-16">Actions</div>,
+    header: () => <div className=" pl-20">Actions</div>,
     cell: ({ row: { original: data } }) => {
       return (
         <div className="flex gap-1">
           <AppointmentModal type="schedule"
+            patientId={data.patient.$id}
+            userId={data.userId}
+            appointment={data}
+          />
+          <AppointmentModal type="note"
             patientId={data.patient.$id}
             userId={data.userId}
             appointment={data}

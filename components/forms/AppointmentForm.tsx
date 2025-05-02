@@ -23,8 +23,8 @@ import { toast } from "react-toastify"
 const AppointmentForm = ({ userId, patientId, type, appointment, open, setOpen }: {
     userId: string,
     patientId: string,
-    type: "create" | "cancel" | "schedule"
-    appointment: Appointment,
+    type: "create" | "cancel" | "note" | "schedule"
+    appointment?: Appointment,
     open: boolean,
     setOpen: (open: boolean) => void;
 }) => {
@@ -33,29 +33,29 @@ const AppointmentForm = ({ userId, patientId, type, appointment, open, setOpen }
     const [isLoading, setIsLoading] = useState(false);
     const AppointmentFormValidation = getAppointmentSchema(type)
 
-     const {showLoader, hideLoader} = useLoader();
-        const [ doctor, setDoctor ] = useState('');
-        
-        useEffect(() => {
-            const fetchUser = async () => {
-              try {
+    const { showLoader, hideLoader } = useLoader();
+    const [doctor, setDoctor] = useState('');
+
+    useEffect(() => {
+        const fetchUser = async () => {
+            try {
                 showLoader();
                 const loggedDoc = await getUser();
-                if (loggedDoc){
-                  console.log(loggedDoc);
-                  setDoctor(loggedDoc.$id);
+                if (loggedDoc) {
+                    console.log(loggedDoc);
+                    setDoctor(loggedDoc.$id);
                 }
                 else {
-                  router.push('/login');
+                    router.push('/login');
                 }
                 hideLoader();
-              } catch (error) {
+            } catch (error) {
                 console.error("Error fetching user:", error);
-              }
-            };
-        
-            fetchUser();
-          }, []);
+            }
+        };
+
+        fetchUser();
+    }, []);
 
     const form = useForm<z.infer<typeof AppointmentFormValidation>>({
         resolver: zodResolver(AppointmentFormValidation),
@@ -100,7 +100,26 @@ const AppointmentForm = ({ userId, patientId, type, appointment, open, setOpen }
                     toast.success('Appointment created successfully!')
                     setOpen && setOpen(false);
                 }
-            } else {
+            } else if (type === 'note' && patientId) {
+                const appointmentToUpdate = {
+                    userId,
+                    appointmentId: appointment?.$id!,
+                    appointment: {
+                        note: values?.note,
+                    },
+                    type,
+                }
+
+                const updatedAppointment = await updateAppointment(appointmentToUpdate);
+
+                if (updatedAppointment) {
+                    toast.success('Notes Updated successfully!')
+                    setOpen && setOpen(false);
+                    form.reset();
+                }
+
+            }
+            else {
                 const appointmentToUpdate = {
                     userId,
                     appointmentId: appointment?.$id!,
@@ -133,6 +152,8 @@ const AppointmentForm = ({ userId, patientId, type, appointment, open, setOpen }
             break;
         case 'schedule': buttonLabel = 'Schedule Appointment';
             break;
+        case 'note': buttonLabel = 'Update note';
+            break;
         default: break;
     }
 
@@ -145,7 +166,7 @@ const AppointmentForm = ({ userId, patientId, type, appointment, open, setOpen }
                 </section>
                 }
 
-                {type !== "cancel" && (
+                {(type === "create" || type === "schedule") && (
                     <>
                         <CustomForm
                             fieldType={FormFieldType.DATE_PICKER}
@@ -183,11 +204,20 @@ const AppointmentForm = ({ userId, patientId, type, appointment, open, setOpen }
                         label="Reason for Cancellation"
                         placeholder="Enter Reason for Cancellation"
                     />
+                )}   
+                {type === "note" &&(
+                    <CustomForm
+                        fieldType={FormFieldType.TEXTAREA}
+                        control={form.control}
+                        name="note"
+                        label="Note"
+                        placeholder="Enter important notes"
+                    />
                 )}
 
                 <div className="flex gap-4">
-                    { open === false && 
-                     <Button type="reset" onClick={() => router.push(`/patients/${userId}/profile`)}>Skip</Button>
+                    {open === false &&
+                        <Button type="reset" onClick={() => router.push(`/patients/${userId}/profile`)}>Skip</Button>
                     }
                     <SubmitButton isLoading={isLoading} className={`${type === 'cancel' ? 'shad-danger-btn' : 'shad-primary-btn'} w-full`}>{buttonLabel}</SubmitButton>
                 </div>

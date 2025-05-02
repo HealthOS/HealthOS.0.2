@@ -39,7 +39,8 @@ const ButtonActions = ({ user }: {
                             type='create'
                             userId={user.userId}
                             patientId={user.$id}
-                            open={true}
+                            open={openApt}
+                            setOpen={setOpenApt}
                         />
                     </DialogFooter>
                 </DialogContent>

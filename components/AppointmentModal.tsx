@@ -14,7 +14,7 @@ import { Appointment } from '@/types/appwrite.types';
 
 
 const AppointmentModal = ({ type, patientId, userId, appointment }: {
-    type: "schedule" | "cancel",
+    type: "schedule" | "note" | "cancel",
     patientId: string,
     userId: string,
     appointment: Appointment,
@@ -23,7 +23,10 @@ const AppointmentModal = ({ type, patientId, userId, appointment }: {
     return (
         <Dialog open={open} onOpenChange={setOpen}>
             <DialogTrigger asChild>
-                <Button variant="ghost" className={`capitalize ${type === 'schedule'?'text-green-500':'text-red-500'}`}>
+                <Button variant="ghost" className={`capitalize ${type === 'cancel' && 'text-red-500'} 
+                ${type === 'note' && 'text-white'}
+                ${type === 'schedule' && 'text-green-500'}
+                `}>
                     {type}
                 </Button>
             </DialogTrigger>
@@ -40,6 +43,7 @@ const AppointmentModal = ({ type, patientId, userId, appointment }: {
                     patientId={patientId}
                     type={type}
                     appointment={appointment}
+                    open={open}
                     setOpen={setOpen}
                 />
             </DialogContent>

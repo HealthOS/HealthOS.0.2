@@ -61,7 +61,17 @@ declare type SearchParamProps = {
     reason: string;
     schedule: Date;
     status: Status;
+    doctor: string;
     note: string | undefined;
+  };
+
+  declare type AddAppointmentParams = {
+    patient: string;
+    reason: string;
+    schedule: Date;
+    status: Status;
+    note: string | undefined;
+    doctor: string;
   };
 
   declare type CreateBillParams = {

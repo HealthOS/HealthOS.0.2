@@ -32,7 +32,7 @@ export function LoginForm({
         try {
           let user = await getUser();
           console.log("Current user", user);
-          if(user) router.push('/');
+          if(user) router.push(`/admin/${user.$id}/dashboard`);
         } catch (error: any) {
           console.warn("Session expired:", error.message);
           localStorage.removeItem("appwriteUser");
@@ -57,7 +57,7 @@ export function LoginForm({
       let user = await getUser();
       console.log("Current user", user);
       localStorage.setItem("appwriteUser", JSON.stringify(user)); // ✅ Correct
-      router.push('/');
+      router.push(`/admin/${user.$id}/dashboard`);
     }
   };
 

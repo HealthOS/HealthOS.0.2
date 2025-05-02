@@ -43,7 +43,7 @@ export function SignupForm({
             let user = await getUser();
             console.log("Current user", user);
             localStorage.setItem("appwriteUser", parseStringify(user));
-            router.push('/');
+            router.push(`/admin/${user.$id}/dashboard`);
         }
     };
 

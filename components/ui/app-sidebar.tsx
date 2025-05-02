@@ -15,11 +15,9 @@ import {
 import {
     Dialog,
     DialogContent,
-    DialogDescription,
     DialogFooter,
     DialogHeader,
     DialogTitle,
-    DialogTrigger,
 } from "@/components/ui/dialog"
 
 import { getUser, logout } from '@/lib/actions/accounts.actions'
@@ -30,16 +28,12 @@ import { useLoader } from '@/src/app/context/LoaderContext'
 import { Home, IndianRupee, LayoutDashboard, List, ListPlus, LogOut, User, UserPlus } from "lucide-react"
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import PasskeyModal from "../PasskeyModal";
 import Loader from "../loader/loader";
-import AppointmentForm from "../forms/AppointmentForm";
 import PatientForm from "../forms/PatientForm";
+import AddAppointment from "../forms/AddAppointment";
 
 
 export function AppSidebar() {
-
-    const searchParams = useSearchParams();
-    const isAdmin = searchParams.get("admin") === "true";
 
     const [openApt, setOpenApt] = useState(false);
     const [openPatientForm, setOpenPatientForm] = useState(false);
@@ -74,43 +68,15 @@ export function AppSidebar() {
 
     return (
         <div>
-            {isAdmin && <PasskeyModal
-                doctor={userId || ""}
-            />}
 
             <Sidebar variant="floating"
             >
                 <SidebarHeader className="font-bold text-green-500 ml-2">HealthOS</SidebarHeader>
                 <SidebarContent className="border-t-2 border-dark-500">
                     <SidebarGroup >
-                        <SidebarGroupLabel>Application</SidebarGroupLabel>
+                        <SidebarGroupLabel>Actions</SidebarGroupLabel>
                         <SidebarGroupContent>
                             <SidebarMenu>
-
-                                <SidebarMenuItem>
-                                    <SidebarMenuButton asChild
-                                        className="hover:bg-green-500"
-                                    >
-                                        <Link href="/">
-                                            <Home />
-                                            <span>Home</span>
-                                        </Link>
-                                    </SidebarMenuButton>
-                                </SidebarMenuItem>
-
-                                <SidebarMenuItem>
-                                    <SidebarMenuButton asChild
-                                        className="hover:bg-green-500"
-                                    >
-                                        <Link href={`${pathname}/?admin=true`}
-                                            onClick={() => { setLoader(true) }}
-                                        >
-                                            <LayoutDashboard />
-                                            <span>Dashboard</span>
-
-                                        </Link>
-                                    </SidebarMenuButton>
-                                </SidebarMenuItem>
 
                                 <SidebarMenuItem>
                                     <SidebarMenuButton asChild
@@ -138,6 +104,31 @@ export function AppSidebar() {
                                     </SidebarMenuButton>
                                 </SidebarMenuItem>
 
+                                
+                            </SidebarMenu>
+                        </SidebarGroupContent>
+                    </SidebarGroup>
+
+                    <SidebarGroup >
+                        <SidebarGroupLabel>Explore</SidebarGroupLabel>
+                        <SidebarGroupContent>
+                            <SidebarMenu>
+
+                                <SidebarMenuItem>
+                                    <SidebarMenuButton asChild
+                                        className="hover:bg-green-500"
+                                    >
+                                        <Link href={`/admin/${userId}/dashboard`}
+                                            onClick={() => { setLoader(true) }}
+                                        >
+                                            <LayoutDashboard />
+                                            <span>Dashboard</span>
+
+                                        </Link>
+                                    </SidebarMenuButton>
+                                </SidebarMenuItem>
+
+                                
                                 <SidebarMenuItem>
                                     <SidebarMenuButton asChild
                                         className="hover:bg-green-500"
@@ -169,6 +160,7 @@ export function AppSidebar() {
                             </SidebarMenu>
                         </SidebarGroupContent>
                     </SidebarGroup>
+                    
                     <SidebarGroup>
                         <SidebarGroupLabel>Account</SidebarGroupLabel>
                         <SidebarGroupContent>
@@ -213,12 +205,11 @@ export function AppSidebar() {
                         <DialogTitle></DialogTitle>
                     </DialogHeader>
                     <DialogFooter>
-                        <AppointmentForm
-                            type='create'
-                            userId={"user.userId"}
-                            patientId={"user.$id"}
-                            open={true}
-                        />
+                        <AddAppointment
+                            doctor={userId}
+                            open={openApt}
+                            setOpen={setOpenApt}                                       
+                            />
                     </DialogFooter>
                 </DialogContent>
             </Dialog>
