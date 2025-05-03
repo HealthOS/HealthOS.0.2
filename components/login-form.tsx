@@ -5,8 +5,8 @@ import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { createSession, getUser, logout } from "@/lib/actions/accounts.actions";
+import { Card, CardContent } from "@/components/ui/card";
+import { createSession, getUser } from "@/lib/actions/accounts.actions";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
 
@@ -101,7 +101,7 @@ export function LoginForm({
                   onChange={(e) => setPassword(e.target.value)} required />
               </div>
               {error && <p className="text-red-500 text-sm">{error}</p>}
-                <Button type="button" onClick={handleLogin} className="w-full" >Login</Button>
+                <Button type="button" onClick={handleLogin} variant="ghost" className="w-full bg-dark-400" >Login</Button>
               
               <p className="text-center text-sm">
                 Don't have an account? 

@@ -9,10 +9,11 @@ import { CustomTrigger } from '@/components/ui/CustomTrigger'
 import GreetComp from '@/components/GreetComp'
 
 const Admin = async ({ params }: { params: { userId: string } }) => {
+  
   const userId = params.userId;
-
-  console.log(userId)
   const appointments = await getRecentAppointmentList(userId);
+
+  console.log(appointments)
 
   return (
     <div className="mx-auto flex flex-col space-y-6">
@@ -59,6 +60,7 @@ const Admin = async ({ params }: { params: { userId: string } }) => {
                 />
               </section>
             </section>
+            
             <TableComponent data={appointments.documents} />
 
           </main>

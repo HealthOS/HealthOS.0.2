@@ -1,6 +1,6 @@
 'use client';
 import { Appointment } from '@/types/appwrite.types'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { columns } from '@/components/table/columns'
 import { DataTable } from '@/components/table/DataTable'
 import { Button } from '@/components/ui/button'
@@ -10,8 +10,13 @@ const TableComponent = ({ data }:
     { data: Appointment[] }
 ) => {
 
+    console.log(data)
     const [aptData, setAptData] = useState(data);
     const [active, setActive] = useState("all");
+
+    useEffect(() => {
+        setAptData(data);
+      }, [data]);
 
     // Function to filter appointments based on date
     const filterAppointments = (type: "today" | "tomorrow" | "all") => {

@@ -28,6 +28,7 @@ export const addAppointment = async (appointment: AddAppointmentParams) => {
             ID.unique(),
             appointment
         )
+        revalidatePath(`/admin/${appointment.doctor}/dashboard`);
         return parseStringify(newAppointment)
     } catch (error) {
         console.log(error);    

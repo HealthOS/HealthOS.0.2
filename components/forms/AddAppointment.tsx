@@ -15,6 +15,7 @@ import { addAppointment } from "@/lib/actions/appointment.actions"
 import { Patient } from "@/types/appwrite.types"
 import { useLoader } from "@/src/app/context/LoaderContext"
 import { getAllPatients } from "@/lib/actions/patient.actions"
+import { useRouter } from "next/navigation"
 
 const AddAppointment = ({ doctor, open, setOpen }: {
     doctor: string,
@@ -29,6 +30,8 @@ const AddAppointment = ({ doctor, open, setOpen }: {
     const [isLoading, setIsLoading] = useState(false);
     const [userId, setUserId] = useState('')
     const { showLoader, hideLoader } = useLoader();
+
+    const router = useRouter();
 
     const AppointmentFormValidation = z.object({
         schedule: z.coerce.date(),
@@ -99,6 +102,7 @@ const AddAppointment = ({ doctor, open, setOpen }: {
             if (appointment) {
                 form.reset();
                 toast.success('Appointment created successfully!');
+                router.refresh();
                 setOpen && setOpen(false);
             }
         } catch (error) {
