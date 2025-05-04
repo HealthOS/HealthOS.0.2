@@ -7,13 +7,13 @@ import { SidebarProvider } from "@/components/ui/sidebar"
 import { AppSidebar } from '@/components/ui/app-sidebar'
 import { CustomTrigger } from '@/components/ui/CustomTrigger'
 import GreetComp from '@/components/GreetComp'
+import DashboardActions from '@/components/DashboardActions'
+import { ChevronDown } from 'lucide-react'
 
 const Admin = async ({ params }: { params: { userId: string } }) => {
-  
+
   const userId = params.userId;
   const appointments = await getRecentAppointmentList(userId);
-
-  console.log(appointments)
 
   return (
     <div className="mx-auto flex flex-col space-y-6">
@@ -37,7 +37,6 @@ const Admin = async ({ params }: { params: { userId: string } }) => {
             </section>
 
             <section className='w-full space-y-4'>
-
               <h1 className='w-full text-36-bold'>All Appointments</h1>
               <section className='admin-stat'>
                 <StatCard
@@ -60,7 +59,7 @@ const Admin = async ({ params }: { params: { userId: string } }) => {
                 />
               </section>
             </section>
-            
+
             <TableComponent data={appointments.documents} />
 
           </main>

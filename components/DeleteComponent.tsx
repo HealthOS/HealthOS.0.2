@@ -1,9 +1,50 @@
-import React from 'react'
+'use client';
+
+import React, { useEffect, useState } from 'react'
 import { Input } from './ui/input'
 import { Button } from './ui/button'
 import { DoctorParams } from '@/types/appwrite.types'
+import { getUser } from '@/lib/actions/accounts.actions';
+import { useLoader } from '@/src/app/context/LoaderContext';
+import { deleteDoctor } from '@/lib/actions/doctor.actions';
+import { useRouter } from 'next/navigation';
 
 const DeleteComponent = ({ user }: { user: DoctorParams }) => {
+
+    const { showLoader, hideLoader } = useLoader();
+    const [name, setName] = useState("");
+    const [userName, setUserName] = useState("");
+    const [userID, setuserID] = useState("");
+    const router = useRouter();
+
+    useEffect(() => {
+        const fetchUser = async () => {
+            try {
+                showLoader();
+                const userData = await getUser();
+                setUserName(userData.name);
+                setuserID(userData.$id)
+                hideLoader();
+            } catch (error) {
+                console.error("Error fetching user:", error);
+            }
+        };
+
+        fetchUser();
+    }, [])
+
+    const handelDelete = async () => {
+        try {
+            showLoader();
+            const userData = await deleteDoctor(userID);
+            localStorage.removeItem("appwriteUser");
+            router.push('/login')
+            hideLoader();
+        } catch (error) {
+            console.error("Error fetching user:", error);
+        }
+    }
+
     return (
         <div className='w-full'>
             <h1 className='text-3xl font-semibold px-10 py-8'>Delete Profile</h1>
@@ -16,11 +57,12 @@ const DeleteComponent = ({ user }: { user: DoctorParams }) => {
                                 type='input'
                                 placeholder='Your full name'
                                 name='name'
+                                onChange={(e) => { setName(e.target.value) }}
                             >
                             </Input>
-                            {('1' === '1') ? 
-                            <Button type="button" className="w-full bg-red-500 hover:bg-red-950 hover:text-white">Delete Account</Button>
-                            : <div className="inline-flex items-center justify-center bg-dark-400 p-2 gap-2 whitespace-nowrap rounded-md text-sm font-medium focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring pointer-events-none opacity-50">Delete Account</div>
+                            {(userName === name) ?
+                                <Button type="button" className="w-full bg-red-500 hover:bg-red-950 hover:text-white" onClick={() => { handelDelete() }}>Delete Account</Button>
+                                : <div className="inline-flex items-center justify-center bg-dark-400 p-2 gap-2 whitespace-nowrap rounded-md text-sm font-medium focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring pointer-events-none opacity-50">Delete Account</div>
                             }
                         </div>
                     </div></div>

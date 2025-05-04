@@ -25,8 +25,8 @@ const ButtonActions = ({ user }: {
 
     return (
         <div className='flex gap-2 relative'>
-            <Button variant="outline" onClick={() => setOpenApt(true)}>New Appointment</Button>
-            <Button variant="outline" onClick={() => setOpenBill(true)}>Add Bill</Button>
+            <Button variant="outline" className='rounded-lg border border-dark-500' onClick={() => setOpenApt(true)}>New Appointment</Button>
+            <Button variant="outline" className='rounded-lg border border-dark-500' onClick={() => setOpenBill(true)}>Add Bill</Button>
 
 
             <Dialog open={openApt} onOpenChange={setOpenApt}>

@@ -1,7 +1,7 @@
 'use server';
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { ID, Query } from "node-appwrite"
-import { BUCKET_ID, storage, databases, DATABASE_ID, PATIENT_COLLECTION_ID, ENDPOINT, PROJECT_ID, APPOINTMENT_COLLECTION_ID, DOCTOR_COLLECTION_ID } from "../appwrite.config"
+import { databases, DATABASE_ID, DOCTOR_COLLECTION_ID, users } from "../appwrite.config"
 import { parseStringify } from "../utils";
 import { DoctorParams, } from "@/types/appwrite.types";
 import { revalidatePath } from "next/cache";
@@ -34,6 +34,18 @@ export const registerDoctor = async ( doctor : DoctorParams ) => {
       if(!doctors.documents[0]) return null;
   
       return parseStringify(doctors.documents[0]);
+  
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+  export const deleteDoctor = async (userId: string) => {
+    try {
+      const doctors = await users.delete(
+        userId
+      );
+      return parseStringify(doctors);
   
     } catch (error) {
       console.log(error)

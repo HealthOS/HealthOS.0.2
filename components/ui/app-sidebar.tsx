@@ -21,11 +21,11 @@ import {
 } from "@/components/ui/dialog"
 
 import { getUser, logout } from '@/lib/actions/accounts.actions'
-import { usePathname, useRouter, useSearchParams } from 'next/navigation'
+import { useRouter } from 'next/navigation'
 
 import { useLoader } from '@/src/app/context/LoaderContext'
 
-import { Home, IndianRupee, LayoutDashboard, List, ListPlus, LogOut, User, UserPlus } from "lucide-react"
+import { IndianRupee, LayoutDashboard, List, ListPlus, LogOut, User, UserPlus } from "lucide-react"
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import Loader from "../loader/loader";
@@ -40,7 +40,6 @@ export function AppSidebar() {
     const [userId, setUser] = useState("");
     const [loader, setLoader] = useState(false);
     const { showLoader, hideLoader } = useLoader();
-    const pathname = usePathname();
 
     useEffect(() => {
         const fetchUser = async () => {

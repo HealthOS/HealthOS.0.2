@@ -5,7 +5,7 @@ import { useForm } from "react-hook-form"
 import { z } from "zod"
 import { Form } from "@/components/ui/form"
 
-import { DoctorFormValidation, PersonalFormValidation, ProfessionalFormValidation, UserFormValidation } from "@/lib/validation"
+import { PersonalFormValidation } from "@/lib/validation"
 import { useRouter } from "next/navigation"
 import { DoctorParams } from '@/types/appwrite.types'
 import CustomForm from '../CustomForm'

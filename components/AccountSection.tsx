@@ -22,7 +22,7 @@ const AccountSection = ({ user }: { user: DoctorParams }) => {
                 <div className='py-3 px-2 gap-2 flex items-center hover:cursor-pointer hover:bg-dark-500 rounded-xl' onClick={() => setState('passAccess')}>
                     <Lock className='h-5' />
                     <p className='text-14-regular' >
-                        Password & Passkey
+                        Password
                     </p>
                 </div>
                 <div className='py-3 px-2 gap-2 flex items-center hover:cursor-pointer hover:bg-dark-500 rounded-xl' onClick={() => setState('logout')}>

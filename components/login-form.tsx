@@ -9,6 +9,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { createSession, getUser } from "@/lib/actions/accounts.actions";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
+import { useLoader } from "@/src/app/context/LoaderContext";
 
 export function LoginForm({
   className,
@@ -16,7 +17,7 @@ export function LoginForm({
 }: React.ComponentProps<"div">) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [loading, setLoading] = useState(true);
+  const { showLoader, hideLoader } = useLoader();
   const [error, setError] = useState("");
   const router = useRouter();
 
@@ -29,6 +30,7 @@ export function LoginForm({
     console.log("Retrieved user", storedUser);
     
       if (storedUser) {
+        showLoader();
         try {
           let user = await getUser();
           console.log("Current user", user);
@@ -37,8 +39,8 @@ export function LoginForm({
           console.warn("Session expired:", error.message);
           localStorage.removeItem("appwriteUser");
         }
+        hideLoader();
       }
-      setLoading(false);
     };
 
     checkSession();
@@ -61,7 +63,6 @@ export function LoginForm({
     }
   };
 
-  if (loading) return <p>Loading...</p>;
   return (
     <div className={cn("flex flex-col gap-6", className)} {...props}>
       <Card className="overflow-hidden bg-dark-300">

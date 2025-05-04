@@ -5,7 +5,6 @@ import fitz  # PyMuPDF
 import pytesseract
 from PIL import Image
 import io
-import os
 from dotenv import load_dotenv
 
 pytesseract.pytesseract.tesseract_cmd = r'C:\Program Files\Tesseract-OCR\tesseract.exe'

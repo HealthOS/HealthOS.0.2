@@ -27,7 +27,7 @@ const AppointmentModal = ({ type, patientId, userId, appointment }: {
                 ${type === 'note' && 'text-white'}
                 ${type === 'schedule' && 'text-green-500'}
                 `}>
-                    {type}
+                    {type === "schedule" ? "Edit" : type }
                 </Button>
             </DialogTrigger>
             <DialogContent className='shad-dialog sm:max-w-md'>
