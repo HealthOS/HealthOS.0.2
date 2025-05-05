@@ -54,10 +54,10 @@ const PatientForm = () => {
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6 flex-1">
-        {/* {<section className="mb-6 space-y-2">
+        <section className="mb-6 space-y-2">
             <h1 className="header text-green-500">Register Patient</h1>
             <p className="text-dark-700">Add patient to your modern EMR system in few simple steps</p>
-        </section>} */}
+        </section>
         <CustomForm 
             fieldType={FormFieldType.INPUT}
             control={form.control}

@@ -12,7 +12,8 @@ import { getAllBillsByOldest } from '@/lib/actions/bill.action';
 import EarningCards from './EarningCards';
 import { useLoader } from '@/src/app/context/LoaderContext';
 
-const BillTableComp = ({ data, todayTxn, yesterdayTxn, last7dTxn }: {
+const BillTableComp = ({ doctor, data, todayTxn, yesterdayTxn, last7dTxn }: {
+  doctor: string
   data: Bill[]
   todayTxn: number
   yesterdayTxn: number
@@ -67,7 +68,7 @@ const BillTableComp = ({ data, todayTxn, yesterdayTxn, last7dTxn }: {
     if (type === 'newest') {
       setBillData(data)
     } else if (type === 'oldest') {
-      const fetchedData = await getAllBillsByOldest();
+      const fetchedData = await getAllBillsByOldest(doctor);
       setBillData(fetchedData);
     }
     hideLoader();

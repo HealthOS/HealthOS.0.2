@@ -91,12 +91,15 @@ export const getAllPatientBills = async ( doctor : string ) => {
     }
 }
 
-export const getAllBillsByOldest = async () => {
+export const getAllBillsByOldest = async ( doctor : string ) => {
     try {
         const data = await databases.listDocuments(
             DATABASE_ID!,
             BILL_COLLECTION_ID!,
-            [Query.orderAsc("$createdAt")]
+            [ 
+                Query.equal("doctor", doctor),
+                Query.orderAsc("$createdAt")
+            ]
         );
         return parseStringify(data.documents);
     } catch (error) {

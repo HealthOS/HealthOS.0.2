@@ -7,8 +7,6 @@ import { SidebarProvider } from "@/components/ui/sidebar"
 import { AppSidebar } from '@/components/ui/app-sidebar'
 import { CustomTrigger } from '@/components/ui/CustomTrigger'
 import GreetComp from '@/components/GreetComp'
-import DashboardActions from '@/components/DashboardActions'
-import { ChevronDown } from 'lucide-react'
 
 const Admin = async ({ params }: { params: { userId: string } }) => {
 

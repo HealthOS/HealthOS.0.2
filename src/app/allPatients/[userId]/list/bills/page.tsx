@@ -27,7 +27,9 @@ const page = async ({ params: { userId } }: SearchParamProps) => {
         <AppSidebar />
         <CustomTrigger />
         <main className='admin-main max-w-7xl mx-auto w-full mt-10 space-y-14'>
-          <BillTableComp data={billsData.documents}
+          <BillTableComp 
+            doctor={userId}
+            data={billsData.documents}
             todayTxn={billsData.todayTxn}
             yesterdayTxn={billsData.yesterdayTxn}
             last7dTxn={billsData.last7dTxn}

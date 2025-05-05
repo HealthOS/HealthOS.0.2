@@ -15,7 +15,7 @@ import { useState } from "react"
 import { registerPatient, updatePatient } from "@/lib/actions/patient.actions"
 import { FormFieldType } from "./PatientForm"
 import { RadioGroup, RadioGroupItem } from "../ui/radio-group"
-import { Doctors, GenderOptions, IdentificationTypes } from "@/constants"
+import { GenderOptions, IdentificationTypes } from "@/constants"
 import { Label } from "../ui/label"
 import { SelectItem } from "../ui/select"
 import Image from "next/image"
@@ -263,7 +263,7 @@ temperature: "98.6°F"
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-12 flex-1">
 
-        <section className="space-y-4w-full">
+        <section className="space-y-4 w-full">
           <h1 className="text-3xl font-bold text-green-500 animate-fade-in">
             👋 Welcome to HealthOS!
           </h1>

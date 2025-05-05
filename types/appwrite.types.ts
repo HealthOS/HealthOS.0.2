@@ -69,7 +69,6 @@ export interface DoctorParams extends Models.Document {
   phone: string;
   password: string;
   birthDate?: Date;
-  passKey?: string;
   registrationNumber?: string;
   licensingAuthority?: string;
   validFrom?: Date;

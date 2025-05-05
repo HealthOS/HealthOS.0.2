@@ -34,6 +34,4 @@ const page = async ({ params: { userId } }: SearchParamProps) => {
   )
 }
 
-
-
 export default page

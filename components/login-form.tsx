@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent } from "@/components/ui/card";
-import { createSession, getUser } from "@/lib/actions/accounts.actions";
+import { createSession, getUser, logout } from "@/lib/actions/accounts.actions";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
 import { useLoader } from "@/src/app/context/LoaderContext";
@@ -48,6 +48,7 @@ export function LoginForm({
 
   const handleLogin = async () => {
     setError("");
+    await logout();
     let session = await createSession({ email, password });
     if (session.error) {
       if(session.message==="Invalid `password` param: Password must be between 8 and 256 characters long.")
