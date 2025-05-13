@@ -124,7 +124,7 @@ temperature: "98.6°F"
       room: patientData?.room || "",
       email: patientData?.email || user?.email || "",
       phone: patientData?.phone || user?.phone || "",
-      birthDate: patientData?.birthDate || new Date(Date.now()),
+      birthDate: patientData?.birthDate || undefined,
       gender: patientData?.gender || "male" as Gender,
       address: patientData?.address || "",
       occupation: patientData?.occupation || "",
@@ -404,14 +404,14 @@ temperature: "98.6°F"
             fieldType={FormFieldType.INPUT}
             control={form.control}
             name="emergencyContactName"
-            label="Eemergency Contact Name"
+            label="Emergency Contact Name"
             placeholder="Guardian's Name"
           />
           <CustomForm
             fieldType={FormFieldType.PHONE_INPUT}
             control={form.control}
             name="emergencyContactNumber"
-            label="Eemergency Contact Number"
+            label="Emergency Contact Number"
             placeholder="00000 00000"
           />
         </div>
@@ -659,7 +659,7 @@ temperature: "98.6°F"
 
         <section className="space-y-6">
           <div className="mb-9 space-y-1">
-            <h2 className="sub-header">Consennt and Privacy</h2>
+            <h2 className="sub-header">Consent and Privacy</h2>
           </div>
         </section>
 

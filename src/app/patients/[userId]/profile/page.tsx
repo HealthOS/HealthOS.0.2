@@ -5,7 +5,6 @@ import IPN from '@/components/IPN';
 import ListField from '@/components/ListField';
 import ProfileCard from '@/components/ProfileCard';
 import RoundedContainers from '@/components/RoundedContainers';
-import { ScrollArea } from '@/components/ui/scroll-area';
 import { getAppointmentsByUser } from '@/lib/actions/appointment.actions';
 import { getBillsByUser } from '@/lib/actions/bill.action';
 import { getPatient } from '@/lib/actions/patient.actions';
@@ -20,8 +19,8 @@ import { CustomTrigger } from '@/components/ui/CustomTrigger'
 
 
 const profilePage = async ({ params: { userId } }: SearchParamProps) => {
-    const user = await getPatient(userId); // 677421f4003129054d37
-    const appointments = await getAppointmentsByUser(userId); // 677421f4003129054d37
+    const user = await getPatient(userId);
+    const appointments = await getAppointmentsByUser(userId); 
     const bills = await getBillsByUser(userId);
 
     return (
@@ -31,7 +30,6 @@ const profilePage = async ({ params: { userId } }: SearchParamProps) => {
             <div className='mx-auto flex max-w-7xl w-full h-screen min-h-[768px]  max-h-screen pb-6 flex-col space-y-10'>
                 <header className='admin-header'>
                     <div className='flex items-center gap-2'>
-                        <Link href="/" className="cursor-pointer">
                             <Image
                                 src="/assets/icons/logo-full.svg"
                                 height={32}
@@ -39,7 +37,6 @@ const profilePage = async ({ params: { userId } }: SearchParamProps) => {
                                 alt='logo'
                                 className='h-8 w-fit'
                             />
-                        </Link>
                         <ChevronRight className='h-5 w-5' />
                         {user.room && <div className='flex'>
                             <p className='text-14-bold'>Room: {user.room}</p>
@@ -143,7 +140,7 @@ const profilePage = async ({ params: { userId } }: SearchParamProps) => {
                                     <p className='text-16-medium'>Allergies</p>
                                     {user.allergies.length > 0 ? <p className='text-14-regular text-dark-700'>{user.allergies}</p> : <p className='text-14-regular text-dark-600'>nil</p>}
                                 </div>
-                                <p className='text-16-medium'>Physician: <span className='text-16-regular text-dark-700'>Dr. {user.primaryPhysician}</span></p>
+            
                                 <div>
                                     <p className='text-16-medium'>Current Medication</p>
                                     <p className='text-14-regular text-dark-700'>{user.currentMedication}</p>

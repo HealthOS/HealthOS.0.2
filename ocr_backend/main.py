@@ -46,10 +46,13 @@ def extract_text_from_pdf(url: str) -> str:
     return text
 
 def parse_text_to_fields(text: str) -> dict:
-    # Example dummy parser. Improve this with regex or NLP.
 
     prompt = f"""
-    Extract the following patient data in JSON format with exact keys and types if not available or mismatched set to "" and based on the text give description and serious conditions and fill respective fields: 
+    Extract the following patient data in JSON format 
+    with exact keys and types 
+    if not available or mismatched set to "" and 
+    based on the text give description and serious conditions and 
+    fill respective fields: 
     birthDate: Date (YYYY-MM-DD);
     gender: 'male' | 'female' | 'other';
     address: string;

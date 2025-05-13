@@ -50,7 +50,6 @@ export function SignupForm({
     const handleSignUp = async () => {
         setError("");
         try {
-            
             let newDoctor = await createAccount(formData);
             if (newDoctor) {
                 console.log("Account created");

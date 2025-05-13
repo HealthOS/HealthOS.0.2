@@ -11,7 +11,7 @@ import SubmitButton from "../SubmitButton"
 import { useEffect, useState } from "react"
 import { FormFieldType } from "./PatientForm"
 import { toast } from "react-toastify"
-import { addAppointment } from "@/lib/actions/appointment.actions"
+import { createAppointment } from "@/lib/actions/appointment.actions"
 import { Patient } from "@/types/appwrite.types"
 import { useLoader } from "@/src/app/context/LoaderContext"
 import { getAllPatients } from "@/lib/actions/patient.actions"
@@ -97,7 +97,7 @@ const AddAppointment = ({ doctor, open, setOpen }: {
                 doctor: doctor,
                 status: "pending" as Status,
             }
-            const appointment = await addAppointment(appointmentData);
+            const appointment = await createAppointment(appointmentData);
 
             if (appointment) {
                 form.reset();

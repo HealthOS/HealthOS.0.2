@@ -44,8 +44,6 @@ const TableComponent = ({ data }:
             if (type === "scheduled") return value.status === "scheduled";
             if (type === "pending" && value.status === "pending") return value;
             if (type === "cancelled" && value.status === "cancelled") return value;
-
-
         })
         setAptData(newData)
     };
@@ -68,7 +66,10 @@ const TableComponent = ({ data }:
                 </Button>
 
                 <Button
-                    className={`rounded-full hover:bg-gray-700 text-white border border-gray-700 ${active=="today"? 'bg-gray-600':'bg-gray-800'}`}
+                    className={
+                        `rounded-full hover:bg-gray-700 text-white border border-gray-700 
+                        ${active=="today"? 'bg-gray-600':'bg-gray-800'}
+                        `}
                     onClick={() => filterAppointments("today")}
                 >
                     <Clock className="h-4 w-4" />

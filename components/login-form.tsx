@@ -48,7 +48,6 @@ export function LoginForm({
 
   const handleLogin = async () => {
     setError("");
-    await logout();
     let session = await createSession({ email, password });
     if (session.error) {
       if(session.message==="Invalid `password` param: Password must be between 8 and 256 characters long.")
@@ -57,10 +56,12 @@ export function LoginForm({
         setError("Invalid Email address")
       else setError(session.message)
     } else {
+      showLoader();
       let user = await getUser();
       console.log("Current user", user);
       localStorage.setItem("appwriteUser", JSON.stringify(user)); // ✅ Correct
       router.push(`/admin/${user.$id}/dashboard`);
+      hideLoader();
     }
   };
 
@@ -89,12 +90,7 @@ export function LoginForm({
               <div className="grid gap-2">
                 <div className="flex items-center">
                   <Label htmlFor="password">Password</Label>
-                  <a
-                    href="#"
-                    className="ml-auto text-sm text-dark-700 underline-offset-2 hover:underline"
-                  >
-                    Forgot your password?
-                  </a>
+                  
                 </div>
                 <Input
                   id="password"
@@ -103,7 +99,13 @@ export function LoginForm({
                   onChange={(e) => setPassword(e.target.value)} required />
               </div>
               {error && <p className="text-red-500 text-sm">{error}</p>}
-                <Button type="button" onClick={handleLogin} variant="ghost" className="w-full bg-dark-400" >Login</Button>
+                <Button type="button" 
+                  onClick={handleLogin} 
+                  variant="ghost" 
+                  className="w-full bg-dark-400"
+                  >
+                    Login
+                  </Button>
               
               <p className="text-center text-sm">
                 Don't have an account? 

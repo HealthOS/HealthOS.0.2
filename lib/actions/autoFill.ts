@@ -24,8 +24,8 @@ export const deletePDF = async (fileId: string) => {
 
   try {
     const result = await storage.deleteFile(
-      BUCKET_ID!, // bucketId
-      fileId // fileId
+      BUCKET_ID!,
+      fileId
     );
 
     return result;
@@ -52,7 +52,6 @@ export const extractTextFromPDF = async (fileId: string) => {
 
       const text = data.data.candidates[0].content.parts[0].text;
       const cleanText = text.replace(/^```json\s*|\s*```$/g, '');
-
       const obj = JSON.parse(cleanText);
       return obj;
     } catch (error) {

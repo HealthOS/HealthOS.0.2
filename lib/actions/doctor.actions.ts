@@ -4,7 +4,6 @@ import { ID, Query } from "node-appwrite"
 import { databases, DATABASE_ID, DOCTOR_COLLECTION_ID, users } from "../appwrite.config"
 import { parseStringify } from "../utils";
 import { DoctorParams, } from "@/types/appwrite.types";
-import { revalidatePath } from "next/cache";
 
 
 export const registerDoctor = async ( doctor : DoctorParams ) => {

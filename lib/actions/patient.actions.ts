@@ -167,12 +167,12 @@ export const deleteProfile = async (userId: string) => {
         PATIENT_COLLECTION_ID!,
         documentId
       );
-      console.log(`Appointment with userId ${userId} has been deleted.`);
+      console.log(`Profile with userId ${userId} has been deleted.`);
     } else {
       console.error(`No document found with userId: ${userId}`);
     }
   } catch (error) {
-    console.error('Error deleting appointment:', error);
+    console.error('Error deleting profile:', error);
   }
 };
 

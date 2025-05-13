@@ -15,9 +15,9 @@ export const {
 const client = new sdk.Client();
 
 client
-  .setEndpoint(ENDPOINT!)  // Using environment variable
-  .setProject(PROJECT_ID!)  // Using environment variable
-  .setKey(API_KEY!);  // Using environment variable
+  .setEndpoint(ENDPOINT!)
+  .setProject(PROJECT_ID!)
+  .setKey(API_KEY!);
   
 
 export const databases = new sdk.Databases(client);
