@@ -206,7 +206,6 @@ export function AppSidebar() {
                     <DialogFooter>
                         <AddAppointment
                             doctor={userId}
-                            open={openApt}
                             setOpen={setOpenApt}                                       
                             />
                     </DialogFooter>

@@ -1,8 +1,6 @@
 import AccountSection from '@/components/AccountSection';
-import ProfileMenu from '@/components/profileMenu';
 import { getDoctor } from '@/lib/actions/doctor.actions';
 import Image from 'next/image';
-import Link from 'next/link';
 import React from 'react'
 
 import { SidebarProvider } from "@/components/ui/sidebar"

@@ -9,7 +9,6 @@ import {
     AlertDialogFooter,
     AlertDialogHeader,
     AlertDialogTitle,
-    AlertDialogTrigger,
 } from "@/components/ui/alert-dialog"
 
 import React, { useState } from 'react'
@@ -21,16 +20,13 @@ import {
     TooltipProvider,
     TooltipTrigger,
 } from "@/components/ui/tooltip"
-import { deleteAppointment, deletePatient, deleteProfile, getUser } from '@/lib/actions/patient.actions';
-import { useRouter } from 'next/navigation';
+import { deleteAppointment, deletePatient, deleteProfile  } from '@/lib/actions/patient.actions';
 import Image from "next/image";
 import Link from "next/link";
-import { formatDateTime, parseStringify } from "@/lib/utils";
 import { Button } from "./ui/button";
 import { BUCKET_ID } from "@/lib/appwrite.config";
 import { storage } from "@/lib/actions/accounts.actions";
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const ProfileCard = ({ userId, name, phone, gender, birthDate, address, occupation, email, emergencyContactName, emergencyContactNumber, identificationDocumentUrl, report }: {
     userId: string
     name: string
@@ -46,7 +42,6 @@ const ProfileCard = ({ userId, name, phone, gender, birthDate, address, occupati
     report: string
 }) => {
 
-    const router = useRouter();
     const [open, setOpen] = useState(false);
     const [openLoading, setLoadingOpen] = useState(false);
     const [patient, setPatient] = useState(false);
@@ -81,13 +76,13 @@ const ProfileCard = ({ userId, name, phone, gender, birthDate, address, occupati
         setLoadingOpen(true);
         setDel(1);
         setPatient(true);
-        const deleteAppointments = await deleteAppointment(userId);
+        await deleteAppointment(userId);
         setPatient(false);
         setApt(true);
-        const deleteProfileData = await deleteProfile(userId);
+        await deleteProfile(userId);
         setApt(false);
         setUser(true);
-        const userDeleted = await deletePatient(userId);
+        await deletePatient(userId);
         setUser(false);
         setDel(2);
     }

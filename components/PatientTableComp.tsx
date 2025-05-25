@@ -3,7 +3,7 @@
 import React, { useEffect, useState } from 'react'
 import { columns } from '@/components/table/patientColumns';
 import { DataTable } from '@/components/table/PatientTable';
-import { ArrowUp, FileText, List, Plus, Search } from 'lucide-react'
+import { ArrowUp, List, Search } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import GreetComp from '@/components/GreetComp';
 import { Patient } from '@/types/appwrite.types';

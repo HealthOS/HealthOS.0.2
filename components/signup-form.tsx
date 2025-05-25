@@ -1,12 +1,12 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { createAccount, createSession, getUser, logout } from "@/lib/actions/accounts.actions";
+import { Card, CardContent } from "@/components/ui/card";
+import { createAccount, createSession, getUser } from "@/lib/actions/accounts.actions";
 import { cn, parseStringify } from "@/lib/utils";
 import Link from "next/link";
 import { registerDoctor } from "@/lib/actions/doctor.actions";
@@ -32,7 +32,7 @@ export function SignupForm({
 
     const handleLogin = async () => {
         setError("");
-        let session = await createSession(formData);
+        const session = await createSession(formData);
         if (session.error) {
             if (session.message === "Invalid `password` param: Password must be between 8 and 256 characters long.")
                 setError("Incorrect Password")
@@ -40,7 +40,7 @@ export function SignupForm({
                 setError("Invalid Email address")
             else setError(session.message)
         } else {
-            let user = await getUser();
+            const user = await getUser();
             console.log("Current user", user);
             localStorage.setItem("appwriteUser", parseStringify(user));
             router.push(`/admin/${user.$id}/dashboard`);
@@ -50,7 +50,7 @@ export function SignupForm({
     const handleSignUp = async () => {
         setError("");
         try {
-            let newDoctor = await createAccount(formData);
+            const newDoctor = await createAccount(formData);
             if(newDoctor===409){
                 setError("Email already exists")
             }
@@ -61,7 +61,7 @@ export function SignupForm({
             else{
                 console.log("Account created");
                 console.log(newDoctor);
-                let userId = newDoctor.$id;
+                const userId = newDoctor.$id;
                 const docData = {
                     userId,
                     name: formData.name,
@@ -71,7 +71,7 @@ export function SignupForm({
                 };
                 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
                 // @ts-expect-error
-                let doctorData = await registerDoctor(docData);
+                const doctorData = await registerDoctor(docData);
                 if (doctorData) handleLogin();
             }
         } catch (error: any) {

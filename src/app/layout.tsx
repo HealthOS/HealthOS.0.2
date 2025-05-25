@@ -6,9 +6,6 @@ import "./globals.css";
 import { LoaderProvider } from "./context/LoaderContext";
 import NetworkStatus from "@/components/NetworkStatus";
 import { ToastProvider } from "@/components/ToastProvider";
-import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar"
-import { AppSidebar } from "@/components/ui/app-sidebar";
-import Link from "next/link";
 
 
 const fontSans = Plus_Jakarta_Sans({

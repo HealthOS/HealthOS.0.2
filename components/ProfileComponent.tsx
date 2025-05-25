@@ -1,15 +1,5 @@
 'use client'
 import React, { useState } from 'react'
-import { zodResolver } from "@hookform/resolvers/zod"
-import { useForm } from "react-hook-form"
-import { z } from "zod"
-import { Form } from "@/components/ui/form"
-
-import { ProfessionalFormValidation } from "@/lib/validation"
-import { useRouter } from "next/navigation"
-import CustomForm from './CustomForm'
-import { FormFieldType } from './forms/PatientForm'
-import SubmitButton from './SubmitButton'
 import { DoctorParams } from '@/types/appwrite.types'
 import PersonalForm from './forms/PersonalForm'
 import ProfessionalForm from './forms/ProfessionalForm'

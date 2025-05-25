@@ -3,7 +3,7 @@
 import React, { useEffect, useState } from 'react'
 import { columns } from '@/components/table/billColumn';
 import { DataTable } from '@/components/table/billTable';
-import { ArrowDownIcon, ArrowUp, ArrowUpIcon, Calendar, CalendarIcon, Clock, DollarSignIcon, IndianRupeeIcon, List, Search } from 'lucide-react'
+import { ArrowUp, Calendar, Clock, IndianRupeeIcon, List, Search } from 'lucide-react'
 import { Bill } from '@/types/appwrite.types';
 import GreetComp from './GreetComp';
 import { Input } from './ui/input';

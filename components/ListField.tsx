@@ -1,5 +1,5 @@
 'use client';
-import React, { useState } from 'react';
+import React from 'react';
 import { ScrollArea } from './ui/scroll-area';
 import { Patient } from '@/types/appwrite.types';
 import TransactionItem from './TransactionItem';

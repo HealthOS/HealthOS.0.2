@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent } from "@/components/ui/card";
-import { createSession, getUser, logout } from "@/lib/actions/accounts.actions";
+import { createSession, getUser } from "@/lib/actions/accounts.actions";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
 import { useLoader } from "@/src/app/context/LoaderContext";
@@ -32,7 +32,7 @@ export function LoginForm({
       if (storedUser) {
         showLoader();
         try {
-          let user = await getUser();
+          const user = await getUser();
           console.log("Current user", user);
           if(user) router.push(`/admin/${user.$id}/dashboard`);
         } catch (error: any) {
@@ -48,7 +48,7 @@ export function LoginForm({
 
   const handleLogin = async () => {
     setError("");
-    let session = await createSession({ email, password });
+    const session = await createSession({ email, password });
     if (session.error) {
       if(session.message==="Invalid `password` param: Password must be between 8 and 256 characters long.")
         setError("Incorrect Password")
@@ -57,7 +57,7 @@ export function LoginForm({
       else setError(session.message)
     } else {
       showLoader();
-      let user = await getUser();
+      const user = await getUser();
       console.log("Current user", user);
       localStorage.setItem("appwriteUser", JSON.stringify(user)); // ✅ Correct
       router.push(`/admin/${user.$id}/dashboard`);
@@ -113,7 +113,7 @@ export function LoginForm({
                   }
               
               <p className="text-center text-sm">
-                Don't have an account? 
+                Don&#39;t have an account? 
                 <Link href='/login/signUp' className="text-green-500 underline"> Sign Up</Link>
               </p>
             </div>

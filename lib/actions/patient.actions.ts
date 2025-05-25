@@ -141,9 +141,8 @@ export const getPatient = async (userId: string) => {
 
 export const deletePatient = async (userId: string) => {
   try {
-    const deletedUser = await users.delete(userId);
+    await users.delete(userId);
     return (true);
-
   } catch (error) {
     console.log(error)
     return (false);

@@ -45,7 +45,7 @@ const RegisterForm = ({ user, patientData }: {
       console.log(deletedFile)
       hideLoader();
 
-    } catch (error) {
+    } catch (error: any) {
       console.log(error)
     }
   }
@@ -268,7 +268,7 @@ temperature: "98.6°F"
             👋 Welcome to HealthOS!
           </h1>
           <p className="text-lg text-muted-foreground">
-            Let's add complete details of your patients for better care.
+            Let&#39;s add complete details of your patients for better care.
           </p>
         </section>
 

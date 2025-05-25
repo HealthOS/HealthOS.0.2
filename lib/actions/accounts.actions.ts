@@ -58,7 +58,7 @@ export const createAccount = async ({ email, password, name }:
 
     export const getUser = async () => {
         try {
-            let user = await account.get();
+            const user = await account.get();
 
             return parseStringify(user);
 
@@ -71,7 +71,7 @@ export const createAccount = async ({ email, password, name }:
     export const logout = async () => {
         try {
 
-            let user = await account.deleteSessions();
+            const user = await account.deleteSessions();
 
             return parseStringify(user);
 

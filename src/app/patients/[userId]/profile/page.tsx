@@ -10,7 +10,6 @@ import { getBillsByUser } from '@/lib/actions/bill.action';
 import { getPatient } from '@/lib/actions/patient.actions';
 import { ChevronRight } from 'lucide-react';
 import Image from 'next/image';
-import Link from 'next/link';
 import React from 'react'
 
 import { SidebarProvider } from "@/components/ui/sidebar"

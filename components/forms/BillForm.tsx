@@ -59,12 +59,10 @@ const BillForm = ({ userId, patientId, setOpenBill }: {
 
     async function onSubmit({ transactionAmount }: z.infer<typeof BillFormValidation>) {
 
-        let dateTime = new Date();
+        const dateTime = new Date();
         setIsLoading(true);
 
         try {
-            dateTime;
-            console.log(dateTime);
             const billData = {
                 userId,
                 patient: patientId,

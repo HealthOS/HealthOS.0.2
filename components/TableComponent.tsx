@@ -4,7 +4,7 @@ import React, { useEffect, useState } from 'react'
 import { columns } from '@/components/table/columns'
 import { DataTable } from '@/components/table/DataTable'
 import { Button } from '@/components/ui/button'
-import { AlertTriangle, Calendar, Clock, FileText, List, Plus, Settings } from 'lucide-react'
+import { AlertTriangle, Calendar, Clock, FileText, List } from 'lucide-react'
 
 const TableComponent = ({ data }:
     { data: Appointment[] }

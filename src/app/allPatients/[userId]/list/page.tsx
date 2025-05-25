@@ -1,6 +1,3 @@
-import ProfileMenu from '@/components/profileMenu';
-import Image from 'next/image';
-import Link from 'next/link';
 import React from 'react'
 import PatientTableComp from '@/components/PatientTableComp';
 import { getAllPatients } from '@/lib/actions/patient.actions';

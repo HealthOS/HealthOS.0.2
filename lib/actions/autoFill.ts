@@ -16,7 +16,7 @@ export const uploadPDF = async (file: File) => {
     return parseStringify(result);
 
   } catch (error) {
-
+    console.log(error);
   }
 }
 
@@ -31,7 +31,7 @@ export const deletePDF = async (fileId: string) => {
     return result;
 
   } catch (error) {
-
+    console.log(error);
   }
 }
 

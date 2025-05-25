@@ -17,9 +17,8 @@ import { useLoader } from "@/src/app/context/LoaderContext"
 import { getAllPatients } from "@/lib/actions/patient.actions"
 import { useRouter } from "next/navigation"
 
-const AddAppointment = ({ doctor, open, setOpen }: {
+const AddAppointment = ({ doctor, setOpen }: {
     doctor: string,
-    open: boolean,
     setOpen?: (open: boolean) => void;
 }) => {
 

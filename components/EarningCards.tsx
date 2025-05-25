@@ -1,4 +1,4 @@
-import { CalendarIcon, ArrowUpIcon, ArrowDownIcon } from 'lucide-react'
+import { CalendarIcon } from 'lucide-react'
 import React from 'react'
 
 const EarningCards = ( {title, amount}: {
