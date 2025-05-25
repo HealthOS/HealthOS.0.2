@@ -1,7 +1,4 @@
-import ProfileMenu from '@/components/profileMenu';
 import { getAllPatientBills } from '@/lib/actions/bill.action';
-import Image from 'next/image';
-import Link from 'next/link';
 import React from 'react'
 import BillTableComp from '@/components/BillTableComp';
 
