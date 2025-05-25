@@ -8,7 +8,7 @@ export const client = new Client()
     .setEndpoint(ENDPOINT!)
     .setProject(PROJECT_ID!);
 
-    export const storage = new Storage(client);
+export const storage = new Storage(client);
 
 const account = new Account(client);
 
@@ -26,73 +26,77 @@ export const createAccount = async ({ email, password, name }:
             password,
             name
         );
-            return parseStringify(newAccount);
-    } catch (error) {
-        console.log(error)
-        return error;
+        console.log(newAccount)
+        return parseStringify(newAccount);
+    } catch (error: any) {
+        if (error && error?.code === 409) {
+            return 409;
+        }
+            console.log(error.message)
+            return { error: true, message: error.message || "Failed to create user" };;
+        }
     }
-}
 
-export const createSession = async ({ email, password }:
-    {
-        email: string
-        password: string
+    export const createSession = async ({ email, password }:
+        {
+            email: string
+            password: string
+        }) => {
+
+        try {
+            const newSession = await account.createEmailPasswordSession(
+                email,
+                password
+            );
+
+            return parseStringify(newSession)
+        } catch (error: any) {
+            console.log(error.message)
+            return { error: true, message: error.message || "Failed to fetch user" };
+        }
+    }
+
+    export const getUser = async () => {
+        try {
+            let user = await account.get();
+
+            return parseStringify(user);
+
+        } catch (error) {
+            console.log(error)
+            return null;
+        }
+    }
+
+    export const logout = async () => {
+        try {
+
+            let user = await account.deleteSessions();
+
+            return parseStringify(user);
+
+        } catch (error) {
+            console.log(error)
+            return error;
+        }
+    }
+
+
+    export const UpdatePassword = async ({ currentPassword, newPassword }: {
+        currentPassword: string
+        newPassword: string
     }) => {
+        try {
 
-    try {
-        const newSession = await account.createEmailPasswordSession(
-            email,
-            password
-        );
+            const result = await account.updatePassword(
+                newPassword, // password
+                currentPassword // oldPassword (optional)
+            );
 
-        return parseStringify(newSession)
-    } catch (error:any) {
-        console.log(error.message)
-        return { error: true, message: error.message || "Failed to fetch user" };;
+            return parseStringify(result);
+
+        } catch (error) {
+            console.log(error)
+            return null;
+        }
     }
-}
-
-export const getUser = async () => {
-    try {
-        let user = await account.get();
-
-        return parseStringify(user);
-
-    } catch (error) {
-        console.log(error)
-        return null;
-    }
-}
-
-export const logout = async () => {
-    try {
-
-        let user = await account.deleteSessions();
-
-        return parseStringify(user);
-
-    } catch (error) {
-        console.log(error)
-        return error;
-    }
-}
-
-
-export const UpdatePassword = async ({currentPassword, newPassword}:{
-    currentPassword: string
-    newPassword: string
-}) => {
-    try {
-
-        const result = await account.updatePassword(
-            newPassword, // password
-            currentPassword // oldPassword (optional)
-        );
-
-        return parseStringify(result);
-
-    } catch (error) {
-        console.log(error)
-        return null;
-    }
-}

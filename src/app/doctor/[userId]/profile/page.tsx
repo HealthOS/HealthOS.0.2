@@ -20,7 +20,6 @@ const page = async ({ params: { userId } }: SearchParamProps) => {
     <CustomTrigger />
     <div className="mx-auto flex max-w-7xl min-h-[768px] w-full h-screen pb-5 flex-col space-y-8">
       <header className='admin-header'>
-        <Link href="/" className="cursor-pointer">
           <Image
             src="/assets/icons/logo-full.svg"
             height={32}
@@ -28,7 +27,6 @@ const page = async ({ params: { userId } }: SearchParamProps) => {
             alt='logo'
             className='h-7 w-fit'
           />
-        </Link>
       </header>
       
       <AccountSection 

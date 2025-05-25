@@ -51,7 +51,14 @@ export function SignupForm({
         setError("");
         try {
             let newDoctor = await createAccount(formData);
-            if (newDoctor) {
+            if(newDoctor===409){
+                setError("Email already exists")
+            }
+            else if (newDoctor.error){
+                setError(newDoctor.message)
+            }
+
+            else{
                 console.log("Account created");
                 console.log(newDoctor);
                 let userId = newDoctor.$id;
@@ -62,14 +69,10 @@ export function SignupForm({
                     password: formData.password,
                     phone: formData.phone
                 };
-                console.log(docData); // This will exclude confirmPassword
                 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
                 // @ts-expect-error
                 let doctorData = await registerDoctor(docData);
                 if (doctorData) handleLogin();
-            }
-            else {
-                console.log("failed to register");
             }
         } catch (error: any) {
             setError("Sign-up failed. Try again.");
@@ -106,6 +109,7 @@ export function SignupForm({
                                     type="tel"
                                     value={formData.phone}
                                     onChange={handleChange}
+                                    required
                                 />
                             </div>
                             <div className="grid gap-2">
@@ -137,9 +141,9 @@ export function SignupForm({
                                     required />
                             </div>
                             {error && <p className="text-red-500 text-sm">{error}</p>}
-                            {(formData.password === formData.confirmPassword && formData.password.length > 0) ?
+                            {(formData.password === formData.confirmPassword && formData.password.length > 6 && (formData.name || formData.email || formData.phone )) ?
                                 <Button type="button" onClick={handleSignUp} variant="ghost" className="w-full bg-dark-400">Sign Up</Button>
-                                : <div className="inline-flex items-center justify-center bg-dark-400 p-2 gap-2 whitespace-nowrap rounded-md text-sm font-medium focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring pointer-events-none opacity-50">Sign Up</div>
+                                : <div className="inline-flex items-center justify-center bg-dark-400 p-2 gap-2 whitespace-nowrap rounded-md text-sm font-medium focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring cursor-default opacity-50" onClick={()=>setError("Kindly enter valid data in each field to proceed.")}>Sign Up</div>
                             }
                             
                             <p className="text-center text-sm">

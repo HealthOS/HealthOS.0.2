@@ -1,7 +1,6 @@
 import StatCard from '@/components/StatCard'
 import TableComponent from '@/components/TableComponent'
 import { getRecentAppointmentList } from '@/lib/actions/appointment.actions'
-import Link from 'next/link'
 import React from 'react'
 import { SidebarProvider } from "@/components/ui/sidebar"
 import { AppSidebar } from '@/components/ui/app-sidebar'
@@ -16,11 +15,9 @@ const Admin = async ({ params }: { params: { userId: string } }) => {
   return (
     <div className="mx-auto flex flex-col space-y-6">
       <header className='fixed bg-dark-200 w-full flex items-center py-1 justify-center z-0'>
-        <Link href="/" className="cursor-pointer">
           <p className='text-sm font-extralight'>
             HealthOS
           </p>
-        </Link>
       </header>
 
       <SidebarProvider >

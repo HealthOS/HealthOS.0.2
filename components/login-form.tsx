@@ -99,13 +99,18 @@ export function LoginForm({
                   onChange={(e) => setPassword(e.target.value)} required />
               </div>
               {error && <p className="text-red-500 text-sm">{error}</p>}
-                <Button type="button" 
+                {
+                  email && password ?
+                  <Button type="button" 
                   onClick={handleLogin} 
                   variant="ghost" 
                   className="w-full bg-dark-400"
                   >
                     Login
                   </Button>
+                  : 
+                  <div className="inline-flex items-center justify-center bg-dark-400 p-2 gap-2 whitespace-nowrap rounded-md text-sm font-medium focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring cursor-default opacity-50" onClick={()=>setError("Kindly enter valid data in each field to proceed.")}>Login</div>
+                  }
               
               <p className="text-center text-sm">
                 Don't have an account? 
