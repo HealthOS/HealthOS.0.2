@@ -28,13 +28,22 @@ export const createAccount = async ({ email, password, name }:
         );
         console.log(newAccount)
         return parseStringify(newAccount);
-    } catch (error: any) {
-        if (error && error?.code === 409) {
-            return 409;
-        }
-            console.log(error.message)
-            return { error: true, message: error.message || "Failed to create user" };;
-        }
+    } catch (error: unknown) {
+  // First, narrow the type
+  if (typeof error === 'object' && error !== null && 'code' in error) {
+    const err = error as { code: number }; // optionally extend with message if needed
+    if (err.code === 409) {
+      return 409;
+    }
+  }
+
+  if (error instanceof Error) {
+    return { error: true, message: error.message || "Failed to create user" };
+  }
+
+  // Fallback if it's not an Error instance
+  return { error: true, message: "Failed to create user" };
+}
     }
 
     export const createSession = async ({ email, password }:
@@ -50,9 +59,9 @@ export const createAccount = async ({ email, password, name }:
             );
 
             return parseStringify(newSession)
-        } catch (error: any) {
-            console.log(error.message)
-            return { error: true, message: error.message || "Failed to fetch user" };
+        } catch (error) {
+            console.log(error)
+            return { error: true, message: error || "Failed to fetch user" };
         }
     }
 

@@ -75,7 +75,7 @@ const BillForm = ({ userId, patientId, setOpenBill }: {
 
             if (bill) {
                 form.reset();
-                setOpenBill && setOpenBill(false);
+                setOpenBill(false);
                 router.refresh();
             }
 

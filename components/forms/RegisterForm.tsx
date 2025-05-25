@@ -45,12 +45,12 @@ const RegisterForm = ({ user, patientData }: {
       console.log(deletedFile)
       hideLoader();
 
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.log(error)
     }
   }
 
-  const onDrop = useCallback(async (acceptedFiles: any) => {
+  const onDrop = useCallback(async (acceptedFiles: File[]) => {
 
     showLoader();
 

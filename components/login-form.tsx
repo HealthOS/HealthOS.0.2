@@ -35,8 +35,8 @@ export function LoginForm({
           const user = await getUser();
           console.log("Current user", user);
           if(user) router.push(`/admin/${user.$id}/dashboard`);
-        } catch (error: any) {
-          console.warn("Session expired:", error.message);
+        } catch (error: unknown) {
+          console.warn("Session expired:", error);
           localStorage.removeItem("appwriteUser");
         }
         hideLoader();

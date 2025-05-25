@@ -16,7 +16,7 @@ export const createAppointment = async (appointment: CreateAppointmentParams) =>
         )
         revalidatePath(`/admin/${appointment.doctor}/dashboard`);
         return parseStringify(newAppointment)
-    } catch (error) {
+    } catch (error: unknown) {
         console.log(error);    
     }
 }
@@ -31,7 +31,7 @@ export const getAppointment = async (appointmentId: string) => {
         )
 
         return parseStringify(appointment)
-    } catch (error) {
+    } catch (error: unknown) {
         console.log(error)
     }
 }
@@ -73,7 +73,7 @@ export const getRecentAppointmentList = async ( doctor: string ) => {
         }
 
         return parseStringify(data);
-    } catch (error) {
+    } catch (error: unknown) {
         console.log(error)
     }
 }
@@ -94,7 +94,7 @@ export const updateAppointment = async ({ appointmentId, appointment }: UpdateAp
         revalidatePath('/admin');
         return parseStringify(updatedAppointment);
 
-    } catch(error) {
+    } catch(error: unknown) {
         console.log(error);
     }
 }
@@ -115,7 +115,7 @@ export const getAppointmentsByUser = async (userId: string) => {
             documents: appointments.documents
         });
 
-    } catch (error) {
+    } catch (error: unknown) {
         console.error("Error fetching appointments:", error);
         return null;
     }

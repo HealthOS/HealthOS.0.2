@@ -74,9 +74,9 @@ export function SignupForm({
                 const doctorData = await registerDoctor(docData);
                 if (doctorData) handleLogin();
             }
-        } catch (error: any) {
+        } catch (error: unknown) {
             setError("Sign-up failed. Try again.");
-            console.error("Sign-up error:", error.message);
+            console.error("Sign-up error:", error);
         }
     };
 
