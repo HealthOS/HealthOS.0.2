@@ -6,8 +6,9 @@ import { SidebarProvider } from "@/components/ui/sidebar"
 import { AppSidebar } from '@/components/ui/app-sidebar'
 import { CustomTrigger } from '@/components/ui/CustomTrigger'
 
-const page = async ({ params: { userId } }: SearchParamProps) => {
+const page = async ({ params }: { params: Promise<{ userId: string }> }) => {
 
+  const { userId } = await params;
   const billsData = await getAllPatientBills(userId);
 
   return (

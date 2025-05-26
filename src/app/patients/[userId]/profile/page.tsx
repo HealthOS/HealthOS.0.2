@@ -17,9 +17,11 @@ import { AppSidebar } from '@/components/ui/app-sidebar'
 import { CustomTrigger } from '@/components/ui/CustomTrigger'
 
 
-const profilePage = async ({ params: { userId } }: SearchParamProps) => {
+const profilePage = async ({ params }: { params: Promise<{ userId: string }> }) => {
+
+    const { userId } = await params;
     const user = await getPatient(userId);
-    const appointments = await getAppointmentsByUser(userId); 
+    const appointments = await getAppointmentsByUser(userId);
     const bills = await getBillsByUser(userId);
 
     return (
@@ -29,13 +31,13 @@ const profilePage = async ({ params: { userId } }: SearchParamProps) => {
             <div className='mx-auto flex max-w-7xl w-full h-screen min-h-[768px]  max-h-screen pb-6 flex-col space-y-10'>
                 <header className='admin-header'>
                     <div className='flex items-center gap-2'>
-                            <Image
-                                src="/assets/icons/logo-full.svg"
-                                height={32}
-                                width={162}
-                                alt='logo'
-                                className='h-8 w-fit'
-                            />
+                        <Image
+                            src="/assets/icons/logo-full.svg"
+                            height={32}
+                            width={162}
+                            alt='logo'
+                            className='h-8 w-fit'
+                        />
                         <ChevronRight className='h-5 w-5' />
                         {user.room && <div className='flex'>
                             <p className='text-14-bold'>Room: {user.room}</p>
@@ -139,7 +141,7 @@ const profilePage = async ({ params: { userId } }: SearchParamProps) => {
                                     <p className='text-16-medium'>Allergies</p>
                                     {user.allergies.length > 0 ? <p className='text-14-regular text-dark-700'>{user.allergies}</p> : <p className='text-14-regular text-dark-600'>nil</p>}
                                 </div>
-            
+
                                 <div>
                                     <p className='text-16-medium'>Current Medication</p>
                                     <p className='text-14-regular text-dark-700'>{user.currentMedication}</p>

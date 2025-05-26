@@ -74,7 +74,6 @@ const DashboardActions = ({ doctor }: { doctor: string }) => {
                             <DialogFooter>
                                 <AddAppointment
                                     doctor={doctor}
-                                    open={openApt}
                                     setOpen={setOpenApt}
                                 />
                             </DialogFooter>
@@ -87,8 +86,7 @@ const DashboardActions = ({ doctor }: { doctor: string }) => {
                                 <DialogTitle></DialogTitle>
                             </DialogHeader>
                             <DialogFooter>
-                                <PatientForm
-                                />
+                                <PatientForm/>
                             </DialogFooter>
                         </DialogContent>
                     </Dialog>

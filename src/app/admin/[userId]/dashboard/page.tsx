@@ -7,9 +7,9 @@ import { AppSidebar } from '@/components/ui/app-sidebar'
 import { CustomTrigger } from '@/components/ui/CustomTrigger'
 import GreetComp from '@/components/GreetComp'
 
-const Admin = async ({ params }: { params: { userId: string } }) => {
+const Admin = async ({ params }: { params: Promise<{ userId: string }> }) => {
 
-  const userId = params.userId;
+  const { userId } = await params;
   const appointments = await getRecentAppointmentList(userId);
 
   return (
