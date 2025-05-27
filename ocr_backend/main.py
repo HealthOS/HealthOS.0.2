@@ -5,12 +5,22 @@ import fitz  # PyMuPDF
 import pytesseract
 from PIL import Image
 import io
+import uvicorn
+import os
 from dotenv import load_dotenv
+import platform
 
-pytesseract.pytesseract.tesseract_cmd = r'C:\Program Files\Tesseract-OCR\tesseract.exe'
+if platform.system() == "Windows":
+    pytesseract.pytesseract.tesseract_cmd = r'C:\Program Files\Tesseract-OCR\tesseract.exe'
 
-load_dotenv
+load_dotenv()
+api_key = os.getenv("GEMINI_API")
 app = FastAPI()
+
+if __name__ == "__main__":
+    port = int(os.getenv("PORT", 8000))  # Read port from env var, default 8000 for local
+    uvicorn.run(app, host="0.0.0.0", port=port)
+
 
 # Enable CORS
 app.add_middleware(
@@ -84,7 +94,7 @@ def parse_text_to_fields(text: str) -> dict:
     response = requests.post(
         "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent",
         headers={"Content-Type": "application/json"},
-        params={"key": ("AIzaSyBRo5lRdlAAumZB8Qpa_pySvhIDkI5zKsQ")},
+        params={"key": api_key},
         json={"contents": [{"parts": [{"text": prompt}]}]}
     )
 
