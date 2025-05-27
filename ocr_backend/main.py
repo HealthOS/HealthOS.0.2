@@ -105,6 +105,7 @@ def parse_text_to_fields(text: str) -> dict:
 @app.get("/extract-text")
 def extract_report(file_url: str = Query(...)):
     try:
+        
         text = extract_text_from_pdf(file_url)
         structured_data = parse_text_to_fields(text)
         return structured_data
