@@ -40,7 +40,7 @@ export const extractTextFromPDF = async (fileId: string) => {
 
     const response = storage.getFileDownload(BUCKET_ID!, fileId);
 
-    const res = await fetch(`http://localhost:8000/extract-text?file_url=${encodeURIComponent(response)}`);
+    const res = await fetch(`https://healthos-ocr.onrender.com/extract-text?file_url=${encodeURIComponent(response)}`);
     const data = await res.json();
 
     if (data) {

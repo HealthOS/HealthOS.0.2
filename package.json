@@ -3,9 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "concurrently \"npm run dev:next\" \"npm run dev:ocr\"",
-    "dev:next": "next dev --turbopack",
-    "dev:ocr": "cd ocr_backend && uvicorn main:app --reload --port 8000",
+    "dev": "next dev --turbopack",
     "build": "next build",
     "start": "next start",
     "lint": "next lint"

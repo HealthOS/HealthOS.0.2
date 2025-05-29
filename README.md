@@ -13,6 +13,10 @@ pnpm dev
 # or
 bun dev
 ```
+concurrently
+    "dev": "concurrently \"npm run dev:next\" \"npm run dev:ocr\"",
+    "dev:next": "next dev --turbopack",
+    "dev:ocr": "cd ocr_backend && uvicorn main:app --reload --port 8000",
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
