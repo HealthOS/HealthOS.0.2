@@ -26,7 +26,6 @@ export const createAccount = async ({ email, password, name }:
             password,
             name
         );
-        console.log(newAccount)
         return parseStringify(newAccount);
     } catch (error: unknown) {
   // First, narrow the type

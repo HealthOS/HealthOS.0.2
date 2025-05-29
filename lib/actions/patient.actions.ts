@@ -95,8 +95,6 @@ export const updatePatient = async ({ identificationDocument, userId, ...patient
         throw new Error('Appointment not found');
       }
 
-      console.log(updatedPatient);
-
       revalidatePath('/admin');
       return parseStringify(updatedPatient);
     }
@@ -113,7 +111,6 @@ export const updatePatient = async ({ identificationDocument, userId, ...patient
     if (!updatedPatient) {
       throw new Error('Appointment not found');
     }
-    console.log(updatedPatient);
 
     revalidatePath('/admin');
     return parseStringify(updatedPatient);
