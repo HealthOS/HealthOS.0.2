@@ -18,23 +18,23 @@ export function LoginForm({
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const { showLoader, hideLoader } = useLoader();
-  const [error, setError] = useState("");
+  const [error, setError] = useState<string | null>(null);
   const router = useRouter();
 
   useEffect(() => {
     const checkSession = async () => {
       const storedUser = localStorage.getItem("appwriteUser")
-      ? JSON.parse(localStorage.getItem("appwriteUser")!)
-      : null;
-    
-    console.log("Retrieved user", storedUser);
-    
+        ? JSON.parse(localStorage.getItem("appwriteUser")!)
+        : null;
+
+      console.log("Retrieved user", storedUser);
+
       if (storedUser) {
         showLoader();
         try {
           const user = await getUser();
           console.log("Current user", user);
-          if(user) router.push(`/admin/${user.$id}/dashboard`);
+          if (user) router.push(`/admin/${user.$id}/dashboard`);
         } catch (error: unknown) {
           console.warn("Session expired:", error);
           localStorage.removeItem("appwriteUser");
@@ -50,12 +50,23 @@ export function LoginForm({
     setError("");
     const session = await createSession({ email, password });
     if (session.error) {
-      if(session.message==="Invalid `password` param: Password must be between 8 and 256 characters long.")
-        setError("Incorrect Password")
-      else if(session.message==="Invalid `email` param: Value must be a valid email address")
-        setError("Invalid Email address")
-      else setError(session.message)
-    } else {
+      const message =
+        typeof session.message === "string"
+          ? session.message
+          : session.message instanceof Error
+            ? session.message.message
+            : "Login failed";
+
+      if (message.includes("password"))
+        setError("Incorrect Password");
+      else if (message.includes("email"))
+        setError("Invalid Email address");
+      else
+        setError(message);
+
+      return;
+    }
+    else {
       showLoader();
       const user = await getUser();
       console.log("Current user", user);
@@ -90,7 +101,7 @@ export function LoginForm({
               <div className="grid gap-2">
                 <div className="flex items-center">
                   <Label htmlFor="password">Password</Label>
-                  
+
                 </div>
                 <Input
                   id="password"
@@ -98,22 +109,22 @@ export function LoginForm({
                   value={password}
                   onChange={(e) => setPassword(e.target.value)} required />
               </div>
-              {error && <p className="text-red-500 text-sm">{error}</p>}
-                {
-                  email && password ?
-                  <Button type="button" 
-                  onClick={handleLogin} 
-                  variant="ghost" 
-                  className="w-full bg-dark-400"
+              {error && <p className="text-red-500 text-sm">{String(error)}</p>}
+              {
+                email && password ?
+                  <Button type="button"
+                    onClick={handleLogin}
+                    variant="ghost"
+                    className="w-full bg-dark-400"
                   >
                     Login
                   </Button>
-                  : 
-                  <div className="inline-flex items-center justify-center bg-dark-400 p-2 gap-2 whitespace-nowrap rounded-md text-sm font-medium focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring cursor-default opacity-50" onClick={()=>setError("Kindly enter valid data in each field to proceed.")}>Login</div>
-                  }
-              
+                  :
+                  <div className="inline-flex items-center justify-center bg-dark-400 p-2 gap-2 whitespace-nowrap rounded-md text-sm font-medium focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring cursor-default opacity-50" onClick={() => setError("Kindly enter valid data in each field to proceed.")}>Login</div>
+              }
+
               <p className="text-center text-sm">
-                Don&#39;t have an account? 
+                Don&#39;t have an account?
                 <Link href='/login/signUp' className="text-green-500 underline"> Sign Up</Link>
               </p>
             </div>

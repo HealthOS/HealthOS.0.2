@@ -1,7 +1,6 @@
 import RegisterForm from '@/components/forms/RegisterForm'
 import { getPatient, getUser } from '@/lib/actions/patient.actions'
 import Image from 'next/image'
-import React from 'react'
 
 const Register = async ({ params }: { params: Promise<{ userId: string }> }) => {
 
