@@ -1,0 +1,89 @@
+declare type SearchParamProps = {
+    params: { [key: string]: string };
+    searchParams: { [key: string]: string | string[] | undefined };
+  };
+  
+  declare type Gender = "male" | "female" | "other";
+  declare type Status = "pending" | "scheduled" | "cancelled";
+  
+  declare interface CreateUserParams {
+    name: string;
+    email: string;
+    phone: string;
+  }
+  declare interface User extends CreateUserParams {
+    $id: string;
+  }
+  
+  declare interface RegisterUserParams extends CreateUserParams {
+    userId: string;
+    room: string;
+    birthDate: Date;
+    gender: Gender;
+    address: string;
+    occupation: string;
+    emergencyContactName: string;
+    emergencyContactNumber: string;
+    insuranceProvider: string;
+    insurancePolicyNumber: string;
+    allergies: string | undefined;
+    currentMedication: string | undefined;
+    familyMedicalHistory: string | undefined;
+    pastMedicalHistory: string | undefined;
+    identificationType: string | undefined;
+    identificationNumber: string | undefined;
+    identificationDocument: FormData | undefined;
+    privacyConsent: boolean;
+    temperature: string | undefined;
+    bloodPressure: string | undefined;
+    description: string | undefined;
+    seriousConditions: string | undefined;
+    diabetes: string | undefined;
+    tachycardia: string | undefined;
+    hypoxia: string | undefined;
+    respiratoryDistress: string | undefined;
+    hypercholesterolemia: string | undefined;
+    anemia: string | undefined;
+    chronicKidneyDisease: string | undefined;
+    hypothyroidism: string | undefined;
+    hyperthyroidism: string | undefined;
+    obesity: string | undefined;
+    gout: string | undefined;
+    coagulationDisorder: string | undefined;
+    osteoporosis: string | undefined;
+    report: string | undefined;
+    doctor: string | undefined;
+  }
+  
+  declare type CreateAppointmentParams = {
+    userId: string;
+    patient: string;
+    reason: string;
+    schedule: Date;
+    status: Status;
+    doctor: string;
+    note: string | undefined;
+  };
+
+  declare type AddAppointmentParams = {
+    patient: string;
+    reason: string;
+    schedule: Date;
+    status: Status;
+    note: string | undefined;
+    doctor: string;
+  };
+
+  declare type CreateBillParams = {
+    userId: string;
+    patient: string;
+    transactionAmount: number;
+    dateTime: Date;
+  };
+  
+  declare type UpdateAppointmentParams = {
+    appointmentId: string;
+    userId: string;
+    appointment: Appointment;
+    type: string;
+  };
